@@ -18,8 +18,8 @@ class Fase(models.Model):
 
 class Partido(models.Model):
     fecha = models.DateField()
-    local = models.ForeignKey('Pais', on_delete=models.SET_NULL)
-    visitante = models.ForeignKey('Pais', on_delete=models.SET_NULL)
+    local = models.ForeignKey('Pais', related_name='partidos_locales', on_delete=models.SET_NULL, null=True)
+    visitante = models.ForeignKey('Pais', related_name='partidos_visitantes', on_delete=models.SET_NULL, null=True)
     goles_local = models.PositiveSmallIntegerField()
     goles_visitante = models.PositiveSmallIntegerField()
     minutos_ataque = models.PositiveSmallIntegerField()
@@ -37,8 +37,8 @@ class Partido(models.Model):
 
 class Evento(models.Model):
     minuto_ocurrido = models.PositiveSmallIntegerField()
-    jugador = models.ForeignKey("Jugador")
-    tipo_evento = models.ForeignKey('TipoEvento')
+    jugador = models.ForeignKey('Jugador', on_delete=models.SET_NULL, null=True)
+    tipo_evento = models.ForeignKey('TipoEvento', on_delete=models.SET_NULL, null=True)
 
 
 class TipoEvento(models.Model):
@@ -54,24 +54,23 @@ class Participante(models.Model):
 class Equipo(models.Model):
     nombre = models.CharField(max_length=100)
     descripcion = models.TextField(max_length=300)
-    pais_perteneciente = models.ForeignKey('Pais', on_delete=models.SET_NULL)
+    pais_perteneciente = models.ForeignKey('Pais', on_delete=models.SET_NULL, null=True)
       
 
 class Formacion(models.Model):
-    esquema = models.CharField(max_length=50)
-    jugadores = models.ManyToManyField(Jugador)
+    esquema = models.CharField(max_length=100, default='', blank=True)
+    # jugadores = models.ManyToManyField(Jugador)
 
 
 class Pais(models.Model):
     nombre = models.CharField(max_length=100)
-    liga_nombre = models.CharField(max_length=150)
+    liga_nombre = models.CharField(max_length=150, default='tu_valor_predeterminado')
     formacion = models.ForeignKey(Formacion, on_delete=models.CASCADE)
+
 
     def conocerPersonal(self):
         return Personal.objects.filter(pais_perteneciente=self)
     
-    def obtenerTodosPartidos(self):
-        return Partido.objects.filter(Q(local=self) | Q(visitante=self))
     def conocerEstadistica(self) -> dict:
         estadistica = {
             'minutos_ataque': 0,
@@ -83,13 +82,6 @@ class Pais(models.Model):
             estadistica['cantidad_corners'] += partido.cantidad_corners
             estadistica['cantidad_laterales'] += partido.cantidad_laterales
         return estadistica
-    
-    def conocerFormacionActual(self):
-        from django.utils import timezone
-        fecha_actual = timezone.now()
-        partido_mas_cercano = Partido.objects.filter(
-        Q(local=self) | Q(visitante=self), fecha__gte=fecha_actual).order_by('fecha').first()
-
 
 
 class Persona(models.Model):
@@ -110,10 +102,9 @@ class Persona(models.Model):
 class Jugador(Persona):
     numero_camiseta = models.IntegerField()
     pais = models.ForeignKey('Pais', on_delete=models.CASCADE)
-    equipo = models.ForeignKey('Equipo', on_delete=models.SET_NULL)
-    posicion = models.ForeignKey('Posicion', on_delete=models.SET_NULL)
+    equipo = models.ForeignKey('Equipo', on_delete=models.SET_NULL, null=True)
+    posicion = models.CharField(max_length=100)
     fecha_retiro = models.DateField(null=True, default=None)
-
     def sigue_jugando(self):
         return self.fecha_retiro != None
 
@@ -127,11 +118,10 @@ class Rol(models.Model):
 class Personal(Persona):
     fecha_comienzo = models.DateField()
     fecha_fin = models.DateField()
-    rol = models.ForeignKey(Rol, on_delete=models.SET_NULL)
-    pais_perteneciente = models. ForeignKey(Pais, on_delete=models.SET_NULL)
+    pais_perteneciente = models.ForeignKey('Pais', on_delete=models.SET_NULL, null=True)
+    rol = models.ForeignKey('Rol', on_delete=models.SET_NULL, null=True)
 
 
 class Posicion(models.Model):
     nombre_posicion = models.CharField(max_length=100)
     descripcion = models.TextField(max_length=300)
-
