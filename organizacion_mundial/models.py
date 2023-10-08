@@ -1,5 +1,6 @@
 import queue
 from django.db import models
+from django.core.exceptions import ValidationError
 
 class Mundial(models.Model):
     nombre = models.CharField(max_length=100)
@@ -55,6 +56,9 @@ class Equipo(models.Model):
     nombre = models.CharField(max_length=100)
     descripcion = models.TextField(max_length=300)
     pais_perteneciente = models.ForeignKey('Pais', on_delete=models.SET_NULL, null=True)
+
+    def __str__(self):
+        return self.nombre
       
 
 class Formacion(models.Model):
@@ -64,8 +68,18 @@ class Formacion(models.Model):
 
 class Pais(models.Model):
     nombre = models.CharField(max_length=100)
-    liga_nombre = models.CharField(max_length=150, default='tu_valor_predeterminado')
-    formacion = models.ForeignKey(Formacion, on_delete=models.CASCADE)
+    liga_nombre = models.CharField(max_length=150)
+    FORMACION_CHOICES = [
+    ('4-4-2', '4-4-2'),
+    ('4-3-3', '4-3-3'),
+    ('3-5-2', '3-5-2'),
+    ('4-2-4', '4-2-4'),
+    ('4-2-3-1', '4-2-3-1'),
+    ('4-3-2-1', '4-3-2-1'),
+    ('3-4-3', '3-4-3'),
+    ]
+    
+    formacion = models.CharField(max_length=10, choices=FORMACION_CHOICES, default='4-4-2')
 
 
     def conocerPersonal(self):
@@ -82,6 +96,9 @@ class Pais(models.Model):
             estadistica['cantidad_corners'] += partido.cantidad_corners
             estadistica['cantidad_laterales'] += partido.cantidad_laterales
         return estadistica
+    
+    def __str__(self):
+        return self.nombre
 
 
 class Persona(models.Model):
@@ -103,10 +120,25 @@ class Jugador(Persona):
     numero_camiseta = models.IntegerField()
     pais = models.ForeignKey('Pais', on_delete=models.CASCADE)
     equipo = models.ForeignKey('Equipo', on_delete=models.SET_NULL, null=True)
-    posicion = models.CharField(max_length=100)
+    POSICION_CHOICES = [
+        ('Delantero', 'Delantero'),
+        ('Mediocampista', 'Mediocampista'),
+        ('Defensor', 'Defensor'),
+        ('Arquero', 'Arquero'),
+    ]
+    posicion = models.CharField(max_length=100, choices=POSICION_CHOICES)
     fecha_retiro = models.DateField(null=True, default=None)
     def sigue_jugando(self):
         return self.fecha_retiro != None
+    
+    def clean(self):
+        super().clean()
+
+        if self.numero_camiseta is not None and self.numero_camiseta < 0:
+            raise ValidationError('El número de camiseta no puede ser negativo.')
+    
+    def __str__(self):
+        return f"{self.nombre} {self.apellido}"
 
 
 

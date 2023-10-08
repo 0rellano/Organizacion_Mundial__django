@@ -1,0 +1,24 @@
+<!-- lista_jugadores.html -->
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Lista de Jugadores</title>
+</head>
+<body>
+    <h1>Lista de Jugadores</h1>
+    
+    <p><a href="?ordenar_por=nombre">Ordenar por Nombre</a></p>
+    <p><a href="?ordenar_por=pais">Ordenar por País</a></p>
+    <p><a href="?ordenar_por=posicion">Ordenar por Posición</a></p>
+
+    <ul>
+        {% for jugador in jugadores %}
+            <li>
+                <a href="{% url 'detalle_jugador' pk=jugador.pk %}">{{ jugador.nombre }} {{ jugador.apellido }}</a> -
+                {{ jugador.pais.nombre }} - {{ jugador.posicion }}
+            </li>
+        {% endfor %}
+    </ul>
+</body>
+</html>
