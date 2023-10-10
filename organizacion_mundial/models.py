@@ -64,8 +64,10 @@ class Formacion(models.Model):
 
 class Pais(models.Model):
     nombre = models.CharField(max_length=100)
-    liga_nombre = models.CharField(max_length=150, default='tu_valor_predeterminado')
-    formacion = models.ForeignKey(Formacion, on_delete=models.CASCADE)
+    liga_nombre = models.CharField(max_length=150)
+
+    def __str__(self) -> str:
+        return self.nombre
 
 
     def conocerPersonal(self):
