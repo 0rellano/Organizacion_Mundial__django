@@ -62,24 +62,24 @@ class Equipo(models.Model):
       
 
 class Formacion(models.Model):
-    esquema = models.CharField(max_length=100, default='', blank=True)
-    # jugadores = models.ManyToManyField(Jugador)
+    FORMACION_CHOICES = [
+        ('4-4-2', '4-4-2'),
+        ('4-3-3', '4-3-3'),
+        ('3-5-2', '3-5-2'),
+        ('4-2-4', '4-2-4'),
+        ('4-2-3-1', '4-2-3-1'),
+        ('4-3-2-1', '4-3-2-1'),
+        ('3-4-3', '3-4-3'),
+    ]
+    esquema = models.CharField(max_length=10, choices=FORMACION_CHOICES, default='4-4-2')
 
 
 class Pais(models.Model):
     nombre = models.CharField(max_length=100)
     liga_nombre = models.CharField(max_length=150)
-    FORMACION_CHOICES = [
-    ('4-4-2', '4-4-2'),
-    ('4-3-3', '4-3-3'),
-    ('3-5-2', '3-5-2'),
-    ('4-2-4', '4-2-4'),
-    ('4-2-3-1', '4-2-3-1'),
-    ('4-3-2-1', '4-3-2-1'),
-    ('3-4-3', '3-4-3'),
-    ]
-    
-    formacion = models.CharField(max_length=10, choices=FORMACION_CHOICES, default='4-4-2')
+
+    def __str__(self) -> str:
+        return self.nombre
 
 
     def conocerPersonal(self):

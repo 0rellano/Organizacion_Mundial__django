@@ -1,10 +1,11 @@
 from django.urls import path
-from organizacion_mundial.views import index
 from django.urls import path
-from .views import ListaJugadoresView, DetalleJugadorView
+from .views import ListaJugadoresView, DetalleJugadorView, homeView, ListaPaisesView, PaisView
 
 urlpatterns = [
-    path('', index, name='index'),
+    path('', homeView.as_view(), name='index'),
     path('jugadores/', ListaJugadoresView.as_view(), name='lista_jugadores'),
-    path('jugadores/<int:pk>/', DetalleJugadorView.as_view(), name='detalle_jugador')
+    path('jugadores/<int:pk>/', DetalleJugadorView.as_view(), name='detalle_jugador'),
+    path('paises/', ListaPaisesView.as_view()),
+    path('pais/<int:pk>', PaisView.as_view()),
 ]
