@@ -1,6 +1,7 @@
 import queue
 from django.db import models
 from django.core.exceptions import ValidationError
+from datetime import date
 
 class Mundial(models.Model):
     nombre = models.CharField(max_length=100)
@@ -108,11 +109,9 @@ class Persona(models.Model):
     nombre = models.CharField(max_length=100)
     apellido = models.CharField(max_length=100)
     nro_pasaporte = models.CharField(max_length=200)
-    fecha_nacimiento = models.DateField()
+    fecha_nacimiento = models.DateField(default=date(2005, 1, 1))
 
     def obtener_edad(self):
-        from datetime import date
-
         fecha_actual = date.today()
         return self.fecha_nacimiento.year - fecha_actual.year
 
@@ -146,10 +145,13 @@ class Rol(models.Model):
     nombre = models.CharField(max_length=100)
     descripcion = models.TextField(max_length=300)
 
+    def __str__(self) -> str:
+        return self.nombre
+
 
 class Personal(Persona):
     fecha_comienzo = models.DateField()
-    fecha_fin = models.DateField()
+    fecha_fin = models.DateField(null=True)
     pais_perteneciente = models.ForeignKey('Pais', on_delete=models.SET_NULL, null=True)
     rol = models.ForeignKey('Rol', on_delete=models.SET_NULL, null=True)
 
