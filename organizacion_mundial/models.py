@@ -114,6 +114,10 @@ class Persona(models.Model):
     def obtener_edad(self):
         fecha_actual = date.today()
         return self.fecha_nacimiento.year - fecha_actual.year
+    
+    def __str__(self) -> str:
+        return f'{self.nombre} {self.apellido} {self.nro_pasaporte}'
+    
 
 class Jugador(Persona):
     numero_camiseta = models.IntegerField()
@@ -151,9 +155,12 @@ class Rol(models.Model):
 
 class Personal(Persona):
     fecha_comienzo = models.DateField()
-    fecha_fin = models.DateField(null=True)
+    fecha_fin = models.DateField(null=True, blank=True)
     pais_perteneciente = models.ForeignKey('Pais', on_delete=models.SET_NULL, null=True)
     rol = models.ForeignKey('Rol', on_delete=models.SET_NULL, null=True)
+
+    def __str__(self) -> str:
+        return self.rol.__str__(), super().__str__()
 
 
 class Posicion(models.Model):
