@@ -159,8 +159,11 @@ class Personal(Persona):
     pais_perteneciente = models.ForeignKey('Pais', on_delete=models.SET_NULL, null=True)
     rol = models.ForeignKey('Rol', on_delete=models.SET_NULL, null=True)
 
+    def sigue_trabajando(self):
+        return self.fecha_fin == None
+
     def __str__(self) -> str:
-        return self.rol.__str__(), super().__str__()
+        return f"{self.rol.__str__()}, {super().__str__()}"
 
 
 class Posicion(models.Model):

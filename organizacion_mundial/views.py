@@ -1,3 +1,4 @@
+from typing import Any
 from django.shortcuts import render
 from django.views.generic import ListView, DetailView, TemplateView
 from django.views import View
@@ -41,3 +42,12 @@ class PaisView(DetailView):
     context_object_name = 'pais'
     template_name = 'pais.html'
     pk_url_kwarg = 'pk'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+
+        pais = self.object
+        plantel_tecnico = pais.conocerPersonal()
+        
+        context['plantel_tecnico'] = plantel_tecnico
+        return context
