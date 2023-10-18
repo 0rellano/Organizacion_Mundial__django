@@ -2,7 +2,7 @@ from typing import Any
 from django.shortcuts import render
 from django.views.generic import ListView, DetailView, TemplateView
 from django.views import View
-from .models import Jugador, Pais
+from .models import Jugador, Pais, Equipo, Mundial
 
 class homeView(TemplateView):
     template_name = 'index.html'
@@ -47,7 +47,17 @@ class PaisView(DetailView):
         context = super().get_context_data(**kwargs)
 
         pais = self.object
+
         plantel_tecnico = pais.conocerPersonal()
-        
         context['plantel_tecnico'] = plantel_tecnico
+
+        equipos = Equipo.objects.filter(pais_perteneciente=pais)
+        context['equipos'] = equipos
+
         return context
+    
+
+class ListaMundialesView(ListView):
+    model = Mundial
+    context_object_name = 'mundiales'
+    template_name = 'mundiales.html'

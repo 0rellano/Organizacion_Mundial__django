@@ -8,6 +8,15 @@
 <body>
     <h1>Pais {{pais.nombre}}</h1>
     <p>Liga que tiene{{pais.liga_nombre}}</p>
+    <h2>
+        EQUIPOS
+    </h2>
+    <ul>
+        {% for equipo in equipos %}
+        <li>{{equipo}}</li>                
+        {% endfor %}
+        
+    </ul>
     <h2>Plantel Tecnico</h2>
     <ul>
        

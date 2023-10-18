@@ -4,10 +4,13 @@ from django.core.exceptions import ValidationError
 from datetime import date
 
 class Mundial(models.Model):
-    nombre = models.CharField(max_length=100)
+    anio = models.CharField(max_length=100)
     pais_sede = models.ForeignKey("Pais", on_delete=models.CASCADE)
     fecha_inicio = models.DateField()
     fecha_final = models.DateField()
+
+    def __str__(self) -> str:
+        return f'Mundial {self.pais_sede.nombre} {self.anio}'
 
 
 class Fase(models.Model):
@@ -20,8 +23,10 @@ class Fase(models.Model):
 
 class Partido(models.Model):
     fecha = models.DateField()
-    local = models.ForeignKey('Pais', related_name='partidos_locales', on_delete=models.SET_NULL, null=True)
-    visitante = models.ForeignKey('Pais', related_name='partidos_visitantes', on_delete=models.SET_NULL, null=True)
+    local = models.ForeignKey('Pais', related_name='pais_local', on_delete=models.SET_NULL, null=True)
+    formacion_local = models.ForeignKey('Formacion', related_name="formacion_local",  on_delete=models.SET_NULL, null=True)
+    visitante = models.ForeignKey('Pais', related_name='pais_visitante', on_delete=models.SET_NULL, null=True)
+    formacion_visitante = models.ForeignKey('Formacion', related_name="formacion_visitante", on_delete=models.SET_NULL, null=True)
     goles_local = models.PositiveSmallIntegerField()
     goles_visitante = models.PositiveSmallIntegerField()
     minutos_ataque = models.PositiveSmallIntegerField()
@@ -82,7 +87,6 @@ class Pais(models.Model):
     def __str__(self) -> str:
         return self.nombre
 
-
     def conocerPersonal(self):
         return Personal.objects.filter(pais_perteneciente=self)
     
@@ -130,7 +134,7 @@ class Jugador(Persona):
         ('Arquero', 'Arquero'),
     ]
     posicion = models.CharField(max_length=100, choices=POSICION_CHOICES)
-    fecha_retiro = models.DateField(null=True, default=None)
+    fecha_retiro = models.DateField(null=True, default=None, blank=True)
     def sigue_jugando(self):
         return self.fecha_retiro != None
     
