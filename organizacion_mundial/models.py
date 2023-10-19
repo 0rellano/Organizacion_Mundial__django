@@ -84,9 +84,6 @@ class Pais(models.Model):
     nombre = models.CharField(max_length=100)
     liga_nombre = models.CharField(max_length=150)
 
-    def __str__(self) -> str:
-        return self.nombre
-
     def conocerPersonal(self):
         return Personal.objects.filter(pais_perteneciente=self)
     
@@ -127,13 +124,7 @@ class Jugador(Persona):
     numero_camiseta = models.IntegerField()
     pais = models.ForeignKey('Pais', on_delete=models.CASCADE)
     equipo = models.ForeignKey('Equipo', on_delete=models.SET_NULL, null=True)
-    POSICION_CHOICES = [
-        ('Delantero', 'Delantero'),
-        ('Mediocampista', 'Mediocampista'),
-        ('Defensor', 'Defensor'),
-        ('Arquero', 'Arquero'),
-    ]
-    posicion = models.CharField(max_length=100, choices=POSICION_CHOICES)
+    posicion = models.ForeignKey('Posicion', on_delete=models.SET_NULL, null=True)
     fecha_retiro = models.DateField(null=True, default=None, blank=True)
     def sigue_jugando(self):
         return self.fecha_retiro != None
@@ -173,3 +164,6 @@ class Personal(Persona):
 class Posicion(models.Model):
     nombre_posicion = models.CharField(max_length=100)
     descripcion = models.TextField(max_length=300)
+
+    def __str__(self):
+        return self.nombre_posicion

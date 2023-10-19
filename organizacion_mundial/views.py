@@ -22,7 +22,8 @@ class ListaJugadoresView(ListView):
         elif ordering == 'posicion':
             queryset = queryset.order_by('posicion', 'nombre')
 
-        return queryset
+        # Si no se selecciona ninguna opción de orden, se usará el orden predeterminado por nombre
+        return queryset.order_by(*self.ordering)
 
 
 
