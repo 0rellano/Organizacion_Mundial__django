@@ -78,6 +78,10 @@ class Formacion(models.Model):
         ('3-4-3', '3-4-3'),
     ]
     esquema = models.CharField(max_length=10, choices=FORMACION_CHOICES, default='4-4-2')
+    titulares = models.ManyToManyField('Jugador', related_name='jugadores_titulares')
+    suplentes = models.ManyToManyField('Jugador', related_name='jugadores_suplentes')
+
+
 
 
 class Pais(models.Model):
