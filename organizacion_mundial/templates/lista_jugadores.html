@@ -1,62 +1,59 @@
-<!-- lista_jugadores.html -->
+{% extends 'base.html' %}
 
-<!DOCTYPE html>
-<html>
-<head>
-    <title>Lista de Jugadores</title>
-</head>
-<body>
-    <h1>Lista de Jugadores</h1>
+{% block title %}Lista de Jugadores
+{% endblock %}
 
-    <form method="get" action="{% url 'lista_jugadores' %}">
-        <input type="text" name="buscar" placeholder="Buscar por nombre" value="{{ request.GET.buscar }}">
-        <button type="submit">Buscar</button>
-        <button type="button" onclick="limpiarYEnviar()">Limpiar</button>
-        <button type="button" onclick="ordenarPor('nombre')">Ordenar por Nombre</button>
-        <button type="button" onclick="ordenarPor('pais')">Ordenar por País</button>
-        <button type="button" onclick="ordenarPor('posicion')">Ordenar por Posición</button>
-    </form>
-    
-    <ul>
-        {% for jugador in jugadores %}
-            <li>
-                <a href="{% url 'detalle_jugador' pk=jugador.pk %}">{{ jugador.nombre }} {{ jugador.apellido }}</a> -
-                {{ jugador.pais.nombre }} - {{ jugador.posicion }}
-            </li>
-        {% endfor %}
-    </ul>
+{% block content %}
+<h1>Lista de Jugadores</h1>
 
-    <script>
-        function limpiarYEnviar() {
-            var campoBusqueda = document.querySelector('input[name="buscar"]');
-            campoBusqueda.value = '';
-            campoBusqueda.dispatchEvent(new Event('input'));  // Simular evento de entrada
-            campoBusqueda.form.submit();
+<form method="get" action="{% url 'lista_jugadores' %}">
+    <input type="text" name="buscar" placeholder="Buscar por nombre" value="{{ request.GET.buscar }}">
+    <button type="submit">Buscar</button>
+    <button type="button" onclick="limpiarYEnviar()">Limpiar</button>
+    <button type="button" onclick="ordenarPor('nombre')">Ordenar por Nombre</button>
+    <button type="button" onclick="ordenarPor('pais')">Ordenar por País</button>
+    <button type="button" onclick="ordenarPor('posicion')">Ordenar por Posición</button>
+</form>
+
+<ul>
+    {% for jugador in jugadores %}
+        <li>
+            <a href="{% url 'detalle_jugador' pk=jugador.pk %}">{{ jugador.nombre }} {{ jugador.apellido }}</a> -
+            {{ jugador.pais.nombre }} - {{ jugador.posicion }}
+        </li>
+    {% endfor %}
+</ul>
+
+<script>
+    function limpiarYEnviar() {
+        var campoBusqueda = document.querySelector('input[name="buscar"]');
+        campoBusqueda.value = '';
+        campoBusqueda.dispatchEvent(new Event('input'));  // Simular evento de entrada
+        campoBusqueda.form.submit();
+    }
+
+    function ordenarPor(criterio) {
+        var url = window.location.href.split('?')[0];  // Obtener la URL base sin parámetros
+        var parametros = new URLSearchParams(window.location.search);
+
+        // Obtener el criterio actual de orden (si existe)
+        var ordenActual = parametros.get('ordenar_por');
+
+        // Si ya existe el parámetro y es igual al criterio actual, invertir el orden
+        if (ordenActual === criterio || ordenActual === '-' + criterio) {
+            parametros.set('ordenar_por', ordenActual.startsWith('-') ? criterio : '-' + criterio);
+        } else {
+            parametros.set('ordenar_por', criterio);
         }
-    
-        function ordenarPor(criterio) {
-            var url = window.location.href.split('?')[0];  // Obtener la URL base sin parámetros
-            var parametros = new URLSearchParams(window.location.search);
 
-            // Obtener el criterio actual de orden (si existe)
-            var ordenActual = parametros.get('ordenar_por');
-
-            // Si ya existe el parámetro y es igual al criterio actual, invertir el orden
-            if (ordenActual === criterio || ordenActual === '-' + criterio) {
-                parametros.set('ordenar_por', ordenActual.startsWith('-') ? criterio : '-' + criterio);
-            } else {
-                parametros.set('ordenar_por', criterio);
-            }
-
-            // Si el criterio es 'nombre' o 'posicion', invertir el orden si ya tiene un signo menos (-)
-            if (criterio === 'nombre' || criterio === 'posicion') {
-                parametros.set('ordenar_por', ordenActual && ordenActual.startsWith('-') ? criterio : '-' + criterio);
-            }
-
-            // Redireccionar a la nueva URL con los parámetros actualizados
-            window.location.href = url + '?' + parametros.toString();
+        // Si el criterio es 'nombre' o 'posicion', invertir el orden si ya tiene un signo menos (-)
+        if (criterio === 'nombre' || criterio === 'posicion') {
+            parametros.set('ordenar_por', ordenActual && ordenActual.startsWith('-') ? criterio : '-' + criterio);
         }
-        
-    </script>
-</body>
-</html>
+
+        // Redireccionar a la nueva URL con los parámetros actualizados
+        window.location.href = url + '?' + parametros.toString();
+    }
+</script>
+
+{% endblock %}

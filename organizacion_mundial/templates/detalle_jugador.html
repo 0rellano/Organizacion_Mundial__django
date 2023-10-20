@@ -1,28 +1,25 @@
-<!-- detalle_jugador.html -->
+{% extends 'base.html' %}
 
-<!DOCTYPE html>
-<html>
-<head>
-    <title>Detalles del Jugador</title>
-</head>
-<body>
-    <h1>Detalles del Jugador</h1>
-    <p><strong>Nombre:</strong> {{ jugador.nombre }}</p>
-    <p><strong>Apellido:</strong> {{ jugador.apellido }}</p>
-    <p><strong>Número de Pasaporte:</strong> {{ jugador.nro_pasaporte }}</p>
-    <p><strong>Fecha de Nacimiento:</strong> {{ jugador.fecha_nacimiento }}</p>
-    <!-- Agrega otros campos según sea necesario -->
+{% block title %}Detalle de los Jugadores
+{% endblock %}
 
-    <p><strong>Número de Camiseta:</strong> {{ jugador.numero_camiseta }}</p>
-    <p><strong>País:</strong> {{ jugador.pais.nombre }}</p>
-    <p><strong>Equipo:</strong> {% if jugador.equipo %}{{ jugador.equipo.nombre }}{% else %}No asignado{% endif %}</p>
-    <p><strong>Posición:</strong> {{ jugador.posicion }}</p>
-    
-    {% if jugador.sigue_jugando %}
-        <p><strong>Estado:</strong> Jugando</p>
-    {% else %}
-        <p><strong>Estado:</strong> Retirado</p>
-        <p><strong>Fecha de Retiro:</strong> {{ jugador.fecha_retiro }}</p>
-    {% endif %}
-</body>
-</html>
+{% block content %}
+<h1>Detalles del Jugador</h1>
+<p><strong>Nombre:</strong> {{ jugador.nombre }}</p>
+<p><strong>Apellido:</strong> {{ jugador.apellido }}</p>
+<p><strong>Número de Pasaporte:</strong> {{ jugador.nro_pasaporte }}</p>
+<p><strong>Fecha de Nacimiento:</strong> {{ jugador.fecha_nacimiento }}</p>
+<!-- Agrega otros campos según sea necesario -->
+
+<p><strong>Número de Camiseta:</strong> {{ jugador.numero_camiseta }}</p>
+<p><strong>País:</strong> {{ jugador.pais.nombre }}</p>
+<p><strong>Equipo:</strong> {% if jugador.equipo %}{{ jugador.equipo.nombre }}{% else %}No asignado{% endif %}</p>
+<p><strong>Posición:</strong> {{ jugador.posicion }}</p>
+
+{% if jugador.sigue_jugando %}
+    <p><strong>Estado:</strong> Jugando</p>
+{% else %}
+    <p><strong>Estado:</strong> Retirado</p>
+    <p><strong>Fecha de Retiro:</strong> {{ jugador.fecha_retiro }}</p>
+{% endif %}
+{% endblock %}
