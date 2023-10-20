@@ -9,14 +9,14 @@
     <h1>Lista de Jugadores</h1>
 
     <form method="get" action="{% url 'lista_jugadores' %}">
-        <input type="text" name="buscar" placeholder="Buscar por nombre">
+        <input type="text" name="buscar" placeholder="Buscar por nombre" value="{{ request.GET.buscar }}">
         <button type="submit">Buscar</button>
+        <button type="button" onclick="limpiarYEnviar()">Limpiar</button>
+        <button type="button" onclick="ordenarPor('nombre')">Ordenar por Nombre</button>
+        <button type="button" onclick="ordenarPor('pais')">Ordenar por País</button>
+        <button type="button" onclick="ordenarPor('posicion')">Ordenar por Posición</button>
     </form>
     
-    <p><a href="?ordenar_por=nombre">Ordenar por Nombre</a></p>
-    <p><a href="?ordenar_por=pais">Ordenar por País</a></p>
-    <p><a href="?ordenar_por=posicion">Ordenar por Posición</a></p>
-
     <ul>
         {% for jugador in jugadores %}
             <li>
@@ -25,5 +25,38 @@
             </li>
         {% endfor %}
     </ul>
+
+    <script>
+        function limpiarYEnviar() {
+            var campoBusqueda = document.querySelector('input[name="buscar"]');
+            campoBusqueda.value = '';
+            campoBusqueda.dispatchEvent(new Event('input'));  // Simular evento de entrada
+            campoBusqueda.form.submit();
+        }
+    
+        function ordenarPor(criterio) {
+            var url = window.location.href.split('?')[0];  // Obtener la URL base sin parámetros
+            var parametros = new URLSearchParams(window.location.search);
+
+            // Obtener el criterio actual de orden (si existe)
+            var ordenActual = parametros.get('ordenar_por');
+
+            // Si ya existe el parámetro y es igual al criterio actual, invertir el orden
+            if (ordenActual === criterio || ordenActual === '-' + criterio) {
+                parametros.set('ordenar_por', ordenActual.startsWith('-') ? criterio : '-' + criterio);
+            } else {
+                parametros.set('ordenar_por', criterio);
+            }
+
+            // Si el criterio es 'nombre' o 'posicion', invertir el orden si ya tiene un signo menos (-)
+            if (criterio === 'nombre' || criterio === 'posicion') {
+                parametros.set('ordenar_por', ordenActual && ordenActual.startsWith('-') ? criterio : '-' + criterio);
+            }
+
+            // Redireccionar a la nueva URL con los parámetros actualizados
+            window.location.href = url + '?' + parametros.toString();
+        }
+        
+    </script>
 </body>
 </html>

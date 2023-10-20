@@ -7,15 +7,14 @@ from .models import Jugador, Pais, Equipo, Mundial
 class homeView(TemplateView):
     template_name = 'index.html'
 
+
 class ListaJugadoresView(ListView):
     model = Jugador
     template_name = 'lista_jugadores.html'
     context_object_name = 'jugadores'
-    ordering = ['nombre']  # Orden predeterminado por nombre
 
     def get_queryset(self):
         queryset = Jugador.objects.all()
-        ordering = self.request.GET.get('ordenar_por')
         buscar = self.request.GET.get('buscar')
 
         # Filtrar los jugadores según el parámetro de búsqueda
@@ -23,14 +22,14 @@ class ListaJugadoresView(ListView):
             # Modificar la búsqueda para que incluya jugadores que comienzan con la letra proporcionada
             queryset = queryset.filter(nombre__istartswith=buscar)
 
-        # Ordenar los jugadores
-        if ordering == 'pais':
-            queryset = queryset.order_by('pais__nombre', 'nombre')
-        elif ordering == 'posicion':
-            queryset = queryset.order_by('posicion', 'nombre')
+        # Obtener el parámetro 'ordenar_por' de la URL
+        ordenar_por = self.request.GET.get('ordenar_por')
 
-        # Si no se selecciona ninguna opción de orden, se usará el orden predeterminado por nombre
-        return queryset.order_by(*self.ordering)
+        # Aplicar la ordenación si el parámetro está presente
+        if ordenar_por:
+            queryset = queryset.order_by(ordenar_por)
+
+        return queryset
 
 
 class DetalleJugadorView(DetailView):
