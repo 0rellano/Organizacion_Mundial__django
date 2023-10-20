@@ -1,0 +1,24 @@
+{% extends 'base.html' %}
+
+{% block title %}{{mundial.pais_sede.nombre}} {{mundial.anio}}
+{% endblock %}
+
+{% block content %}
+<h1>{{mundial.pais_sede.nombre}} {{mundial.anio}}</h1>
+<h2>Participantes</h2>
+<ul>
+    {% for participante in participantes %}
+    <li>
+        <p>{{participante.posicion_obtenida}}°: {{participante.pais.nombre}}</p>
+    </li>
+    {% endfor %}
+</ul>
+<h2>Fases</h2>
+<ul>
+    {% for fase in fases %}
+    <li>
+        <p>{{fase}}</p>
+    </li>
+    {% endfor %}
+</ul>
+{% endblock %}

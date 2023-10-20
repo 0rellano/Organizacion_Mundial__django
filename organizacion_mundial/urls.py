@@ -9,4 +9,8 @@ urlpatterns = [
     path('paises/', ListaPaisesView.as_view(), name='paises'),
     path('pais/<int:pk>', PaisView.as_view()),
     path('mundiales/', ListaMundialesView.as_view(), name='mundiales'),
+<<<<<<< HEAD
+=======
+    path('mundiales/<int:pk>', DetalleMundialView.as_view())
+>>>>>>> 77fabf3 (Correcion de errores de commits)
 ]
