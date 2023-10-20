@@ -10,16 +10,6 @@
     <li>
         <a href="/pais/{{pais.pk}}">{{ pais.nombre }}</a>
     </li>
-{% endfor %}
-</ul>
-
-
-<ul>
-    {% for jugador in jugadores %}
-        <li>
-            <a href="{% url 'detalle_jugador' pk=jugador.pk %}">{{ jugador.nombre }} {{ jugador.apellido }}</a> -
-            {{ jugador.pais.nombre }} - {{ jugador.posicion }}
-        </li>
     {% endfor %}
 </ul>
 

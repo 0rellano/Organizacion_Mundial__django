@@ -18,6 +18,7 @@ class Fase(models.Model):
     descripcion = models.TextField(max_length=300)
     fecha_inicio = models.DateField()
     fecha_final = models.DateField()
+    orden = models.PositiveSmallIntegerField()
     mundial = models.ForeignKey('Mundial', on_delete=models.CASCADE)
 
 
@@ -56,6 +57,7 @@ class TipoEvento(models.Model):
 class Participante(models.Model):
     pais = models.ForeignKey('Pais', on_delete=models.CASCADE)
     posicion_obtenida = models.PositiveSmallIntegerField()
+    mundial = models.ForeignKey('Mundial', on_delete=models.CASCADE)
 
 
 class Equipo(models.Model):

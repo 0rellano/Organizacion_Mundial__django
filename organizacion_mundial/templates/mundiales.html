@@ -7,12 +7,14 @@
 <ul>
     {% for mundial in mundiales %}
         <li>
-            {{mundial}}
-            {{mundial.pais_sede}}
-            {{mundial.fecha_inicio}}
-            {{mundial.fecha_fin}}
+            <a href="/mundiales/{{mundial.pk}}">
+                {{mundial}}
+                {{mundial.pais_sede}}
+                {{mundial.fecha_inicio}}
+                {{mundial.fecha_fin}}
+            </a>
+
         </li>
         {% endfor %}
-    </ul>
-
+</ul>
 {% endblock %}
