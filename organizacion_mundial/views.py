@@ -16,7 +16,14 @@ class ListaJugadoresView(ListView):
     def get_queryset(self):
         queryset = Jugador.objects.all()
         ordering = self.request.GET.get('ordenar_por')
+        buscar = self.request.GET.get('buscar')
 
+        # Filtrar los jugadores según el parámetro de búsqueda
+        if buscar:
+            # Modificar la búsqueda para que incluya jugadores que comienzan con la letra proporcionada
+            queryset = queryset.filter(nombre__istartswith=buscar)
+
+        # Ordenar los jugadores
         if ordering == 'pais':
             queryset = queryset.order_by('pais__nombre', 'nombre')
         elif ordering == 'posicion':
@@ -24,7 +31,6 @@ class ListaJugadoresView(ListView):
 
         # Si no se selecciona ninguna opción de orden, se usará el orden predeterminado por nombre
         return queryset.order_by(*self.ordering)
-
 
 
 class DetalleJugadorView(DetailView):

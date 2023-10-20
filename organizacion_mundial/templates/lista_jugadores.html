@@ -7,6 +7,11 @@
 </head>
 <body>
     <h1>Lista de Jugadores</h1>
+
+    <form method="get" action="{% url 'lista_jugadores' %}">
+        <input type="text" name="buscar" placeholder="Buscar por nombre">
+        <button type="submit">Buscar</button>
+    </form>
     
     <p><a href="?ordenar_por=nombre">Ordenar por Nombre</a></p>
     <p><a href="?ordenar_por=pais">Ordenar por País</a></p>
