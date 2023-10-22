@@ -1,12 +1,15 @@
+import logging
 from typing import Any
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from django.views.generic import ListView, DetailView, TemplateView
 from django.views import View
 from .models import *
+from .forms import CustomUserCreationForm
+from django.contrib.auth import authenticate, login
+from django.contrib import messages
 
 class homeView(TemplateView):
     template_name = 'index.html'
-
 
 class ListaJugadoresView(ListView):
     model = Jugador
@@ -82,3 +85,20 @@ class DetalleMundialView(DetailView):
 
         context['fases'] = Fase.objects.filter(mundial=pais).order_by('orden')
         return context
+    
+def registro(request):
+    data = {
+        'form': CustomUserCreationForm()
+    }
+
+    if request.method == 'POST':
+        formulario = CustomUserCreationForm(data=request.POST)
+        if formulario.is_valid():
+            formulario.save()
+            user = authenticate(username=formulario.cleaned_data["username"], password=formulario.cleaned_data["password1"])
+            login(request, user)
+            messages.success(request, "Te has registrado correctamente")
+            return redirect(to="index")
+        data["form"] = formulario
+
+    return render(request, 'registration/registro.html', data)

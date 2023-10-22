@@ -1,0 +1,32 @@
+{% extends 'base.html' %}
+
+{% block title %}Detalle de los Jugadores
+{% endblock %}
+
+{% block content %}
+<h3>Login</h3>
+
+<div class="container">
+    <br>
+    <br>
+    <br>
+    <div class="row">
+        <div class="col-12 col-md-6 offset-md-3">
+            <div class="card">
+                <div class="card-body">
+                    <h2>Ingresa tus credenciales</h2>
+                    <hr>
+                    <form action="" method="post">
+                        {% csrf_token %}
+                        {{ form.as_p }}
+                    <a href="{% url 'index' %}">ir al home</a> |
+                    <a href="{% url 'registro' %}">ir al registro</a>
+                    <input type="submit" value="ingresar" class="btn btn-success float-right">
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}

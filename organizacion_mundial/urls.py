@@ -1,5 +1,4 @@
 from django.urls import path
-from django.urls import path
 from .views import *
 
 urlpatterns = [
@@ -10,4 +9,5 @@ urlpatterns = [
     path('pais/<int:pk>', PaisView.as_view()),
     path('mundiales/', ListaMundialesView.as_view(), name='mundiales'),
     path('mundiales/<int:pk>', DetalleMundialView.as_view(), name='mundial'),
+    path('registro/', registro, name='registro'),
 ]
