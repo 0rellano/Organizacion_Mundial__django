@@ -7,6 +7,7 @@ from .models import *
 from .forms import CustomUserCreationForm
 from django.contrib.auth import authenticate, login
 from django.contrib import messages
+from django.db.models import Q
 
 class homeView(TemplateView):
     template_name = 'index.html'
@@ -20,10 +21,10 @@ class ListaJugadoresView(ListView):
         queryset = Jugador.objects.all()
         buscar = self.request.GET.get('buscar')
 
-        # Filtrar los jugadores según el parámetro de búsqueda
+        # Filtrar los jugadores según el parámetro de búsqueda  
         if buscar:
             # Modificar la búsqueda para que incluya jugadores que comienzan con la letra proporcionada
-            queryset = queryset.filter(nombre__istartswith=buscar)
+            queryset = queryset.filter(Q(nombre__istartswith=buscar) | Q(apellido__istartswith=buscar))
 
         # Obtener el parámetro 'ordenar_por' de la URL
         ordenar_por = self.request.GET.get('ordenar_por')
