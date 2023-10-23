@@ -6,7 +6,6 @@ from django.views import View
 from .models import *
 from .forms import CustomUserCreationForm
 from django.contrib.auth import authenticate, login
-from django.contrib import messages
 from django.db.models import Q
 
 class homeView(TemplateView):
@@ -87,19 +86,20 @@ class DetalleMundialView(DetailView):
         context['fases'] = Fase.objects.filter(mundial=pais).order_by('orden')
         return context
     
-def registro(request):
-    data = {
-        'form': CustomUserCreationForm()
-    }
+class Registro(View):
+    template_name = 'registration/registro.html'
+    form_class = CustomUserCreationForm
 
-    if request.method == 'POST':
-        formulario = CustomUserCreationForm(data=request.POST)
+    def get(self, request, *args, **kwargs):
+        data = {'form': self.form_class()}
+        return render(request, self.template_name, data)
+
+    def post(self, request, *args, **kwargs):
+        formulario = self.form_class(data=request.POST)
         if formulario.is_valid():
             formulario.save()
             user = authenticate(username=formulario.cleaned_data["username"], password=formulario.cleaned_data["password1"])
             login(request, user)
-            messages.success(request, "Te has registrado correctamente")
             return redirect(to="index")
-        data["form"] = formulario
-
-    return render(request, 'registration/registro.html', data)
+        data = {'form': formulario}
+        return render(request, self.template_name, data)
