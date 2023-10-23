@@ -19,7 +19,7 @@
     {% for jugador in jugadores %}
         <li>
             <a href="{% url 'detalle_jugador' pk=jugador.pk %}">{{ jugador.nombre }} {{ jugador.apellido }}</a> -
-            {{ jugador.pais.nombre }} - {{ jugador.posicion }}
+            <a href="{% url 'pais' pk=jugador.pais.pk %}">{{ jugador.pais }}</a> - {{ jugador.posicion }}
         </li>
     {% endfor %}
 </ul>
