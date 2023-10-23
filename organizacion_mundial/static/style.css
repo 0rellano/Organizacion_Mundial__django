@@ -1,0 +1,18 @@
+body {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+    margin: 0;
+  }
+  
+  .wrapper {
+    flex: 1;
+  }
+  
+  .custom-footer {
+    background-color: rgba(0, 0, 0, 0.2);
+    padding: 15px; /* Ajusta según tus necesidades */
+    color: white;
+    margin-top: auto; /* Empuja el footer hacia abajo */
+  }
+  
