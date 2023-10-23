@@ -18,21 +18,40 @@
       </button>
       <div class="collapse navbar-collapse" id="navbarNavDropdown">
         <ul class="navbar-nav">
-          <li class="nav-item dropdown">
-            <a class="nav-link dropdown-toggle" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-              Mundiales
-            </a>
-            <ul class="dropdown-menu">
-              <li><a class="dropdown-item" href="{% url 'mundiales' %}">Mundiales</a></li>
-              <li><a class="dropdown-item" href="{% url 'fases' %}">Fase</a></li>
-            </ul>
-          </li>
+            <li class="nav-item dropdown">
+                <a class="nav-link dropdown-toggle" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                  Mundiales
+                </a>
+                <ul class="dropdown-menu">
+                  <li><a class="dropdown-item" href="{% url 'mundiales' %}">Mundiales</a></li>
+                  <li><a class="dropdown-item" href="{% url 'fases' %}">Fases</a></li>
+                </ul>
+            </li>
         </ul>
       </div>
     </div>
   </nav>
-
-  <p>Aca va a ir todo lo de la pagina</p>
+  
+  <table class="table">
+    <thead>
+      <tr>
+        <th scope="col">Mundial</th>
+        <th scope="col">Pais sede</th>
+        <th scope="col">Fecha inicio</th>
+        <th scope="col">Fecha final</th>
+        <th scope="col" href="{% url 'fases' %}">Fases</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <th scope="row">2022</th>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
 
   <footer class="footer">
     <div class="container">
@@ -78,4 +97,3 @@
     </div>   
   </footer>
 </body>
-</html>
