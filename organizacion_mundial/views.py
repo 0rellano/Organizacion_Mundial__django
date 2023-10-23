@@ -103,3 +103,9 @@ class Registro(View):
             return redirect(to="index")
         data = {'form': formulario}
         return render(request, self.template_name, data)
+    
+
+class DetallaFaseView(DetailView):
+    model = Fase
+    context_object_name = 'fase'
+    template_name = 'fase.html'

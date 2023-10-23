@@ -13,7 +13,7 @@
     <p>Usuario actual: {{ user.username }}</p>
 
     {% if user.is_staff %}
-      <a href="{% url 'admin:index' %}" class="btn btn-primary">Ir al Admin Site</a>
+      <a href="{% url 'admin:index' %}" class="btn btn-primary" target="_blank">Ir al Admin Site</a>
     {% endif %}
 
   {% else %}
