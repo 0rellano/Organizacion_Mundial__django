@@ -42,26 +42,20 @@
           <li class="nav-item">
             <a class="nav-link active" aria-current="page" href="{% url 'index' %}">Home</a>
           </li>
-          <li class="nav-item">
-            <a class="nav-link" href="#">Features</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="#">Pricing</a>
-          </li>
           <li class="nav-item dropdown">
             <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-              Dropdown link
+              Más
             </a>
             <ul class="dropdown-menu">
-              <li><a class="dropdown-item" href="#">Action</a></li>
-              <li><a class="dropdown-item" href="#">Another action</a></li>
-              <li><a class="dropdown-item" href="#">Something else here</a></li>
+              <li><a class="dropdown-item" href="{% url 'lista_jugadores' %}"><button>Ver Lista de Jugadores</button></a></li>
+              <li><a class="dropdown-item" href="{% url 'mundiales' %}"><button>Mundiales</button></a></li>
+              <li><a class="dropdown-item" href="{% url 'paises' %}"><button>Paises</button></a></li>
             </ul>
           </li>
           {% if user.is_authenticated %}
           {% if user.is_staff %}
             <li class="nav-item ms-auto">
-              <a href="{% url 'admin:index' %}" class="nav-link btn btn-dark btn-hover-bg-light btn-admin">Admin Site</a>
+              <a href="{% url 'admin:index' %}" class="nav-link btn btn-dark btn-hover-bg-light btn-admin" target="_blank">Admin Site</a>
             </li>
           {% endif %}
           <li class="nav-item ms-auto">

@@ -5,9 +5,6 @@
 {% block content %}
   {% if user.is_authenticated %}
     <p>Aca va a ir todo lo de la página</p>
-    <a href="{% url 'lista_jugadores' %}"><button>Ver Lista de Jugadores</button></a>
-    <a href="{% url 'mundiales' %}"><button>Mundiales</button></a>
-    <a href="{% url 'paises' %}"><button>Paises</button></a>
   {% else %}
     <div class="text-center">
       <p class="mb-4">Inicia sesión o regístrate para poder ver el contenido de esta página</p>

@@ -16,3 +16,7 @@ body {
     margin-top: auto; /* Empuja el footer hacia abajo */
   }
   
+  button {
+    border: none;
+    background-color: transparent;
+  }
