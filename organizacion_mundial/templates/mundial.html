@@ -17,7 +17,12 @@
 <ul>
     {% for fase in fases %}
     <li>
-        <a href="/mundial/{{mundial.pk}}/{{fase.pk}}">{{fase}}</a>
+        <a href="">{{fase.nombre}}</a>
+        <ol>
+            {% for partido in partidos_por_fase.fase %}
+            <li>{{ partido }}</li>
+            {% endfor %}
+        </ol>
     </li>
     {% endfor %}
 </ul>

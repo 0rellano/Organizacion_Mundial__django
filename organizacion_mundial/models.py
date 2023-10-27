@@ -37,7 +37,7 @@ class Formacion(models.Model):
         ('4-3-2-1', '4-3-2-1'),
         ('3-4-3', '3-4-3'),
     ]
-    pais = models.ForeignKey('Pais', on_delete=models.Case)
+    pais = models.ForeignKey('Pais', on_delete=models.CASCADE)
     esquema = models.CharField(max_length=10, choices=FORMACION_CHOICES, default='4-4-2')
     titulares = models.ManyToManyField('Jugador', related_name='jugadores_titulares')
     suplentes = models.ManyToManyField('Jugador', related_name='jugadores_suplentes')

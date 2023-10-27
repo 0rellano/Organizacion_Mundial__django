@@ -82,8 +82,15 @@ class DetalleMundialView(DetailView):
         pais = self.object
 
         context['participantes'] = Participante.objects.filter(mundial=pais).order_by('posicion_obtenida')
-
         context['fases'] = Fase.objects.filter(mundial=pais).order_by('orden')
+
+        partidos_por_fase = {}
+        for fase in context['fases']:
+            partidos = Partido.objects.filter(fase=fase)
+            partidos_por_fase['fase'] = partidos
+        
+        context['partidos_por_fase'] = partidos_por_fase
+
         return context
     
 class Registro(View):
@@ -109,3 +116,5 @@ class DetallaFaseView(DetailView):
     model = Fase
     context_object_name = 'fase'
     template_name = 'fase.html'
+
+    
