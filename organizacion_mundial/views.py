@@ -6,6 +6,7 @@ from django.views import View
 from .models import *
 from .forms import CustomUserCreationForm
 from django.contrib.auth import authenticate, login
+from django.db.models import Q
 
 class homeView(TemplateView):
     template_name = 'index.html'
@@ -19,10 +20,10 @@ class ListaJugadoresView(ListView):
         queryset = Jugador.objects.all()
         buscar = self.request.GET.get('buscar')
 
-        # Filtrar los jugadores según el parámetro de búsqueda
+        # Filtrar los jugadores según el parámetro de búsqueda  
         if buscar:
             # Modificar la búsqueda para que incluya jugadores que comienzan con la letra proporcionada
-            queryset = queryset.filter(nombre__istartswith=buscar)
+            queryset = queryset.filter(Q(nombre__istartswith=buscar) | Q(apellido__istartswith=buscar))
 
         # Obtener el parámetro 'ordenar_por' de la URL
         ordenar_por = self.request.GET.get('ordenar_por')
@@ -81,8 +82,15 @@ class DetalleMundialView(DetailView):
         pais = self.object
 
         context['participantes'] = Participante.objects.filter(mundial=pais).order_by('posicion_obtenida')
-
         context['fases'] = Fase.objects.filter(mundial=pais).order_by('orden')
+
+        partidos_por_fase = {}
+        for fase in context['fases']:
+            partidos = Partido.objects.filter(fase=fase)
+            partidos_por_fase['fase'] = partidos
+        
+        context['partidos_por_fase'] = partidos_por_fase
+
         return context
     
 class Registro(View):
@@ -102,3 +110,11 @@ class Registro(View):
             return redirect(to="index")
         data = {'form': formulario}
         return render(request, self.template_name, data)
+    
+
+class DetallaFaseView(DetailView):
+    model = Fase
+    context_object_name = 'fase'
+    template_name = 'fase.html'
+
+    

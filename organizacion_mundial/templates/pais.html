@@ -6,7 +6,6 @@
 <div class="container mt-5">
     <h1 class="text-center mb-4">País {{ pais.nombre }}</h1>
     <p>Liga que tiene: {{ pais.liga_nombre }}</p>
-
     <h2>EQUIPOS</h2>
     <ul class="list-group">
         {% for equipo in equipos %}
@@ -37,7 +36,6 @@
         {% endfor %}
     </ul>
 </div>
-
 <script>
     // Obtener todas las instancias de fecha-nacimiento y edad-empleado
     var fechasNacimiento = document.getElementsByClassName('fecha-nacimiento');
@@ -55,8 +53,10 @@
         }
 
         // Mostrar la edad en el elemento correspondiente
+
         edadesEmpleado[i].innerHTML = '<strong>Edad:</strong> ' + edadEmpleado + ' años';
 
     }
 </script>
 {% endblock %}
+>>>>>>> front-end

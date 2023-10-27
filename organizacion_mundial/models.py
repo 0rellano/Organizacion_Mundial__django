@@ -1,7 +1,9 @@
-import queue
 from django.db import models
 from django.core.exceptions import ValidationError
 from datetime import date
+from django.core.validators import MinValueValidator
+from django.db.models import Q
+
 
 class Mundial(models.Model):
     anio = models.CharField(max_length=100)
@@ -21,18 +23,45 @@ class Fase(models.Model):
     orden = models.PositiveSmallIntegerField()
     mundial = models.ForeignKey('Mundial', on_delete=models.CASCADE)
 
+    def __str__(self) -> str:
+        return f"FASE {self.mundial} {self.nombre}"
+
+
+class Formacion(models.Model):
+    FORMACION_CHOICES = [
+        ('4-4-2', '4-4-2'),
+        ('4-3-3', '4-3-3'),
+        ('3-5-2', '3-5-2'),
+        ('4-2-4', '4-2-4'),
+        ('4-2-3-1', '4-2-3-1'),
+        ('4-3-2-1', '4-3-2-1'),
+        ('3-4-3', '3-4-3'),
+    ]
+    pais = models.ForeignKey('Pais', on_delete=models.CASCADE)
+    esquema = models.CharField(max_length=10, choices=FORMACION_CHOICES, default='4-4-2')
+    titulares = models.ManyToManyField('Jugador', related_name='jugadores_titulares')
+    suplentes = models.ManyToManyField('Jugador', related_name='jugadores_suplentes')
+
+    def __str__(self) -> str:
+        partido = Partido.objects.get(Q(formacion_local=self) | Q(formacion_visitante=self))
+        return f'{self.esquema} {self.pais} del {self.partido}'
+
+
 
 class Partido(models.Model):
     fecha = models.DateField()
     local = models.ForeignKey('Pais', related_name='pais_local', on_delete=models.SET_NULL, null=True)
-    formacion_local = models.ForeignKey('Formacion', related_name="formacion_local",  on_delete=models.SET_NULL, null=True)
     visitante = models.ForeignKey('Pais', related_name='pais_visitante', on_delete=models.SET_NULL, null=True)
-    formacion_visitante = models.ForeignKey('Formacion', related_name="formacion_visitante", on_delete=models.SET_NULL, null=True)
     goles_local = models.PositiveSmallIntegerField()
     goles_visitante = models.PositiveSmallIntegerField()
-    minutos_ataque = models.PositiveSmallIntegerField()
-    cantidad_corners = models.PositiveSmallIntegerField()
-    cantidad_laterales = models.PositiveSmallIntegerField()
+    minutos_ataque_local = models.PositiveSmallIntegerField()
+    cantidad_corners_local = models.PositiveSmallIntegerField()
+    cantidad_laterales_local = models.PositiveSmallIntegerField()
+    minutos_ataque_visitante = models.PositiveSmallIntegerField()
+    cantidad_corners_visitante = models.PositiveSmallIntegerField()
+    cantidad_laterales_visitante = models.PositiveSmallIntegerField()
+    formacion_local = models.ForeignKey('Formacion', on_delete=models.CASCADE, related_name='formacion_local', null=True)
+    formacion_visitante = models.ForeignKey('Formacion', on_delete=models.CASCADE, related_name='formacion_visitante', null=True)
     fase = models.ForeignKey('Fase', on_delete=models.CASCADE)
 
     def gano_local(self):
@@ -41,7 +70,12 @@ class Partido(models.Model):
         elif self.goles_visitante > self.goles_local:
             return self.visitante
         return None
+
+    def __str__(self) -> str:
+        return f'{self.local} ({self.goles_local}) - {self.visitante} ({self.goles_visitante}): {self.fecha}'
     
+
+
 
 class Evento(models.Model):
     minuto_ocurrido = models.PositiveSmallIntegerField()
@@ -56,8 +90,11 @@ class TipoEvento(models.Model):
 
 class Participante(models.Model):
     pais = models.ForeignKey('Pais', on_delete=models.CASCADE)
-    posicion_obtenida = models.PositiveSmallIntegerField()
+    posicion_obtenida = models.PositiveSmallIntegerField(validators=[MinValueValidator(1)])
     mundial = models.ForeignKey('Mundial', on_delete=models.CASCADE)
+
+    def __str__(self) -> str:
+        return f"Posicion {self.posicion_obtenida} de {self.pais} en el Mundial {self.mundial}"
 
 
 class Equipo(models.Model):
@@ -68,23 +105,6 @@ class Equipo(models.Model):
     def __str__(self):
         return self.nombre
       
-
-class Formacion(models.Model):
-    FORMACION_CHOICES = [
-        ('4-4-2', '4-4-2'),
-        ('4-3-3', '4-3-3'),
-        ('3-5-2', '3-5-2'),
-        ('4-2-4', '4-2-4'),
-        ('4-2-3-1', '4-2-3-1'),
-        ('4-3-2-1', '4-3-2-1'),
-        ('3-4-3', '3-4-3'),
-    ]
-    esquema = models.CharField(max_length=10, choices=FORMACION_CHOICES, default='4-4-2')
-    titulares = models.ManyToManyField('Jugador', related_name='jugadores_titulares')
-    suplentes = models.ManyToManyField('Jugador', related_name='jugadores_suplentes')
-
-
-
 
 class Pais(models.Model):
     nombre = models.CharField(max_length=100)
