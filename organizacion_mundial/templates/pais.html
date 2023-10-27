@@ -21,8 +21,8 @@
                 <p><strong>Nombre:</strong> {{ empleado.nombre }}</p>
                 <p><strong>Apellido:</strong> {{ empleado.apellido }}</p>
                 <p><strong>Número de Pasaporte:</strong> {{ empleado.nro_pasaporte }}</p>
-                <p><strong>Fecha de Nacimiento:</strong> {{ empleado.fecha_nacimiento }}</p>
-                <p><strong>Edad:</strong> {{ empleado.edad }}</p>
+                <p class="fecha-nacimiento"><strong>Fecha de Nacimiento:</strong> {{ empleado.fecha_nacimiento }}</p>
+                <p class="edad-empleado"><strong>Edad: Calculando...</strong></p>
                 <p><strong>Fecha de Comienzo:</strong> {{ empleado.fecha_comienzo }}</p>
                 
                 {% if empleado.fecha_fin == None %}
@@ -37,4 +37,26 @@
         {% endfor %}
     </ul>
 </div>
+
+<script>
+    // Obtener todas las instancias de fecha-nacimiento y edad-empleado
+    var fechasNacimiento = document.getElementsByClassName('fecha-nacimiento');
+    var edadesEmpleado = document.getElementsByClassName('edad-empleado');
+
+    // Iterar sobre cada instancia y calcular la edad
+    for (var i = 0; i < fechasNacimiento.length; i++) {
+        var fechaNacimientoString = fechasNacimiento[i].getAttribute('data-nacimiento');
+        var fechaNacimiento = new Date(fechaNacimientoString);
+        var fechaActual = new Date();
+        var edadEmpleado = fechaActual.getFullYear() - fechaNacimiento.getFullYear();
+
+        if (fechaActual.getMonth() < fechaNacimiento.getMonth() || (fechaActual.getMonth() === fechaNacimiento.getMonth() && fechaActual.getDate() < fechaNacimiento.getDate())) {
+            edadEmpleado--;
+        }
+
+        // Mostrar la edad en el elemento correspondiente
+        edadesEmpleado[i].innerHTML = '<strong>Edad:</strong> ' + edadEmpleado + ' años';
+
+    }
+</script>
 {% endblock %}
