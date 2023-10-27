@@ -5,78 +5,61 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="{% static 'fontawesome/css/all.min.css' %}">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script>
     <link rel="stylesheet" href="{% static 'style.css' %}">
 
     <title>{% block title %}Document{% endblock %}</title>
-
-    <style>
-      /* Nueva clase personalizada para el cambio de color al pasar el ratón */
-      .btn-hover-bg-light:hover {
-        background-color: #f8f9fa !important; /* Cambia al color de fondo deseado */
-        color: #eee !important; /* Cambia al color de texto deseado al pasar el ratón */
-      }
-
-      /* Estilo adicional para el botón del Admin Site */
-      .btn-admin {
-        background-color: #343a40 !important; /* Cambia al color deseado para el fondo */
-        color: #fff !important; /* Cambia al color deseado para el texto */
-      }
-
-      .btn-admin:hover {
-        background-color: #212529 !important; /* Cambia al color deseado al pasar el ratón */
-      }
-    </style>
 </head>
 <body>
 
   <nav class="navbar navbar-expand-lg bg-body-tertiary">
-    <div class="container-fluid">
-      <a class="navbar-brand" href="{% url 'index' %}">Org de Torneos</a>
-      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
-      </button>
-      <div class="collapse navbar-collapse" id="navbarNavDropdown">
-        <ul class="navbar-nav ms-auto">
-          <li class="nav-item">
-            <a class="nav-link active" aria-current="page" href="{% url 'index' %}">Home</a>
-          </li>
-          <li class="nav-item dropdown">
-            <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-              Más
-            </a>
-            <ul class="dropdown-menu">
-              <li><a class="dropdown-item" href="{% url 'lista_jugadores' %}"><button>Ver Lista de Jugadores</button></a></li>
-              <li><a class="dropdown-item" href="{% url 'mundiales' %}"><button>Mundiales</button></a></li>
-              <li><a class="dropdown-item" href="{% url 'paises' %}"><button>Paises</button></a></li>
-            </ul>
-          </li>
-          {% if user.is_authenticated %}
-          {% if user.is_staff %}
-            <li class="nav-item ms-auto">
-              <a href="{% url 'admin:index' %}" class="nav-link btn btn-dark btn-hover-bg-light btn-admin" target="_blank">Admin Site</a>
+    </button>
+    <a class="nav-title" href="{% url 'index' %}">Org de Torneos</a>
+    <div class="collapse navbar-collapse" id="navbarNavDropdown">
+        <ul class="navbar-nav ms-auto navbar-center">
+            <li class="nav-item">
+                <a class="nav-link active" aria-current="page" href="{% url 'index' %}">Home</a>
             </li>
-          {% endif %}
-          <li class="nav-item ms-auto">
-            <a href="{% url 'logout' %}" class="nav-link">Logout</a>
-          </li>
-          <li class="nav-item ms-auto">
-            <p class="nav-link">Usuario actual: @{{ user.username }}</p>
-          </li>
-        {% else %}
-          <li class="nav-item ms-auto">
-            <a href="{% url 'login' %}" class="nav-link btn btn-dark btn-hover-bg-light">Login</a>
-          </li>
-          <li class="nav-item ms-auto">
-            <a href="{% url 'registro' %}" class="nav-link btn btn-dark btn-hover-bg-light">Registro</a>
-          </li>
-        {% endif %}
+            {% if user.is_authenticated %}
+                {% if user.is_staff %}
+                    <li class="nav-item">
+                        <a href="{% url 'admin:index' %}" class="nav-link btn btn-dark btn-hover-bg-light btn-admin" target="_blank">Admin Site</a>
+                    </li>
+                {% endif %}
+                <li class="nav-item">
+                    <a href="{% url 'logout' %}" class="nav-link">Logout</a>
+                </li>
+                <li class="nav-item">
+                    <p class="nav-link">Usuario actual: @{{ user.username }}</p>
+                </li>
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle custom-dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                        <i class="bi bi-three-dots custom-three-dots"></i>
+                    </a>
+                    <ul class="dropdown-menu dropdown-menu-end">
+                        <li><a class="dropdown-item" href="{% url 'lista_jugadores' %}">Jugadores</a></li>
+                        <li><a class="dropdown-item" href="{% url 'mundiales' %}">Mundiales</a></li>
+                        <li><a class="dropdown-item" href="{% url 'paises' %}">Paises</a></li>
+                    </ul>
+                </li>
+            {% else %}
+                <li class="nav-item">
+                    <a href="{% url 'login' %}" class="nav-link btn btn-dark btn-hover-bg-light">Login</a>
+                </li>
+                <li class="nav-item">
+                    <a href="{% url 'registro' %}" class="nav-link btn btn-dark btn-hover-bg-light">Registro</a>
+                </li>
+            {% endif %}
         </ul>
-      </div>
     </div>
-  </nav>
-  
+</nav>
+
+
+
   {% block content %}
   {% endblock %}
 

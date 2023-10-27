@@ -1,16 +1,27 @@
 {% extends 'base.html' %}
 
-{% block title %}Lista de Paises
-{% endblock %}
+{% block title %}Lista de Paises{% endblock %}
 
 {% block content %}
 
-<ul>
-    {% for pais in paises %}
-    <li>
-        <a href="/pais/{{pais.pk}}">{{ pais.nombre }}</a>
-    </li>
-    {% endfor %}
-</ul>
+<div class="container mt-5">
+    <h2 class="text-center mb-4">Explora los Países</h2>
+
+    <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4">
+        {% for pais in paises %}
+        <div class="col">
+            <div class="card h-100">
+                <div class="card-body">
+                    <h5 class="card-title">
+                        <a href="/pais/{{ pais.pk }}" class="black-link">{{ pais.nombre }}</a>
+                    </h5>
+                    <p class="card-text">Liga: {{ pais.liga_nombre }}</p>
+                    <!-- Agrega más información según tus necesidades -->
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+</div>
 
 {% endblock %}

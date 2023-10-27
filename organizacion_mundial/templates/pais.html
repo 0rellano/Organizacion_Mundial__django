@@ -1,42 +1,40 @@
 {% extends 'base.html' %}
 
-{% block title %}{{pais.nombre}}
-{% endblock %}
+{% block title %}{{ pais.nombre }}{% endblock %}
 
 {% block content %}
+<div class="container mt-5">
+    <h1 class="text-center mb-4">País {{ pais.nombre }}</h1>
+    <p>Liga que tiene: {{ pais.liga_nombre }}</p>
 
-<h1>Pais {{pais.nombre}}</h1>
-<p>Liga que tiene{{pais.liga_nombre}}</p>
-<h2>
-    EQUIPOS
-</h2>
-<ul>
-    {% for equipo in equipos %}
-    <li>{{equipo}}</li>                
-    {% endfor %}
-    
-</ul>
-<h2>Plantel Tecnico</h2>
-<ul>
-   
-        {% for empleado in plantel_tecnico %}
-        <li>
-        <p>nombre {{empleado.nombre}}</p>
-        <p>apellido {{empleado.apellido}}</p>
-        <p>nro pasaporte {{empleado.nro_pasaporte}}</p>
-        <p>nacimiento {{empleado.fecha_nacimiento}}</p>
-        <p>edad {{empleado}}</p>
-        <p>fecha de comienzo {{empleado.fecha_comienzo}}</p>
-        {% if empleado.fecha_fin == None %}
-        <p>Sigue trabajando</p>
-        {% else %}
-        <p>No sigue trabajando</p>
-        {% endif %}
-        <p>rol {{empleado.rol}}</p>
-        <p>descripcion rol {{empleado.rol.descripcion}}</p>
-        </li>
+    <h2>EQUIPOS</h2>
+    <ul class="list-group">
+        {% for equipo in equipos %}
+            <li class="list-group-item">{{ equipo.nombre }}</li>
         {% endfor %}
-    
-</ul>
+    </ul>
 
+    <h2>Plantel Técnico</h2>
+    <ul class="list-group">
+        {% for empleado in plantel_tecnico %}
+            <li class="list-group-item">
+                <p><strong>Nombre:</strong> {{ empleado.nombre }}</p>
+                <p><strong>Apellido:</strong> {{ empleado.apellido }}</p>
+                <p><strong>Número de Pasaporte:</strong> {{ empleado.nro_pasaporte }}</p>
+                <p><strong>Fecha de Nacimiento:</strong> {{ empleado.fecha_nacimiento }}</p>
+                <p><strong>Edad:</strong> {{ empleado.edad }}</p>
+                <p><strong>Fecha de Comienzo:</strong> {{ empleado.fecha_comienzo }}</p>
+                
+                {% if empleado.fecha_fin == None %}
+                    <p><strong>Estado:</strong> Sigue trabajando</p>
+                {% else %}
+                    <p><strong>Estado:</strong> No sigue trabajando</p>
+                {% endif %}
+                
+                <p><strong>Rol:</strong> {{ empleado.rol }}</p>
+                <p><strong>Descripción del Rol:</strong> {{ empleado.rol.descripcion }}</p>
+            </li>
+        {% endfor %}
+    </ul>
+</div>
 {% endblock %}
