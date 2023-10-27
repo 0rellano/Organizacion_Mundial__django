@@ -1,25 +1,29 @@
 {% extends 'base.html' %}
 
-{% block title %}Detalle de los Jugadores
-{% endblock %}
+{% block title %}Detalle de los Jugadores{% endblock %}
 
 {% block content %}
-<h1>Detalles del Jugador</h1>
-<p><strong>Nombre:</strong> {{ jugador.nombre }}</p>
-<p><strong>Apellido:</strong> {{ jugador.apellido }}</p>
-<p><strong>Número de Pasaporte:</strong> {{ jugador.nro_pasaporte }}</p>
-<p><strong>Fecha de Nacimiento:</strong> {{ jugador.fecha_nacimiento }}</p>
-<!-- Agrega otros campos según sea necesario -->
+<div class="container mt-5">
+    <h1 class="text-center mb-4">Detalles del Jugador</h1>
 
-<p><strong>Número de Camiseta:</strong> {{ jugador.numero_camiseta }}</p>
-<p><strong>País:</strong> <a href="{% url 'pais' pk=jugador.pais.pk %}">{{ jugador.pais.nombre}}</a></p>
-<p><strong>Equipo:</strong> {% if jugador.equipo %}{{ jugador.equipo.nombre }}{% else %}No asignado{% endif %}</p>
-<p><strong>Posición:</strong> {{ jugador.posicion }}</p>
+    <div class="card">
+        <div class="card-body">
+            <h5 class="card-title">{{ jugador.nombre }} {{ jugador.apellido }}</h5>
+            <p class="card-text"><strong>Número de Pasaporte:</strong> {{ jugador.nro_pasaporte }}</p>
+            <p class="card-text"><strong>Fecha de Nacimiento:</strong> {{ jugador.fecha_nacimiento }}</p>
+            <!-- Agrega otros campos según sea necesario -->
+            <p class="card-text"><strong>Número de Camiseta:</strong> {{ jugador.numero_camiseta }}</p>
+            <p class="card-text"><strong>País:</strong> {{ jugador.pais.nombre }}</p>
+            <p class="card-text"><strong>Equipo:</strong> {% if jugador.equipo %}{{ jugador.equipo.nombre }}{% else %}No asignado{% endif %}</p>
+            <p class="card-text"><strong>Posición:</strong> {{ jugador.posicion }}</p>
 
-{% if jugador.sigue_jugando %}
-    <p><strong>Estado:</strong> Jugando</p>
-{% else %}
-    <p><strong>Estado:</strong> Retirado</p>
-    <p><strong>Fecha de Retiro:</strong> {{ jugador.fecha_retiro }}</p>
-{% endif %}
+            {% if not jugador.sigue_jugando %}
+                <p class="card-text text-success"><strong>Estado:</strong> Jugando</p>
+            {% else %}
+                <p class="card-text text-danger"><strong>Estado:</strong> Retirado</p>
+                <p class="card-text"><strong>Fecha de Retiro:</strong> {{ jugador.fecha_retiro }}</p>
+            {% endif %}
+        </div>
+    </div>
+</div>
 {% endblock %}

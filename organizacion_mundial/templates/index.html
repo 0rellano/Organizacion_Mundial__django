@@ -5,20 +5,11 @@
 {% block content %}
   {% if user.is_authenticated %}
     <p>Aca va a ir todo lo de la página</p>
-    <a href="{% url 'lista_jugadores' %}"><button>Ver Lista de Jugadores</button></a>
-    <a href="{% url 'mundiales' %}"><button>Mundiales</button></a>
-    <a href="{% url 'paises' %}"><button>Paises</button></a>
-
-    <a href="{% url 'logout' %}">Logout</a>
-    <p>Usuario actual: {{ user.username }}</p>
-
-    {% if user.is_staff %}
-      <a href="{% url 'admin:index' %}" class="btn btn-primary" target="_blank">Ir al Admin Site</a>
-    {% endif %}
-
   {% else %}
-    <p>Inicia sesion o registrate para poder ver el contenido de esta página</p>
-    <a href="{% url 'login' %}">Login</a>
-    <a href="{% url 'registro' %}">Registro</a>
+    <div class="text-center">
+      <p class="mb-4">Inicia sesión o regístrate para poder ver el contenido de esta página</p>
+      <a href="{% url 'login' %}" class="btn btn-primary btn-lg mx-2">Iniciar Sesión</a>
+      <a href="{% url 'registro' %}" class="btn btn-success btn-lg mx-2">Registro</a>
+    </div>
   {% endif %}
 {% endblock %}

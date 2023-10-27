@@ -1,28 +1,51 @@
 {% extends 'base.html' %}
 
-{% block title %}Lista de Jugadores
-{% endblock %}
+{% block title %}Lista de Jugadores{% endblock %}
 
 {% block content %}
-<h1>Lista de Jugadores</h1>
+<div class="container mt-5">
+    <h2 class="text-center mb-4">Explora los Jugadores</h2>
 
-<form method="get" action="{% url 'lista_jugadores' %}">
-    <input type="text" name="buscar" placeholder="Buscar por nombre" value="{{ request.GET.buscar }}">
-    <button type="submit">Buscar</button>
-    <button type="button" onclick="limpiarYEnviar()">Limpiar</button>
-    <button type="button" onclick="ordenarPor('nombre')">Ordenar por Nombre</button>
-    <button type="button" onclick="ordenarPor('pais')">Ordenar por País</button>
-    <button type="button" onclick="ordenarPor('posicion')">Ordenar por Posición</button>
-</form>
+    <form method="get" action="{% url 'lista_jugadores' %}">
+        <div class="input-group mb-2">
+            <input type="text" name="buscar" class="form-control" placeholder="Buscar por nombre" value="{{ request.GET.buscar }}">
+            <div class="input-group-append">
+                <button type="submit" class="btn btn-primary btn-lg">Buscar</button>
+                <button type="button" class="btn btn-secondary btn-lg" onclick="limpiarYEnviar()">
+                    <i class="bi bi-trash"></i>
+                </button>
+            </div>
+        </div>
+    </form>
 
-<ul>
-    {% for jugador in jugadores %}
-        <li>
-            <a href="{% url 'detalle_jugador' pk=jugador.pk %}">{{ jugador.nombre }} {{ jugador.apellido }}</a> -
-            <a href="{% url 'pais' pk=jugador.pais.pk %}">{{ jugador.pais }}</a> - {{ jugador.posicion }}
-        </li>
-    {% endfor %}
-</ul>
+    <table class="table table-bordered table-striped">
+        <thead class="thead-dark">
+            <tr>
+                <th><button type="button" onclick="ordenarPor('nombre')" class="btn btn-info btn-lg btn-block">Nombre</button></th>
+                <th><button type="button" onclick="ordenarPor('pais')" class="btn btn-info btn-lg btn-block">País</button></th>
+                <th><button type="button" onclick="ordenarPor('posicion')" class="btn btn-info btn-lg btn-block">Posición</button></th>
+            </tr>
+        </thead>    
+        <tbody>
+            {% for jugador in jugadores %}
+            <tr>
+                <td>
+                    <a href="{% url 'detalle_jugador' pk=jugador.pk %}" class="black-link">
+                        {{ jugador.nombre|title }} {{ jugador.apellido|title }}
+                    </a>
+                </td>
+                <td>
+                    <a href="{% url 'pais' pk=jugador.pais.pk %}" class="black-link">
+                        {{ jugador.pais.nombre|title }}
+                    </a> 
+                </td>
+                <td>{{ jugador.posicion|title }}</td>
+            </tr>
+            
+            {% endfor %}
+        </tbody> 
+    </table>
+</div>
 
 <script>
     function limpiarYEnviar() {

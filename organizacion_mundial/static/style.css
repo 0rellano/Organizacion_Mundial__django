@@ -1,0 +1,67 @@
+body {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  margin: 0;
+}
+
+.btn-hover-bg-light:hover {
+  background-color: #f8f9fa;
+  color: #eee;
+}
+
+.btn-admin {
+  background-color: #343a40;
+  color: #fff;
+}
+
+.btn-admin:hover {
+  background-color: #212529;
+}
+
+.nav-item {
+  color: #343a40;
+}
+
+.custom-dropdown-toggle::after {
+  content: none; /* Oculta la pestaña del botón de desplegable */
+}
+
+.custom-three-dots {
+  font-size: 24px; /* Ajusta el tamaño según sea necesario */
+}
+
+.wrapper {
+  flex: 1;
+}
+
+.custom-footer {
+  background-color: rgba(0, 0, 0, 0.2);
+  padding: 15px;
+  color: white;
+  margin-top: auto;
+}
+
+button {
+  border: none;
+  background-color: transparent;
+}
+
+.black-link {
+  text-decoration: none;
+  color: black;
+}
+
+.header-button {
+  font-size: larger;
+  font-weight: bold;
+}
+
+.nav-title {
+  text-decoration: none;
+  color: black;
+  font-size: 2em;
+  font-weight: bold;
+  display: inline-block;
+  margin-left: auto;
+}

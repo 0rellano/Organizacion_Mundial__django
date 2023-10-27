@@ -1,29 +1,29 @@
 {% extends 'base.html' %}
 
-{% block title %}{{mundial.pais_sede.nombre}} {{mundial.anio}}
-{% endblock %}
+{% block title %}{{ mundial.pais_sede.nombre }} {{ mundial.anio }}{% endblock %}
 
 {% block content %}
-<h1>{{mundial.pais_sede.nombre}} {{mundial.anio}}</h1>
-<h2>Participantes</h2>
-<ul>
-    {% for participante in participantes %}
-    <li>
-        <p>{{participante.posicion_obtenida}}°: {{participante.pais.nombre}}</p>
-    </li>
-    {% endfor %}
-</ul>
-<h2>Fases</h2>
-<ul>
-    {% for fase in fases %}
-    <li>
-        <a href="">{{fase.nombre}}</a>
-        <ol>
-            {% for partido in partidos_por_fase.fase %}
-            <li>{{ partido }}</li>
-            {% endfor %}
-        </ol>
-    </li>
-    {% endfor %}
-</ul>
+
+<div class="container mt-5">
+    <h1 class="text-center mb-4">{{ mundial.pais_sede.nombre }} {{ mundial.anio }}</h1>
+
+    <h2>Participantes</h2>
+    <ul class="list-group">
+        {% for participante in participantes %}
+            <li class="list-group-item">
+                <p>{{ participante.posicion_obtenida }}°: {{ participante.pais.nombre }}</p>
+            </li>
+        {% endfor %}
+    </ul>
+
+    <h2>Fases</h2>
+    <ul class="list-group">
+        {% for fase in fases %}
+            <li class="list-group-item">
+                <p>{{ fase }}</p>
+            </li>
+        {% endfor %}
+    </ul>
+</div>
 {% endblock %}
+

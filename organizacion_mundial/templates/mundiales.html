@@ -1,20 +1,28 @@
 {% extends 'base.html' %}
 
-{% block title %}Mundiales
-{% endblock %}
+{% block title %}Mundiales{% endblock %}
 
 {% block content %}
-<ul>
-    {% for mundial in mundiales %}
-        <li>
-            <a href="/mundiales/{{mundial.pk}}">
-                {{mundial}}
-                {{mundial.pais_sede}}
-                {{mundial.fecha_inicio}}
-                {{mundial.fecha_fin}}
-            </a>
+<div class="container mt-5">
+    <h2 class="text-center mb-4">Explora los Mundiales</h2>
 
-        </li>
+    <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4">
+        {% for mundial in mundiales %}
+        <div class="col">
+            <div class="card h-100">
+                <div class="card-body">
+                    <h5 class="card-title">
+                        <a href="/mundiales/{{ mundial.pk }}" class="black-link">{{ mundial }}</a>
+                    </h5>
+                    <p class="card-text">País Sede: {{ mundial.pais_sede }}</p>
+                    <p class="card-text">Fecha de Inicio: {{ mundial.fecha_inicio }}</p>
+                    <p class="card-text">Fecha de Fin: {{ mundial.fecha_final }}</p>
+                    <!-- Agrega más información según tus necesidades -->
+                </div>
+            </div>
+        </div>
         {% endfor %}
-</ul>
+    </div>
+</div>
+
 {% endblock %}
