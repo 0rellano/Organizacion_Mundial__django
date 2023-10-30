@@ -10,4 +10,5 @@ urlpatterns = [
     path('mundiales/', ListaMundialesView.as_view(), name='mundiales'),
     path('mundiales/<int:pk>', DetalleMundialView.as_view(), name='mundial'),
     path('registro/', Registro.as_view(), name='registro'),
+    path('partidos/<int:pk>', PartidoView.as_view(), name='partido'),
 ]

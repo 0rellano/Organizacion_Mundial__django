@@ -111,9 +111,17 @@ class Registro(View):
         return render(request, self.template_name, data)
     
 
-class DetallaFaseView(DetailView):
-    model = Fase
-    context_object_name = 'fase'
-    template_name = 'fase.html'
+class PartidoView(DetailView):
+    model = Partido
+    context_object_name = 'partido'
+    template_name = 'partido.html'
+
+    def get_context_data(self, **kwargs: Any) -> dict[str, Any]:
+        context = super().get_context_data(**kwargs)
+        context['eventos'] = Evento.objects.filter(partido=self.object).order_by('minuto_ocurrido')
+
+        #print(self.object.formacion_local.titulares.all())
+
+        return context
 
     

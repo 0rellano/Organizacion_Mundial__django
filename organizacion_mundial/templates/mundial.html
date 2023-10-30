@@ -21,13 +21,11 @@
         {% for fase, partidos in fases.items %}
             <li class="list-group-item">
                 <p>{{ fase }}</p>
-                <ul>
+                <div class="list-group">
                     {% for partido in partidos %}
-                    <li>
-                        {{partido}}
-                    </li>
+                    <a class="list-group-item list-group-item-action list-group-item-primary" href="{% url 'partido' pk=partido.pk %}">{{partido}}</a>
                     {% endfor %}
-                </ul>
+                </div>
             </li>
         {% endfor %}
     </ul>

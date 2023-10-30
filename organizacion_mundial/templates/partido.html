@@ -1,0 +1,32 @@
+{% extends 'base.html' %}
+{% block content %}
+{{partido}}
+<p>
+    {{partido.local}}
+    {{partido.goles_local}}
+    <p>
+        {{partido.formacion_local}}
+        {% for jugador in partido.formacion_local.titulares.all%}
+        {{jugador}}
+        {% endfor %}
+    </p>
+</p>
+<p>
+    {{partido.visitante}}
+    {{partido.goles_visitante}}
+    <p>
+        {{partido.formacion_visitante}}
+        {% for jugador in partido.formacion_visitante.titulares.all%}
+        {{jugador}}
+        {% endfor %}
+
+    </p>
+</p>
+
+<p>Cronologia del PArtido</p>
+{% for evento in eventos %}
+<p>
+{{evento}}
+</p>
+{% endfor %}
+{% endblock %}
