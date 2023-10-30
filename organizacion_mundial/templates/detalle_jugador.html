@@ -25,5 +25,11 @@
             {% endif %}
         </div>
     </div>
+    <h1>Cosas que hizo jugador(eventos)</h1>
+    {% for evento in eventos%}
+    <p>
+        {{evento}}
+    </p>
+    {% endfor %}
 </div>
 {% endblock %}

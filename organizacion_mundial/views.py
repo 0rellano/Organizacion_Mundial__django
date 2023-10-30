@@ -41,6 +41,12 @@ class DetalleJugadorView(DetailView):
     context_object_name = 'jugador'
     pk_url_kwarg = 'pk'
 
+    def get_context_data(self, **kwargs: Any) -> dict[str, Any]:
+        context = super().get_context_data(**kwargs)
+        context['eventos'] = Evento.objects.filter(jugador=self.object).all()
+        
+        return context
+
 class ListaPaisesView(ListView):
     model = Pais
     context_object_name = 'paises'
