@@ -81,15 +81,14 @@ class DetalleMundialView(DetailView):
         context = super().get_context_data(**kwargs)
         pais = self.object
 
-        context['participantes'] = Participante.objects.filter(mundial=pais).order_by('posicion_obtenida')
-        context['fases'] = Fase.objects.filter(mundial=pais).order_by('orden')
-
-        partidos_por_fase = {}
-        for fase in context['fases']:
+        fases = Fase.objects.filter(mundial=pais).order_by('orden')
+        partidos_por_fase = dict()
+        for fase in fases:
             partidos = Partido.objects.filter(fase=fase)
-            partidos_por_fase['fase'] = partidos
+            partidos_por_fase[fase] = partidos
         
-        context['partidos_por_fase'] = partidos_por_fase
+        context['fases'] = partidos_por_fase
+        context['participantes'] = Participante.objects.filter(mundial=pais).order_by('posicion_obtenida')
 
         return context
     

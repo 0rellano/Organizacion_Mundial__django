@@ -44,7 +44,7 @@ class Formacion(models.Model):
 
     def __str__(self) -> str:
         partido = Partido.objects.get(Q(formacion_local=self) | Q(formacion_visitante=self))
-        return f'{self.esquema} {self.pais} del {self.partido}'
+        return f'{self.esquema} {self.pais} del {partido}'
 
 
 

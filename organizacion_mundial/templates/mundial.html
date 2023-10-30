@@ -18,9 +18,16 @@
 
     <h2>Fases</h2>
     <ul class="list-group">
-        {% for fase in fases %}
+        {% for fase, partidos in fases.items %}
             <li class="list-group-item">
                 <p>{{ fase }}</p>
+                <ul>
+                    {% for partido in partidos %}
+                    <li>
+                        {{partido}}
+                    </li>
+                    {% endfor %}
+                </ul>
             </li>
         {% endfor %}
     </ul>
