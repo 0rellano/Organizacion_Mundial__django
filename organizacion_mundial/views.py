@@ -69,6 +69,10 @@ class PaisView(DetailView):
         equipos = Equipo.objects.filter(pais_perteneciente=pais)
         context['equipos'] = equipos
 
+        ultimo_partido = Partido.objects.filter(Q(local=pais)|Q(visitante=pais)).order_by('fecha').last()
+        print(ultimo_partido.fecha)
+        context['formacion_actual'] = ultimo_partido.formacion_local if ultimo_partido.local == pais else ultimo_partido.formacion_visitante
+
         return context
     
 
