@@ -18,6 +18,8 @@
         </div>
     </form>
 
+    <a class="btn btn-primary" href="{% url 'crear_jugador' %}">Crear jugador</a>
+
     <table class="table table-bordered table-striped">
         <thead class="thead-dark">
             <tr>
@@ -40,6 +42,12 @@
                     </a> 
                 </td>
                 <td>{{ jugador.posicion|title }}</td>
+                <td>
+                    <form action="{% url 'eliminar_jugador' pk=jugador.pk %}" method="post">
+                        {% csrf_token %}
+                        <button class="btn btn-sm btn-danger" type="submit">Eliminar</button>
+                    </form>
+                </td>
             </tr>
             
             {% endfor %}

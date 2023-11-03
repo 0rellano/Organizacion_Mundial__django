@@ -14,7 +14,7 @@
                     <h5 class="card-title">
                         <a href="/mundiales/{{ mundial.pk }}" class="black-link">{{ mundial }}</a>
                     </h5>
-                    <p class="card-text">País Sede: {{ mundial.pais_sede }}</p>
+                    <p class="card-text">País Sede: <a href="{% url 'pais' pk=mundial.pais_sede.pk %}">{{ mundial.pais_sede }}</a></p>
                     <p class="card-text">Fecha de Inicio: {{ mundial.fecha_inicio }}</p>
                     <p class="card-text">Fecha de Fin: {{ mundial.fecha_final }}</p>
                     <!-- Agrega más información según tus necesidades -->

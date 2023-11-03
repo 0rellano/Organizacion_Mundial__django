@@ -1,19 +1,24 @@
-import logging
-from typing import Any
-from django.shortcuts import render, redirect
-from django.views.generic import ListView, DetailView, TemplateView
+# Vistas
+from django.views.generic import ListView, DetailView, TemplateView, DeleteView
+from django.views.generic.edit import CreateView
 from django.views import View
-from .models import *
-from .forms import CustomUserCreationForm
+# Recursos
+from django.shortcuts import render, redirect
 from django.contrib.auth import authenticate, login
+from django.urls import reverse_lazy
 from django.db.models import Q
+# Aplicacion
+from .forms import CustomUserCreationForm, JugadorForm
+from .models import *
+
 
 class homeView(TemplateView):
     template_name = 'index.html'
 
+
 class ListaJugadoresView(ListView):
     model = Jugador
-    template_name = 'lista_jugadores.html'
+    template_name = 'jugador/lista_jugadores.html'
     context_object_name = 'jugadores'
 
     def get_queryset(self):
@@ -37,19 +42,39 @@ class ListaJugadoresView(ListView):
 
 class DetalleJugadorView(DetailView):
     model = Jugador
-    template_name = 'detalle_jugador.html'
+    template_name = 'jugador/detalle_jugador.html'
     context_object_name = 'jugador'
     pk_url_kwarg = 'pk'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['eventos'] = Evento.objects.filter(jugador=self.object).all()
+        
+        return context
+    
+
+class CrearJugadorView(CreateView):
+    model = Jugador
+    template_name = 'jugador/crear_jugador.html'
+    form_class = JugadorForm
+    success_url = reverse_lazy('lista_jugadores')
+        
+
+class ElimnarJugadorView(DeleteView):
+    model = Jugador
+    success_url = reverse_lazy('lista_jugadores')
+
 
 class ListaPaisesView(ListView):
     model = Pais
     context_object_name = 'paises'
-    template_name = 'paises.html'
+    template_name = 'pais/paises.html'
     
+
 class PaisView(DetailView):
     model = Pais
     context_object_name = 'pais'
-    template_name = 'pais.html'
+    template_name = 'pais/pais.html'
     pk_url_kwarg = 'pk'
 
     def get_context_data(self, **kwargs):
@@ -63,35 +88,39 @@ class PaisView(DetailView):
         equipos = Equipo.objects.filter(pais_perteneciente=pais)
         context['equipos'] = equipos
 
+        ultimo_partido = Partido.objects.filter(Q(local=pais)|Q(visitante=pais)).order_by('fecha').last()
+        context['formacion_actual'] = ultimo_partido.formacion_local if ultimo_partido.local == pais else ultimo_partido.formacion_visitante
+
         return context
     
 
 class ListaMundialesView(ListView):
     model = Mundial
     context_object_name = 'mundiales'
-    template_name = 'mundiales.html'
+    template_name = 'mundial/mundiales.html'
 
 
 class DetalleMundialView(DetailView):
     model = Mundial
     context_object_name = 'mundial'
-    template_name = 'mundial.html'
+    template_name = 'mundial/mundial.html'
 
-    def get_context_data(self, **kwargs: Any) -> dict[str, Any]:
+    def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         
         # Cambia 'pais' a 'self.object' ya que estás trabajando con un Mundial, no un País
         mundial = self.object
 
-        context['participantes'] = Participante.objects.filter(mundial=mundial).order_by('posicion_obtenida')
-        context['fases'] = Fase.objects.filter(mundial=mundial).order_by('orden')
+      
 
-        partidos_por_fase = {}
-        for fase in context['fases']:
+        fases = Fase.objects.filter(mundial=mundial).order_by('orden')
+        partidos_por_fase = dict()
+        for fase in fases:
             partidos = Partido.objects.filter(fase=fase)
-            partidos_por_fase['fase'] = partidos
+            partidos_por_fase[fase] = partidos
         
-        context['partidos_por_fase'] = partidos_por_fase
+        context['fases'] = partidos_por_fase
+        context['participantes'] = Participante.objects.filter(mundial=mundial).order_by('posicion_obtenida')
 
         return context
     
@@ -114,9 +143,15 @@ class Registro(View):
         return render(request, self.template_name, data)
     
 
-class DetallaFaseView(DetailView):
-    model = Fase
-    context_object_name = 'fase'
-    template_name = 'fase.html'
+class PartidoView(DetailView):
+    model = Partido
+    context_object_name = 'partido'
+    template_name = 'mundial/partido.html'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['eventos'] = Evento.objects.filter(partido=self.object).order_by('minuto_ocurrido')
+
+        return context
 
     
