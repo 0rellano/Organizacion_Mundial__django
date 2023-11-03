@@ -99,8 +99,7 @@ class Participante(models.Model):
     mundial = models.ForeignKey('Mundial', on_delete=models.CASCADE)
 
     def __str__(self) -> str:
-        return f"Posicion {self.posicion_obtenida} de {self.pais} en el Mundial {self.mundial}"
-
+        return f"{self.pais.nombre} - Posición {self.posicion_obtenida} - Mundial {self.mundial.anio}"
 
 class Equipo(models.Model):
     nombre = models.CharField(max_length=100)
@@ -129,6 +128,9 @@ class Pais(models.Model):
             estadistica['cantidad_corners'] += partido.cantidad_corners
             estadistica['cantidad_laterales'] += partido.cantidad_laterales
         return estadistica
+    
+    def mundiales_ganados(self):
+        return Participante.objects.filter(pais=self, posicion_obtenida=1).count()
     
     def __str__(self):
         return self.nombre
