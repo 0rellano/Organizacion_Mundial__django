@@ -13,7 +13,7 @@
             <p class="card-text"><strong>Fecha de Nacimiento:</strong> {{ jugador.fecha_nacimiento }}</p>
             <!-- Agrega otros campos según sea necesario -->
             <p class="card-text"><strong>Número de Camiseta:</strong> {{ jugador.numero_camiseta }}</p>
-            <p class="card-text"><strong>País:</strong> {{ jugador.pais.nombre }}</p>
+            <p class="card-text"><strong>País:</strong> <a href="{% url 'pais' pk=jugador.pais.id %}">{{ jugador.pais.nombre }}</a></p>
             <p class="card-text"><strong>Equipo:</strong> {% if jugador.equipo %}{{ jugador.equipo.nombre }}{% else %}No asignado{% endif %}</p>
             <p class="card-text"><strong>Posición:</strong> {{ jugador.posicion }}</p>
 
@@ -25,5 +25,11 @@
             {% endif %}
         </div>
     </div>
+    <h1>Cosas que hizo jugador(eventos)</h1>
+    {% for evento in eventos%}
+    <p>
+        {{evento.tipo_evento}} de {{evento.jugador}} en el minuto {{evento.minuto_ocurrido}} en el partido <a href="{% url 'partido' pk=evento.partido.id %}">{{evento.partido}}</a>
+    </p>
+    {% endfor %}
 </div>
 {% endblock %}

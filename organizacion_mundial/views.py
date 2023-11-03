@@ -41,6 +41,12 @@ class DetalleJugadorView(DetailView):
     context_object_name = 'jugador'
     pk_url_kwarg = 'pk'
 
+    def get_context_data(self, **kwargs: Any) -> dict[str, Any]:
+        context = super().get_context_data(**kwargs)
+        context['eventos'] = Evento.objects.filter(jugador=self.object).all()
+        
+        return context
+
 class ListaPaisesView(ListView):
     model = Pais
     context_object_name = 'paises'
@@ -63,6 +69,10 @@ class PaisView(DetailView):
         equipos = Equipo.objects.filter(pais_perteneciente=pais)
         context['equipos'] = equipos
 
+        ultimo_partido = Partido.objects.filter(Q(local=pais)|Q(visitante=pais)).order_by('fecha').last()
+        print(ultimo_partido.fecha)
+        context['formacion_actual'] = ultimo_partido.formacion_local if ultimo_partido.local == pais else ultimo_partido.formacion_visitante
+
         return context
     
 
@@ -83,15 +93,16 @@ class DetalleMundialView(DetailView):
         # Cambia 'pais' a 'self.object' ya que estás trabajando con un Mundial, no un País
         mundial = self.object
 
-        context['participantes'] = Participante.objects.filter(mundial=mundial).order_by('posicion_obtenida')
-        context['fases'] = Fase.objects.filter(mundial=mundial).order_by('orden')
+      
 
-        partidos_por_fase = {}
-        for fase in context['fases']:
+        fases = Fase.objects.filter(mundial=mundial).order_by('orden')
+        partidos_por_fase = dict()
+        for fase in fases:
             partidos = Partido.objects.filter(fase=fase)
-            partidos_por_fase['fase'] = partidos
+            partidos_por_fase[fase] = partidos
         
-        context['partidos_por_fase'] = partidos_por_fase
+        context['fases'] = partidos_por_fase
+        context['participantes'] = Participante.objects.filter(mundial=mundial).order_by('posicion_obtenida')
 
         return context
     
@@ -114,9 +125,17 @@ class Registro(View):
         return render(request, self.template_name, data)
     
 
-class DetallaFaseView(DetailView):
-    model = Fase
-    context_object_name = 'fase'
-    template_name = 'fase.html'
+class PartidoView(DetailView):
+    model = Partido
+    context_object_name = 'partido'
+    template_name = 'partido.html'
+
+    def get_context_data(self, **kwargs: Any) -> dict[str, Any]:
+        context = super().get_context_data(**kwargs)
+        context['eventos'] = Evento.objects.filter(partido=self.object).order_by('minuto_ocurrido')
+
+        #print(self.object.formacion_local.titulares.all())
+
+        return context
 
     

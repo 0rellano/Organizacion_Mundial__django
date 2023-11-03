@@ -43,9 +43,7 @@ class Formacion(models.Model):
     suplentes = models.ManyToManyField('Jugador', related_name='jugadores_suplentes')
 
     def __str__(self) -> str:
-        partido = Partido.objects.get(Q(formacion_local=self) | Q(formacion_visitante=self))
-        return f'{self.esquema} {self.pais} del {self.partido}'
-
+        return f'{self.pk}:{self.esquema} {self.pais}'
 
 
 class Partido(models.Model):
@@ -81,11 +79,18 @@ class Evento(models.Model):
     minuto_ocurrido = models.PositiveSmallIntegerField()
     jugador = models.ForeignKey('Jugador', on_delete=models.SET_NULL, null=True)
     tipo_evento = models.ForeignKey('TipoEvento', on_delete=models.SET_NULL, null=True)
+    partido = models.ForeignKey('Partido', on_delete=models.CASCADE)
+
+    def __str__(self) -> str:
+        return f"{self.tipo_evento} de {self.jugador} al {self.minuto_ocurrido}   PARTIDO: {self.partido} "
 
 
 class TipoEvento(models.Model):
     nombre = models.CharField(max_length=100)
     descripcion = models.TextField(max_length=300)
+
+    def __str__(self) -> str:
+        return self.nombre
 
 
 class Participante(models.Model):

@@ -8,10 +8,19 @@
     <p>Liga que tiene: {{ pais.liga_nombre }}</p>
     <h2>EQUIPOS</h2>
     <ul class="list-group">
-        {% for equipo in equipos %}
-            <li class="list-group-item">{{ equipo.nombre }}</li>
-        {% endfor %}
+        {% if equipos%}
+            {% for equipo in equipos %}
+                <li class="list-group-item">{{ equipo.nombre }}</li>
+            {% endfor %}
+        {% else %}
+            <li class="list-group-item">No hay ningun equipo</li>
+        {% endif %}
     </ul>
+
+    <h2>Formacion Actual</h2>
+    <p>{{formacion_actual}}</p>
+
+
 
     <h2>Plantel Técnico</h2>
     <ul class="list-group">
@@ -23,8 +32,7 @@
                 <p class="fecha-nacimiento"><strong>Fecha de Nacimiento:</strong> {{ empleado.fecha_nacimiento }}</p>
                 <p class="edad-empleado"><strong>Edad: Calculando...</strong></p>
                 <p><strong>Fecha de Comienzo:</strong> {{ empleado.fecha_comienzo }}</p>
-                
-                {% if empleado.fecha_fin == None %}
+                {% if empleado.fecha_fin  == None %}
                     <p><strong>Estado:</strong> Sigue trabajando</p>
                 {% else %}
                     <p><strong>Estado:</strong> No sigue trabajando</p>

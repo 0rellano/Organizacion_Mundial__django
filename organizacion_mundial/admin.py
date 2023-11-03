@@ -12,4 +12,8 @@ admin.site.register(Participante)
 admin.site.register(Fase)
 admin.site.register(Partido)
 admin.site.register(Formacion)
+admin.site.register(TipoEvento)
+admin.site.register(Evento)
+
+
 

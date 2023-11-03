@@ -1,0 +1,31 @@
+{% extends 'base.html' %}
+{% block content %}
+{{partido}}
+<p>
+    <a href="{% url 'pais' pk=partido.local.id %}">{{partido.local}}</a>
+    
+    <p>
+        {{partido.formacion_local}}
+        {% for jugador in partido.formacion_local.titulares.all%}
+        <a href="{% url 'detalle_jugador' pk=jugador.id%}">{{jugador}}</a>
+        {% endfor %}
+    </p>
+</p>
+<p>
+    <a href="{% url 'pais' pk=partido.visitante.id %}">{{partido.visitante}}</a>
+    <p>
+        {{partido.formacion_visitante}}
+        {% for jugador in partido.formacion_visitante.titulares.all%}
+        <a href="{% url 'detalle_jugador' pk=jugador.id %}">{{jugador}}</a>
+        {% endfor %}
+
+    </p>
+</p>
+
+<p>Cronologia del PArtido</p>
+{% for evento in eventos %}
+<p>
+{{evento}}
+</p>
+{% endfor %}
+{% endblock %}
