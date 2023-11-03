@@ -15,8 +15,8 @@ class CustomUserCreationForm(UserCreationForm):
 
 class JugadorForm(forms.ModelForm):
     class Meta:
-            model = Jugador
-            fields = '__all__'
+        model = Jugador
+        fields = '__all__'
 
     nombre = forms.CharField(
          max_length=100,
@@ -42,7 +42,7 @@ class JugadorForm(forms.ModelForm):
          widget=forms.DateInput(attrs={
              'class': 'form-control',
              'type': 'date',
-             'input_formats': ['%d-%m-%Y'] # no se porque no me ada :(
+            #  'input_formats': ['%d-%m-%Y'] # no se porque no me ada :(
          })
     )
     numero_camiseta = forms.IntegerField(
@@ -50,6 +50,12 @@ class JugadorForm(forms.ModelForm):
              'placeholder': '123456789',
              'class': 'form-control',
              })
+    )
+    pais = forms.ModelChoiceField(
+         queryset=Pais.objects.all(), 
+         widget=forms.Select(attrs={
+              'class': 'form-control'
+              })
     )
     equipo = forms.ModelChoiceField(
          queryset=Equipo.objects.all(), 

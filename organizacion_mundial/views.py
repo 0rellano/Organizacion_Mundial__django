@@ -1,9 +1,11 @@
 # Vistas
+from typing import Any
+from django.http import HttpRequest, HttpResponse
 from django.views.generic import ListView, DetailView, TemplateView, DeleteView
-from django.views.generic.edit import CreateView
+from django.views.generic.edit import CreateView, UpdateView
 from django.views import View
 # Recursos
-from django.shortcuts import render, redirect
+from django.shortcuts import get_object_or_404, render, redirect
 from django.contrib.auth import authenticate, login
 from django.urls import reverse_lazy
 from django.db.models import Q
@@ -55,10 +57,17 @@ class DetalleJugadorView(DetailView):
 
 class CrearJugadorView(CreateView):
     model = Jugador
-    template_name = 'jugador/crear_jugador.html'
+    template_name = 'jugador/form_jugador.html'
     form_class = JugadorForm
     success_url = reverse_lazy('lista_jugadores')
         
+
+class EditarJugadorView(UpdateView):
+    model = Jugador
+    template_name = 'jugador/form_jugador_update.html'
+    form_class = JugadorForm
+    success_url = reverse_lazy('detalles_jugador')
+
 
 class ElimnarJugadorView(DeleteView):
     model = Jugador
@@ -68,13 +77,13 @@ class ElimnarJugadorView(DeleteView):
 class ListaPaisesView(ListView):
     model = Pais
     context_object_name = 'paises'
-    template_name = 'paises.html'
+    template_name = 'pais/paises.html'
     
 
 class PaisView(DetailView):
     model = Pais
     context_object_name = 'pais'
-    template_name = 'pais.html'
+    template_name = 'pais/pais.html'
     pk_url_kwarg = 'pk'
 
     def get_context_data(self, **kwargs):
@@ -97,13 +106,13 @@ class PaisView(DetailView):
 class ListaMundialesView(ListView):
     model = Mundial
     context_object_name = 'mundiales'
-    template_name = 'mundiales.html'
+    template_name = 'mundial/mundiales.html'
 
 
 class DetalleMundialView(DetailView):
     model = Mundial
     context_object_name = 'mundial'
-    template_name = 'mundial.html'
+    template_name = 'mundial/mundial.html'
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -142,7 +151,7 @@ class Registro(View):
 class PartidoView(DetailView):
     model = Partido
     context_object_name = 'partido'
-    template_name = 'partido.html'
+    template_name = 'mundial/partido.html'
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)

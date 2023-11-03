@@ -47,6 +47,7 @@
                         {% csrf_token %}
                         <button class="btn btn-sm btn-danger" type="submit">Eliminar</button>
                     </form>
+                    <a href="{% url 'editar_jugador' pk=jugador.pk %}" class="btn btn-sm btn-info">Editar</a>
                 </td>
             </tr>
             
