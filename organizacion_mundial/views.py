@@ -211,3 +211,7 @@ class PartidoView(DetailView):
         context['eventos'] = Evento.objects.filter(partido=self.object).order_by('minuto_ocurrido')
 
         return context
+
+class Error404View(View):
+    def get(self, request, exception=None, *args, **kwargs):
+        return render(request, '404.html', status=404)

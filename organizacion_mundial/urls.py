@@ -1,5 +1,6 @@
 from django.urls import path
 from .views import *
+from django.conf.urls import handler404
 
 urlpatterns = [
     path('', homeView.as_view(), name='index'),
@@ -24,3 +25,5 @@ urlpatterns = [
     #Plantel
     path('plantel/crear', CrearPlantelView.as_view(), name='crear_plantel'),
 ]
+
+handler404 = Error404View.as_view()
