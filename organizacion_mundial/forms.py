@@ -5,12 +5,17 @@ from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.models import User
 from django.forms.utils import ErrorList
 from organizacion_mundial.models import Jugador, Pais, Equipo, Posicion
+from django.forms.widgets import TextInput
 
 class CustomUserCreationForm(UserCreationForm):
     
     class Meta:
         model = User
         fields = ['username', 'first_name', 'last_name' , 'email', 'password1', 'password2']
+
+
+class DateInput(TextInput):
+    input_type = 'date'
 
 
 class JugadorForm(forms.ModelForm):
@@ -39,11 +44,8 @@ class JugadorForm(forms.ModelForm):
              })
     )
     fecha_nacimiento = forms.DateField(
-         widget=forms.DateInput(attrs={
-             'class': 'form-control',
-             'type': 'date',
-             #'input_formats': ['%d-%m-%Y'] # no se porque no me ada :(
-         })
+        widget=DateInput(attrs={'class': 'form-control'}),
+        input_formats=['%Y-%m-%d'],  # Agrega el formato aquí
     )
     numero_camiseta = forms.IntegerField(
          widget=forms.NumberInput(attrs={
