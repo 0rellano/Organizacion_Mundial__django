@@ -12,10 +12,15 @@ urlpatterns = [
     #Pais
     path('paises/', ListaPaisesView.as_view(), name='paises'),
     path('pais/<int:pk>', PaisView.as_view(), name='pais'),
+    path('paises/crear', CrearPaisView.as_view(), name='crear_pais'),
     #Mundial
     path('mundiales/', ListaMundialesView.as_view(), name='mundiales'),
     path('mundiales/<int:pk>', DetalleMundialView.as_view(), name='mundial'),
     path('partidos/<int:pk>', PartidoView.as_view(), name='partido'),
     #Registro
     path('registro/', Registro.as_view(), name='registro'),
+    #Posiciones
+    path('posiciones/crear', CrearPosicionView.as_view(), name='crear_posicion'),
+    #Plantel
+    path('plantel/crear', CrearPlantelView.as_view(), name='crear_plantel'),
 ]

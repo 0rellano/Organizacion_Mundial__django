@@ -65,3 +65,11 @@ button {
   display: inline-block;
   margin-left: auto;
 }
+
+.mb-3 {
+  width: 300px; /* Ajusta el valor según tus necesidades */
+  margin-bottom: 15px; /* Espaciado entre los campos */
+}
+.mb-3 input {
+  width: 200%; /* Campo de texto ocupa todo el ancho del contenedor */
+}

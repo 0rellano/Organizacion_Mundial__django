@@ -18,7 +18,10 @@
         </div>
     </form>
 
-    <a class="btn btn-primary" href="{% url 'crear_jugador' %}">Crear jugador</a>
+    {% if user.is_authenticated and user.is_staff%}
+        <a class="btn btn-primary" href="{% url 'crear_jugador' %}">Crear jugador</a>
+        <a class="btn btn-primary" href="{% url 'crear_posicion' %}">Crear posicion</a>
+    {% endif %}
 
     <table class="table table-bordered table-striped">
         <thead class="thead-dark">
@@ -42,13 +45,15 @@
                     </a> 
                 </td>
                 <td>{{ jugador.posicion|title }}</td>
-                <td>
-                    <form action="{% url 'eliminar_jugador' pk=jugador.pk %}" method="post">
-                        {% csrf_token %}
-                        <button class="btn btn-sm btn-danger" type="submit">Eliminar</button>
-                    </form>
-                    <a href="{% url 'editar_jugador' pk=jugador.pk %}" class="btn btn-sm btn-info">Editar</a>
-                </td>
+                {% if user.is_authenticated and user.is_staff%}
+                    <td>
+                        <form action="{% url 'eliminar_jugador' pk=jugador.pk %}" method="post">
+                            {% csrf_token %}
+                            <button class="btn btn-sm btn-danger" type="submit">Eliminar</button>
+                        </form>
+                        <a href="{% url 'editar_jugador' pk=jugador.pk %}" class="btn btn-sm btn-info">Editar</a>
+                    </td>
+                {% endif %}
             </tr>
             
             {% endfor %}

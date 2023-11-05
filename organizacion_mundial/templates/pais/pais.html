@@ -18,31 +18,42 @@
     </ul>
 
     <h2>Formacion Actual</h2>
-    <p>{{formacion_actual}}</p>
+    {% if formacion_actual %}
+        <p>{{ formacion_actual }}</p>
+    {% else %}
+        <p>No hay formación actual disponible</p>
+    {% endif %}
 
-
+    <!--<a class="btn btn-primary" href="{% url 'crear_plantel' %}">Añadir plantel</a>-->
 
     <h2>Plantel Técnico</h2>
     <ul class="list-group">
-        {% for empleado in plantel_tecnico %}
-            <li class="list-group-item">
-                <p><strong>Nombre:</strong> {{ empleado.nombre }}</p>
-                <p><strong>Apellido:</strong> {{ empleado.apellido }}</p>
-                <p><strong>Número de Pasaporte:</strong> {{ empleado.nro_pasaporte }}</p>
-                <p class="fecha-nacimiento"><strong>Fecha de Nacimiento:</strong> {{ empleado.fecha_nacimiento }}</p>
-                <p class="edad-empleado"><strong>Edad: Calculando...</strong></p>
-                <p><strong>Fecha de Comienzo:</strong> {{ empleado.fecha_comienzo }}</p>
-                {% if empleado.fecha_fin  == None %}
-                    <p><strong>Estado:</strong> Sigue trabajando</p>
-                {% else %}
-                    <p><strong>Estado:</strong> No sigue trabajando</p>
-                {% endif %}
-                
-                <p><strong>Rol:</strong> {{ empleado.rol }}</p>
-                <p><strong>Descripción del Rol:</strong> {{ empleado.rol.descripcion }}</p>
-            </li>
-        {% endfor %}
+        {% if plantel_tecnico %}
+            {% for empleado in plantel_tecnico %}
+                <li class="list-group-item">
+                    <p><strong>Nombre:</strong> {{ empleado.nombre }}</p>
+                    <p><strong>Apellido:</strong> {{ empleado.apellido }}</p>
+                    <p><strong>Número de Pasaporte:</strong> {{ empleado.nro_pasaporte }}</p>
+                    <p class="fecha-nacimiento"><strong>Fecha de Nacimiento:</strong> {{ empleado.fecha_nacimiento }}</p>
+                    <p class="edad-empleado"><strong>Edad: Calculando...</strong></p>
+                    <p><strong>Fecha de Comienzo:</strong> {{ empleado.fecha_comienzo }}</p>
+                    {% if empleado.fecha_fin  == None %}
+                        <p><strong>Estado:</strong> Sigue trabajando</p>
+                    {% else %}
+                        <p><strong>Estado:</strong> No sigue trabajando</p>
+                    {% endif %}
+                    
+                    <p><strong>Rol:</strong> {{ empleado.rol }}</p>
+                    {% if empleado.rol %}
+                        <p><strong>Descripción del Rol:</strong> {{ empleado.rol.descripcion }}</p>
+                    {% endif %}
+                </li>
+            {% endfor %}
+        {% else %}
+            <li class="list-group-item">No hay plantel técnico disponible</li>
+        {% endif %}
     </ul>
+
 </div>
 <script>
     // Obtener todas las instancias de fecha-nacimiento y edad-empleado
