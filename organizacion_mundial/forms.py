@@ -4,7 +4,7 @@ from django import forms
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.models import User
 from django.forms.utils import ErrorList
-from organizacion_mundial.models import Jugador, Pais, Equipo, Posicion
+from organizacion_mundial.models import *
 from django.forms.widgets import TextInput
 
 class CustomUserCreationForm(UserCreationForm):
@@ -178,3 +178,81 @@ class PlantelForm(forms.ModelForm):
             'type': 'date',
         })
     )
+
+class EquipoForm(forms.ModelForm):
+    class Meta:
+        model = Equipo
+        fields = '__all__'
+
+    nombre = forms.CharField(
+        max_length=100,
+        widget=forms.TextInput(attrs={
+            'placeholder': 'Nombre del equipo',
+            'class': 'form-control',
+        })
+    )
+    descripcion = forms.CharField(
+        max_length=300,
+        widget=forms.Textarea(attrs={
+            'placeholder': 'Descripción del equipo',
+            'class': 'form-control',
+        })
+    )
+    pais_perteneciente = forms.ModelChoiceField(
+        queryset=Pais.objects.all(),
+        widget=forms.Select(attrs={
+            'class': 'form-control'
+        })
+    )
+    # Puedes agregar más campos según tu modelo
+
+class FormacionForm(forms.ModelForm):
+    class Meta:
+        model = Formacion
+        fields = '__all__'
+
+    pais = forms.ModelChoiceField(
+        queryset=Pais.objects.all(),
+        widget=forms.Select(attrs={
+            'class': 'form-control'
+        })
+    )
+    esquema = forms.ChoiceField(
+        choices=Formacion.FORMACION_CHOICES,
+        widget=forms.Select(attrs={
+            'class': 'form-control'
+        })
+    )
+    titulares = forms.ModelMultipleChoiceField(
+        queryset=Jugador.objects.all(),
+        widget=forms.SelectMultiple(attrs={
+            'class': 'form-control'
+        })
+    )
+    suplentes = forms.ModelMultipleChoiceField(
+        queryset=Jugador.objects.all(),
+        widget=forms.SelectMultiple(attrs={
+            'class': 'form-control'
+        })
+    )
+    # Puedes agregar más campos según tu modelo
+
+class EmpleadoForm(forms.ModelForm):
+    class Meta:
+        model = Personal
+        fields = '__all__'
+
+    pais_perteneciente = forms.ModelChoiceField(
+        queryset=Pais.objects.all(),
+        widget=forms.Select(attrs={
+            'class': 'form-control'
+        })
+    )
+    rol = forms.ModelChoiceField(
+        queryset=Rol.objects.all(),
+        widget=forms.Select(attrs={
+            'class': 'form-control'
+        })
+    )
+    # Puedes agregar más campos según tu modelo
+

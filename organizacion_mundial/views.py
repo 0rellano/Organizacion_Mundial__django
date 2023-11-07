@@ -14,6 +14,7 @@ from django.utils.decorators import method_decorator
 # Aplicacion
 from .forms import *
 from .models import *
+from django.urls import reverse
 
 
 class homeView(TemplateView):
@@ -82,27 +83,25 @@ class ElimnarJugadorView(DeleteView):
 
 
 @method_decorator(login_required(login_url='login'), name='dispatch')
-class CrearPosicionView(CreateView):
-    model = Posicion
-    template_name = 'jugador/form_posicion.html'
-    form_class = PosicionForm
-    success_url = reverse_lazy('lista_jugadores')
-
-
-@method_decorator(login_required(login_url='login'), name='dispatch')
 class CrearPaisView(CreateView):
     model = Pais
     template_name = 'pais/form_pais.html'
     form_class = PaisForm
-    success_url = reverse_lazy('pais/paises.html')
+    success_url = reverse_lazy('paises')
 
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        return context
 
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        return context
+@method_decorator(login_required(login_url='login'), name='dispatch')
+class EliminarPaisView(DeleteView):
+    model = Pais
+    success_url = reverse_lazy('paises')
+    
+
+@method_decorator(login_required(login_url='login'), name='dispatch')
+class EditarPaisView(UpdateView):
+    model = Pais
+    template_name = 'pais/form_pais_update.html'
+    form_class = PaisForm
+    success_url = reverse_lazy('paises')
 
 
 @method_decorator(login_required(login_url='login'), name='dispatch')
@@ -112,6 +111,70 @@ class CrearPlantelView(CreateView):
     form_class = PlantelForm
     success_url = reverse_lazy('paises')
 
+
+@method_decorator(login_required(login_url='login'), name='dispatch')
+class CrearEquipoView(CreateView):
+    model = Equipo
+    template_name = 'pais/form_equipo.html'
+    form_class = EquipoForm
+    success_url = reverse_lazy('pais')  # Ajusta la URL
+
+class EditarEquipoView(UpdateView):
+    model = Equipo
+    template_name = 'pais/form_equipo_update.html'
+    form_class = EquipoForm
+
+    def get_success_url(self):
+        # Obtener el id del país de la URL
+        pais_id = self.kwargs['pk']
+
+        # Redirigir a la página del país después de editar el equipo
+        return reverse('pais', args=[pais_id])
+
+@method_decorator(login_required(login_url='login'), name='dispatch')
+class EliminarEquipoView(DeleteView):
+    model = Equipo
+    success_url = reverse_lazy('paises')  # Ajusta la URL
+
+# Vistas para formaciones
+@method_decorator(login_required(login_url='login'), name='dispatch')
+class CrearFormacionView(CreateView):
+    model = Formacion
+    template_name = 'pais/form_formacion.html'
+    form_class = FormacionForm
+    success_url = reverse_lazy('paises')  # Ajusta la URL
+
+@method_decorator(login_required(login_url='login'), name='dispatch')
+class EditarFormacionView(UpdateView):
+    model = Formacion
+    template_name = 'pais/form_formacion_update.html'
+    form_class = FormacionForm
+    success_url = reverse_lazy('paises')  # Ajusta la URL
+
+@method_decorator(login_required(login_url='login'), name='dispatch')
+class EliminarFormacionView(DeleteView):
+    model = Formacion
+    success_url = reverse_lazy('paises')  # Ajusta la URL
+
+# Vistas para empleados (plantel técnico)
+@method_decorator(login_required(login_url='login'), name='dispatch')
+class CrearEmpleadoView(CreateView):
+    model = Personal
+    template_name = 'pais/form_plantel.html'
+    form_class = EmpleadoForm
+    success_url = reverse_lazy('paises')  # Ajusta la URL
+
+@method_decorator(login_required(login_url='login'), name='dispatch')
+class EditarEmpleadoView(UpdateView):
+    model = Personal
+    template_name = 'pais/form_plantel_update.html'
+    form_class = EmpleadoForm
+    success_url = reverse_lazy('paises')  # Ajusta la URL
+
+@method_decorator(login_required(login_url='login'), name='dispatch')
+class EliminarEmpleadoView(DeleteView):
+    model = Personal
+    success_url = reverse_lazy('paises')  # Ajusta la URL
 
 @method_decorator(login_required(login_url='login'), name='dispatch')
 class ListaPaisesView(ListView):

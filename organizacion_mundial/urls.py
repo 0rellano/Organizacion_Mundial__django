@@ -10,20 +10,33 @@ urlpatterns = [
     path('jugadores/crear', CrearJugadorView.as_view(), name='crear_jugador'),
     path('jugadores/delete/<int:pk>', ElimnarJugadorView.as_view(), name='eliminar_jugador'),
     path('jugadores/editar/<int:pk>', EditarJugadorView.as_view(), name='editar_jugador'),
-    #Pais
+    #Paises
     path('paises/', ListaPaisesView.as_view(), name='paises'),
     path('pais/<int:pk>', PaisView.as_view(), name='pais'),
     path('paises/crear', CrearPaisView.as_view(), name='crear_pais'),
+    path('paises/delete/<int:pk>', EliminarPaisView.as_view(), name='eliminar_pais'),
+    path('paises/editar/<int:pk>', EditarPaisView.as_view(), name='editar_pais'),
     #Mundial
     path('mundiales/', ListaMundialesView.as_view(), name='mundiales'),
     path('mundiales/<int:pk>', DetalleMundialView.as_view(), name='mundial'),
     path('partidos/<int:pk>', PartidoView.as_view(), name='partido'),
     #Registro
     path('registro/', Registro.as_view(), name='registro'),
-    #Posiciones
-    path('posiciones/crear', CrearPosicionView.as_view(), name='crear_posicion'),
     #Plantel
     path('plantel/crear', CrearPlantelView.as_view(), name='crear_plantel'),
+    # Equipos
+    path('equipos/crear', CrearEquipoView.as_view(), name='crear_equipo'),
+    path('equipos/editar/<int:pk>/', EditarEquipoView.as_view(), name='editar_equipo'),
+    path('equipos/eliminar/<int:pk>', EliminarEquipoView.as_view(), name='eliminar_equipo'),
+
+    # Formaciones
+    path('formaciones/crear', CrearFormacionView.as_view(), name='crear_formacion'),
+    path('formaciones/editar/<int:pk>', EditarFormacionView.as_view(), name='editar_formacion'),
+
+    # Empleados (Plantel Técnico)
+    path('empleados/crear', CrearEmpleadoView.as_view(), name='crear_empleado'),
+    path('empleados/editar/<int:pk>', EditarEmpleadoView.as_view(), name='editar_empleado'),
+    path('empleados/eliminar/<int:pk>', EliminarEmpleadoView.as_view(), name='eliminar_empleado'),
 ]
 
 handler404 = Error404View.as_view()

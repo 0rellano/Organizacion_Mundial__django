@@ -6,54 +6,94 @@
 <div class="container mt-5">
     <h1 class="text-center mb-4">País {{ pais.nombre }}</h1>
     <p>Liga que tiene: {{ pais.liga_nombre }}</p>
+    
+    <!-- Botones de Equipos -->
+    {% if user.is_authenticated and user.is_staff %}
+        <div class="mb-3">
+            <a class="btn btn-primary" href="{% url 'crear_equipo' %}">Crear Equipo</a>
+        </div>
+    {% endif %}
+    
     <h2>EQUIPOS</h2>
     <ul class="list-group">
-        {% if equipos%}
+        {% if equipos %}
             {% for equipo in equipos %}
-                <li class="list-group-item">{{ equipo.nombre }}</li>
+                <li class="list-group-item">
+                    {{ equipo.nombre }}
+                    {% if user.is_authenticated and user.is_staff %}
+                        <div class="float-end">
+                            <a href="{% url 'editar_equipo' pk=equipo.pk %}" class="btn btn-sm btn-info">Editar</a>
+                            <form action="{% url 'eliminar_equipo' pk=equipo.pk %}" method="post" style="display: inline;">
+                                {% csrf_token %}
+                                <button class="btn btn-sm btn-danger" type="submit">Eliminar</button>
+                            </form>
+                        </div>
+                    {% endif %}
+                </li>
             {% endfor %}
         {% else %}
-            <li class="list-group-item">No hay ningun equipo</li>
+            <li class="list-group-item">No hay ningún equipo</li>
         {% endif %}
     </ul>
 
     <h2>Formacion Actual</h2>
     {% if formacion_actual %}
         <p>{{ formacion_actual }}</p>
+        <!-- Botones de Formación -->
+        {% if user.is_authenticated and user.is_staff %}
+            <div class="mb-3">
+                <a class="btn btn-primary" href="{% url 'editar_formacion' pk=formacion_actual.pk %}">Editar Formación</a>
+            </div>
+        {% endif %}
     {% else %}
         <p>No hay formación actual disponible</p>
+        <!-- Botones de Formación -->
+        {% if user.is_authenticated and user.is_staff %}
+            <div class="mb-3">
+                <a class="btn btn-primary" href="{% url 'crear_formacion' %}">Crear Formación</a>
+            </div>
+        {% endif %}
     {% endif %}
 
-    <!--<a class="btn btn-primary" href="{% url 'crear_plantel' %}">Añadir plantel</a>-->
-
     <h2>Plantel Técnico</h2>
-    <ul class="list-group">
-        {% if plantel_tecnico %}
-            {% for empleado in plantel_tecnico %}
-                <li class="list-group-item">
-                    <p><strong>Nombre:</strong> {{ empleado.nombre }}</p>
-                    <p><strong>Apellido:</strong> {{ empleado.apellido }}</p>
-                    <p><strong>Número de Pasaporte:</strong> {{ empleado.nro_pasaporte }}</p>
-                    <p class="fecha-nacimiento"><strong>Fecha de Nacimiento:</strong> {{ empleado.fecha_nacimiento }}</p>
-                    <p class="edad-empleado"><strong>Edad: Calculando...</strong></p>
-                    <p><strong>Fecha de Comienzo:</strong> {{ empleado.fecha_comienzo }}</p>
-                    {% if empleado.fecha_fin  == None %}
-                        <p><strong>Estado:</strong> Sigue trabajando</p>
-                    {% else %}
-                        <p><strong>Estado:</strong> No sigue trabajando</p>
-                    {% endif %}
-                    
-                    <p><strong>Rol:</strong> {{ empleado.rol }}</p>
-                    {% if empleado.rol %}
-                        <p><strong>Descripción del Rol:</strong> {{ empleado.rol.descripcion }}</p>
-                    {% endif %}
-                </li>
-            {% endfor %}
-        {% else %}
-            <li class="list-group-item">No hay plantel técnico disponible</li>
-        {% endif %}
-    </ul>
-
+<a class="btn btn-primary" href="{% url 'crear_empleado' %}">Añadir plantel</a>
+<ul class="list-group">
+    {% if plantel_tecnico %}
+        {% for empleado in plantel_tecnico %}
+            <li class="list-group-item">
+                <p><strong>Nombre:</strong> {{ empleado.nombre }}</p>
+                <p><strong>Apellido:</strong> {{ empleado.apellido }}</p>
+                <p><strong>Número de Pasaporte:</strong> {{ empleado.nro_pasaporte }}</p>
+                <p class="fecha-nacimiento"><strong>Fecha de Nacimiento:</strong> {{ empleado.fecha_nacimiento }}</p>
+                <p class="edad-empleado"><strong>Edad: Calculando...</strong></p>
+                <p><strong>Fecha de Comienzo:</strong> {{ empleado.fecha_comienzo }}</p>
+                {% if empleado.fecha_fin == None %}
+                    <p><strong>Estado:</strong> Sigue trabajando</p>
+                {% else %}
+                    <p><strong>Estado:</strong> No sigue trabajando</p>
+                {% endif %}
+                
+                <p><strong>Rol:</strong> {{ empleado.rol }}</p>
+                {% if empleado.rol %}
+                    <p><strong>Descripción del Rol:</strong> {{ empleado.rol.descripcion }}</p>
+                {% endif %}
+                
+                <!-- Botones de Editar y Eliminar -->
+                {% if user.is_authenticated and user.is_staff %}
+                    <div class="float-end">
+                        <a href="{% url 'editar_empleado' pk=empleado.pk %}" class="btn btn-sm btn-info">Editar</a>
+                        <form action="{% url 'eliminar_empleado' pk=empleado.pk %}" method="post" style="display: inline;">
+                            {% csrf_token %}
+                            <button class="btn btn-sm btn-danger" type="submit">Eliminar</button>
+                        </form>
+                    </div>
+                {% endif %}
+            </li>
+        {% endfor %}
+    {% else %}
+        <li class="list-group-item">No hay plantel técnico disponible</li>
+    {% endif %}
+</ul>
 </div>
 <script>
     // Obtener todas las instancias de fecha-nacimiento y edad-empleado
@@ -78,4 +118,3 @@
     }
 </script>
 {% endblock %}
->>>>>>> front-end
