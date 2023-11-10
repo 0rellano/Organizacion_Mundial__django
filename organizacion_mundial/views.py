@@ -15,6 +15,7 @@ from django.utils.decorators import method_decorator
 from .forms import *
 from .models import *
 from django.urls import reverse
+from datetime import date
 
 
 class homeView(TemplateView):
@@ -117,24 +118,27 @@ class CrearEquipoView(CreateView):
     model = Equipo
     template_name = 'pais/form_equipo.html'
     form_class = EquipoForm
-    success_url = reverse_lazy('pais')  # Ajusta la URL
+    def get_success_url(self):
+        if self.object and self.object.pais_perteneciente:
+            pais_id = self.object.pais_perteneciente.id
+            return reverse('pais', args=[pais_id])
+        else:
+            return reverse('')
 
 class EditarEquipoView(UpdateView):
     model = Equipo
     template_name = 'pais/form_equipo_update.html'
     form_class = EquipoForm
-
     def get_success_url(self):
-        # Obtener el id del país de la URL
-        pais_id = self.kwargs['pk']
-
-        # Redirigir a la página del país después de editar el equipo
-        return reverse('pais', args=[pais_id])
+            pais_id = self.object.pais_perteneciente.id
+            return reverse('pais', args=[pais_id])
 
 @method_decorator(login_required(login_url='login'), name='dispatch')
 class EliminarEquipoView(DeleteView):
     model = Equipo
-    success_url = reverse_lazy('paises')  # Ajusta la URL
+    def get_success_url(self):
+            pais_id = self.object.pais_perteneciente.id
+            return reverse('pais', args=[pais_id])
 
 # Vistas para formaciones
 @method_decorator(login_required(login_url='login'), name='dispatch')
@@ -142,19 +146,28 @@ class CrearFormacionView(CreateView):
     model = Formacion
     template_name = 'pais/form_formacion.html'
     form_class = FormacionForm
-    success_url = reverse_lazy('paises')  # Ajusta la URL
+    def get_success_url(self):
+        if self.object and self.object.pais_perteneciente:
+            pais_id = self.object.pais_perteneciente.id
+            return reverse('pais', args=[pais_id])
+        else:
+            return reverse('')
 
 @method_decorator(login_required(login_url='login'), name='dispatch')
 class EditarFormacionView(UpdateView):
     model = Formacion
     template_name = 'pais/form_formacion_update.html'
     form_class = FormacionForm
-    success_url = reverse_lazy('paises')  # Ajusta la URL
+    def get_success_url(self):
+        pais_id = self.object.pais_perteneciente.id
+        return reverse('pais', args=[pais_id])
 
 @method_decorator(login_required(login_url='login'), name='dispatch')
 class EliminarFormacionView(DeleteView):
     model = Formacion
-    success_url = reverse_lazy('paises')  # Ajusta la URL
+    def get_success_url(self):
+        pais_id = self.object.pais_perteneciente.id
+        return reverse('pais', args=[pais_id])
 
 # Vistas para empleados (plantel técnico)
 @method_decorator(login_required(login_url='login'), name='dispatch')
@@ -162,19 +175,28 @@ class CrearEmpleadoView(CreateView):
     model = Personal
     template_name = 'pais/form_plantel.html'
     form_class = EmpleadoForm
-    success_url = reverse_lazy('paises')  # Ajusta la URL
+    def get_success_url(self):
+        if self.object and self.object.pais_perteneciente:
+            pais_id = self.object.pais_perteneciente.id
+            return reverse('pais', args=[pais_id])
+        else:
+            return reverse('')
 
 @method_decorator(login_required(login_url='login'), name='dispatch')
 class EditarEmpleadoView(UpdateView):
     model = Personal
     template_name = 'pais/form_plantel_update.html'
     form_class = EmpleadoForm
-    success_url = reverse_lazy('paises')  # Ajusta la URL
+    def get_success_url(self):
+        pais_id = self.object.pais_perteneciente.id
+        return reverse('pais', args=[pais_id])
 
 @method_decorator(login_required(login_url='login'), name='dispatch')
 class EliminarEmpleadoView(DeleteView):
     model = Personal
-    success_url = reverse_lazy('paises')  # Ajusta la URL
+    def get_success_url(self):
+        pais_id = self.object.pais_perteneciente.id
+        return reverse('pais', args=[pais_id])
 
 @method_decorator(login_required(login_url='login'), name='dispatch')
 class ListaPaisesView(ListView):
@@ -195,7 +217,18 @@ class PaisView(DetailView):
 
         pais = self.object
 
+        # Obtiene el plantel técnico
         plantel_tecnico = pais.conocerPersonal()
+
+        # Calcula la edad para cada empleado
+        for empleado in plantel_tecnico:
+            if empleado.fecha_nacimiento:
+                hoy = date.today()
+                edad = hoy.year - empleado.fecha_nacimiento.year - ((hoy.month, hoy.day) < (empleado.fecha_nacimiento.month, empleado.fecha_nacimiento.day))
+                empleado.edad = edad
+            else:
+                empleado.edad = None
+
         context['plantel_tecnico'] = plantel_tecnico
 
         equipos = Equipo.objects.filter(pais_perteneciente=pais)
@@ -209,6 +242,8 @@ class PaisView(DetailView):
             context['formacion_actual'] = None
 
         return context
+    
+    
 
     
 @method_decorator(login_required(login_url='login'), name='dispatch')

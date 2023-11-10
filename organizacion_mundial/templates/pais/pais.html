@@ -37,23 +37,30 @@
     </ul>
 
     <h2>Formacion Actual</h2>
-    {% if formacion_actual %}
-        <p>{{ formacion_actual }}</p>
-        <!-- Botones de Formación -->
-        {% if user.is_authenticated and user.is_staff %}
-            <div class="mb-3">
-                <a class="btn btn-primary" href="{% url 'editar_formacion' pk=formacion_actual.pk %}">Editar Formación</a>
-            </div>
-        {% endif %}
-    {% else %}
-        <p>No hay formación actual disponible</p>
-        <!-- Botones de Formación -->
-        {% if user.is_authenticated and user.is_staff %}
-            <div class="mb-3">
-                <a class="btn btn-primary" href="{% url 'crear_formacion' %}">Crear Formación</a>
-            </div>
-        {% endif %}
+    {% if user.is_authenticated and user.is_staff %}
+        <div class="mb-3">
+            <a class="btn btn-primary" href="{% url 'crear_formacion' %}">Crear Formacion</a>
+        </div>
     {% endif %}
+{% if formacion_actual %}
+    <div class="card mb-3">
+        <div class="card-body">
+            <p class="card-text">{{ formacion_actual }}</p>
+            <!-- Botones de Formación -->
+            {% if user.is_authenticated and user.is_staff %}
+                <a class="btn btn-primary" href="{% url 'editar_formacion' pk=formacion_actual.pk %}">Editar Formación</a>
+                <form action="{% url 'eliminar_formacion' pk=formacion_actual.pk %}" method="post" style="display: inline;">
+                    {% csrf_token %}
+                    <button class="btn btn-danger" type="submit">Eliminar Formación</button>
+                </form>
+            {% endif %}
+        </div>
+    </div>
+{% else %}
+    <div class="mb-3">
+        <p>No hay formación actual disponible</p>
+    </div>
+{% endif %}
 
     <h2>Plantel Técnico</h2>
 <a class="btn btn-primary" href="{% url 'crear_empleado' %}">Añadir plantel</a>
@@ -65,7 +72,13 @@
                 <p><strong>Apellido:</strong> {{ empleado.apellido }}</p>
                 <p><strong>Número de Pasaporte:</strong> {{ empleado.nro_pasaporte }}</p>
                 <p class="fecha-nacimiento"><strong>Fecha de Nacimiento:</strong> {{ empleado.fecha_nacimiento }}</p>
-                <p class="edad-empleado"><strong>Edad: Calculando...</strong></p>
+                <p class="edad-empleado">
+                    {% if empleado.edad %}
+                        <strong>Edad:</strong> {{ empleado.edad }} años
+                    {% else %}
+                        <strong>Edad:</strong> No disponible
+                    {% endif %}
+                </p>
                 <p><strong>Fecha de Comienzo:</strong> {{ empleado.fecha_comienzo }}</p>
                 {% if empleado.fecha_fin == None %}
                     <p><strong>Estado:</strong> Sigue trabajando</p>
@@ -95,26 +108,4 @@
     {% endif %}
 </ul>
 </div>
-<script>
-    // Obtener todas las instancias de fecha-nacimiento y edad-empleado
-    var fechasNacimiento = document.getElementsByClassName('fecha-nacimiento');
-    var edadesEmpleado = document.getElementsByClassName('edad-empleado');
-
-    // Iterar sobre cada instancia y calcular la edad
-    for (var i = 0; i < fechasNacimiento.length; i++) {
-        var fechaNacimientoString = fechasNacimiento[i].getAttribute('data-nacimiento');
-        var fechaNacimiento = new Date(fechaNacimientoString);
-        var fechaActual = new Date();
-        var edadEmpleado = fechaActual.getFullYear() - fechaNacimiento.getFullYear();
-
-        if (fechaActual.getMonth() < fechaNacimiento.getMonth() || (fechaActual.getMonth() === fechaNacimiento.getMonth() && fechaActual.getDate() < fechaNacimiento.getDate())) {
-            edadEmpleado--;
-        }
-
-        // Mostrar la edad en el elemento correspondiente
-
-        edadesEmpleado[i].innerHTML = '<strong>Edad:</strong> ' + edadEmpleado + ' años';
-
-    }
-</script>
 {% endblock %}

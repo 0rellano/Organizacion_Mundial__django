@@ -1,0 +1,12 @@
+{% extends 'base.html' %}
+{% block title %}Editar Formación{% endblock %}
+{% block content %}
+<main class="d-flex flex-column align-items-center text-center">
+    <h1>Editar Formación</h1>
+    <form method="post" class="row" style="max-width: 300px;" action="{% url 'crear_formacion' pk=form.instance.pk %}">
+        {% csrf_token %}
+        <div class="col"> {{ form }} </div>
+        <button class="btn btn-primary" type="submit">Editar</button>
+    </form>
+</main>
+{% endblock %}

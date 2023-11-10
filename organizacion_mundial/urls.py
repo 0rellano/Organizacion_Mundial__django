@@ -32,10 +32,11 @@ urlpatterns = [
     # Formaciones
     path('formaciones/crear', CrearFormacionView.as_view(), name='crear_formacion'),
     path('formaciones/editar/<int:pk>', EditarFormacionView.as_view(), name='editar_formacion'),
+    path('formaciones/eliminar/<int:pk>', EliminarFormacionView.as_view(), name='eliminar_formacion'),
 
     # Empleados (Plantel Técnico)
     path('empleados/crear', CrearEmpleadoView.as_view(), name='crear_empleado'),
-    path('empleados/editar/<int:pk>', EditarEmpleadoView.as_view(), name='editar_empleado'),
+    path('empleados/editar/<int:pk>/', EditarEmpleadoView.as_view(), name='editar_empleado'),
     path('empleados/eliminar/<int:pk>', EliminarEmpleadoView.as_view(), name='eliminar_empleado'),
 ]
 

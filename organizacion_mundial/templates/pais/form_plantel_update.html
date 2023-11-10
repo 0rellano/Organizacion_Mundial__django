@@ -3,9 +3,10 @@
 {% block content %}
 <main class="d-flex flex-column align-items-center text-center">
     <h1>Editar Personal</h1>
-    <form method="post"  class="row" style="max-width: 300px;" action="{% url 'editar_empleado' pk=pais.pk %}">
+    <form method="post"  class="row" style="max-width: 300px;" action="{% url 'editar_empleado' pk=form.instance.pk %}">
         {% csrf_token %}
         <div class="col"> {{ form }} </div>        
         <button class="btn btn-primary" type="submit">Editar</button>
+    </form>
 </main>
 {% endblock %}

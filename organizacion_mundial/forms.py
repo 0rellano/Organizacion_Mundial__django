@@ -16,7 +16,7 @@ class CustomUserCreationForm(UserCreationForm):
 
 class DateInput(TextInput):
     input_type = 'date'
-
+ 
 
 class JugadorForm(forms.ModelForm):
     class Meta:
@@ -33,6 +33,7 @@ class JugadorForm(forms.ModelForm):
     apellido = forms.CharField(max_length=100
         , widget=forms.TextInput(attrs={
             'placeholder': 'Messi',
+            'class': 'form-control',
         })
     )
     nro_pasaporte = forms.CharField(
@@ -49,7 +50,7 @@ class JugadorForm(forms.ModelForm):
     )
     numero_camiseta = forms.IntegerField(
          widget=forms.NumberInput(attrs={
-             'placeholder': '123456789',
+             'placeholder': '10',
              'class': 'form-control',
              })
     )
@@ -204,7 +205,6 @@ class EquipoForm(forms.ModelForm):
             'class': 'form-control'
         })
     )
-    # Puedes agregar más campos según tu modelo
 
 class FormacionForm(forms.ModelForm):
     class Meta:
@@ -237,6 +237,13 @@ class FormacionForm(forms.ModelForm):
     )
     # Puedes agregar más campos según tu modelo
 
+class PaisSelectWidget(forms.Select):
+    def format_option_label(self, value):
+        if value:
+            pais = Pais.objects.get(pk=value)
+            return str(getattr(pais, 'nombre', ''))
+        return super().format_option_label(value)
+
 class EmpleadoForm(forms.ModelForm):
     class Meta:
         model = Personal
@@ -245,14 +252,33 @@ class EmpleadoForm(forms.ModelForm):
     pais_perteneciente = forms.ModelChoiceField(
         queryset=Pais.objects.all(),
         widget=forms.Select(attrs={
-            'class': 'form-control'
-        })
+            'class': 'form-control',
+            'placeholder': 'Seleccione el país'
+        }),
+        initial=None,  # Establece el valor inicial en None
+        empty_label=None,  # Elimina la etiqueta vacía predeterminada
     )
+
     rol = forms.ModelChoiceField(
         queryset=Rol.objects.all(),
         widget=forms.Select(attrs={
-            'class': 'form-control'
+            'class': 'form-control',
+            'placeholder': 'Seleccione el rol'
         })
     )
-    # Puedes agregar más campos según tu modelo
 
+    fecha_nacimiento = forms.DateField(
+        widget=DateInput(attrs={'class': 'form-control', 'placeholder': 'Seleccione la fecha de nacimiento'}),
+        input_formats=['%Y-%m-%d'],
+        required=False,  # Indica que el campo no es obligatorio
+        initial=None,  # Establece el valor inicial en None
+    )
+
+    def __init__(self, *args, **kwargs):
+        super(EmpleadoForm, self).__init__(*args, **kwargs)
+        self.fields['pais_perteneciente'].empty_label = "Seleccione el país"
+        
+        # Establece el valor inicial solo si existe y no es None
+        initial_pais = getattr(self.instance, 'pais_perteneciente_id', None)
+        if initial_pais is not None:
+            self.fields['pais_perteneciente'].initial = initial_pais

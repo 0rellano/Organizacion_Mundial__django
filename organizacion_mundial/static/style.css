@@ -19,8 +19,15 @@ body {
   background-color: #212529;
 }
 
+.navbar-nav {
+  display: flex;
+  align-items: center;
+}
+
 .nav-item {
+  margin-right: 10px;
   color: #343a40;
+  display: inline-block;
 }
 
 .custom-dropdown-toggle::after {
