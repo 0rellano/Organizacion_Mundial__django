@@ -1,11 +1,32 @@
 {% extends 'base.html' %}
 {% block title %}Editar Equipo{% endblock %}
 {% block content %}
-<main class="d-flex flex-column align-items-center text-center">
+<main class="d-flex flex-column align-items-center text-center mt-5">
+    <br><br><br>
     <h1>Editar Equipo</h1>
-    <form method="post"  class="row" style="max-width: 300px;" action="{% url 'editar_equipo' pk=equipo.pk %}">
+    <form method="post" class="row g-3" style="max-width: 400px;" action="{% url 'editar_equipo' pk=equipo.pk %}">
         {% csrf_token %}
-        <div class="col"> {{ form }} </div>        
-        <button class="btn btn-primary" type="submit">Editar</button>
+        <div class="col-12">
+            <div class="form-group">
+                {{ form.nombre.label_tag }}
+                {{ form.nombre }}
+            </div>
+        </div>
+        <div class="col-12">
+            <div class="form-group">
+                {{ form.descripcion.label_tag }}
+                {{ form.descripcion }}
+            </div>
+        </div>
+        <div class="col-12">
+            <div class="form-group">
+                {{ form.pais_perteneciente.label_tag }}
+                {{ form.pais_perteneciente }}
+            </div>
+        </div>
+        <div class="col-12">
+            <button class="btn btn-primary" type="submit">Editar</button>
+        </div>
+    </form>
 </main>
 {% endblock %}

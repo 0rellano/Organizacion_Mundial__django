@@ -3,13 +3,18 @@
 {% block title %}Principal {% endblock %}
 
 {% block content %}
+<div class="container mt-5">
+  <br> <!-- Ajusta el valor de mt-3 según sea necesario o incluso elimínalo -->
   {% if user.is_authenticated %}
-    <p>Aca va a ir todo lo de la página</p>
+  <br>
+      <p>Aquí va a ir todo lo de la página</p>
   {% else %}
-    <div class="text-center">
-      <p class="mb-4">Inicia sesión o regístrate para poder ver el contenido de esta página</p>
-      <a href="{% url 'login' %}" class="btn btn-primary btn-lg mx-2">Iniciar Sesión</a>
-      <a href="{% url 'registro' %}" class="btn btn-success btn-lg mx-2">Registro</a>
-    </div>
+      <div class="text-center">
+          <p class="mb-4">Inicia sesión o regístrate para poder ver el contenido de esta página</p>
+          <a href="{% url 'login' %}" class="btn btn-primary btn-lg mx-2">Iniciar Sesión</a>
+          <a href="{% url 'registro' %}" class="btn btn-success btn-lg mx-2">Registro</a>
+      </div>
   {% endif %}
+</div>
+
 {% endblock %}

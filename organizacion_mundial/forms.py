@@ -107,7 +107,7 @@ class PosicionForm(forms.ModelForm):
 
 class PlantelForm(forms.ModelForm):
     class Meta:
-        model = Equipo
+        model = Personal
         fields = '__all__'
 
     nombre = forms.CharField(
@@ -179,6 +179,7 @@ class PlantelForm(forms.ModelForm):
             'type': 'date',
         })
     )
+
 
 class EquipoForm(forms.ModelForm):
     class Meta:

@@ -1,7 +1,8 @@
 {% extends 'base.html' %}
 {% block title %}Añadir Personal{% endblock %}
 {% block content %}
-<main class="d-flex flex-column align-items-center text-center">
+<main class="d-flex flex-column align-items-center text-center mt-5">
+    <br><br><br>
     <h1>Añadir Personal</h1>
     <form method="post"  class="row" style="max-width: 300px;" action="{% url 'crear_empleado' %}">
         {% csrf_token %}
