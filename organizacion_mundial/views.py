@@ -16,6 +16,7 @@ from .forms import *
 from .models import *
 from django.urls import reverse
 from datetime import date
+from django.db.models import F
 
 
 class homeView(TemplateView):
@@ -42,8 +43,16 @@ class ListaJugadoresView(ListView):
 
         # Aplicar la ordenación si el parámetro está presente
         if ordenar_por:
-            queryset = queryset.order_by(ordenar_por)
+            if ordenar_por.startswith('-'):
+                # Orden descendente
+                campo_orden = ordenar_por[1:]
+                queryset = queryset.order_by(F(campo_orden).desc())
+            else:
+                # Orden ascendente
+                queryset = queryset.order_by(ordenar_por)
 
+        print("Ordenar por:", ordenar_por)
+        print(queryset.query)  # Imprimir la consulta SQL generada
         return queryset
 
 
@@ -203,6 +212,29 @@ class ListaPaisesView(ListView):
     model = Pais
     context_object_name = 'paises'
     template_name = 'pais/paises.html'
+
+    def get_queryset(self):
+        queryset = Pais.objects.all()
+        buscar = self.request.GET.get('buscar')
+
+        # Filtrar los países según el parámetro de búsqueda
+        if buscar:
+            queryset = queryset.filter(nombre__istartswith=buscar)
+
+        # Obtener el parámetro 'ordenar_por' de la URL
+        ordenar_por = self.request.GET.get('ordenar_por')
+
+        # Aplicar la ordenación si el parámetro está presente
+        if ordenar_por:
+            if ordenar_por.startswith('-'):
+                # Orden descendente
+                campo_orden = ordenar_por[1:]
+                queryset = queryset.order_by(F(campo_orden).desc())
+            else:
+                # Orden ascendente
+                queryset = queryset.order_by(F(ordenar_por))
+
+        return queryset
     
 
 @method_decorator(login_required(login_url='login'), name='dispatch')

@@ -26,32 +26,40 @@
     <table class="table table-bordered table-striped">
         <thead class="thead-dark">
             <tr>
-                <th><button type="button" onclick="ordenarPor('nombre')" class="btn btn-info btn-lg btn-block">Nombre</button></th>
-                <th><button type="button" onclick="ordenarPor('mundiales_ganados')" class="btn btn-info btn-lg btn-block">Mundiales Ganados</button></th>
+                <th>
+                    <button type="button" onclick="ordenarPor('nombre')" class="btn btn-info btn-lg btn-block">
+                        Nombre
+                    </button>                    
+                </th>
+                <th>
+                    <button type="button" onclick="ordenarPor('mundiales_ganados')" class="btn btn-info btn-lg btn-block">
+                        Mundiales Ganados {% if ordenar_por == 'mundiales_ganados' %}{% if ordenar_ascendente %}<i class="bi bi-sort-down"></i>{% else %}<i class="bi bi-sort-up"></i>{% endif %}{% endif %}
+                    </button>
+                </th>
                 {% if user.is_authenticated and user.is_staff %}
                     <th>Acciones</th>
                 {% endif %}
             </tr>
-        </thead>    
+        </thead>
         <tbody>
             {% for pais in paises %}
                 <tr>
                     <td>
-                        <a href="/pais/{{ pais.pk }}" class="black-link">{{ pais.nombre }}</a>
+                        <a href="/pais/{{ pais.pk }}" class="black-link">{{ pais.nombre | title }}</a>
                     </td>
                     <td>{{ pais.mundiales_ganados }}</td>
                     {% if user.is_authenticated and user.is_staff %}
                         <td>
+                            <a href="{% url 'editar_pais' pk=pais.pk %}" class="btn btn-sm btn-info ml-2">Editar</a>
                             <form action="{% url 'eliminar_pais' pk=pais.pk %}" method="post" style="display: inline;">
                                 {% csrf_token %}
                                 <button class="btn btn-sm btn-danger" type="submit">Eliminar</button>
                             </form>
-                            <a href="{% url 'editar_pais' pk=pais.pk %}" class="btn btn-sm btn-info ml-2">Editar</a>
                         </td>
                     {% endif %}
                 </tr>
             {% endfor %}
-        </tbody> 
+        </tbody>
     </table>
 </div>
 
@@ -69,17 +77,19 @@
 
         // Obtener el criterio actual de orden (si existe)
         var ordenActual = parametros.get('ordenar_por');
-
-        // Si ya existe el parámetro y es igual al criterio actual, invertir el orden
+        
+        // Si el criterio es igual al actual, invertir el orden
         if (ordenActual === criterio || ordenActual === '-' + criterio) {
             parametros.set('ordenar_por', ordenActual.startsWith('-') ? criterio : '-' + criterio);
         } else {
+            // Establecer el nuevo criterio de orden y el orden ascendente
             parametros.set('ordenar_por', criterio);
         }
 
         // Redireccionar a la nueva URL con los parámetros actualizados
         window.location.href = url + '?' + parametros.toString();
     }
+
 </script>
 
 {% endblock %}

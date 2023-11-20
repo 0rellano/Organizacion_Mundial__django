@@ -68,7 +68,9 @@
     {% endif %}
 
     <h2 class="mt-4">Plantel Técnico</h2>
-    <a class="btn btn-primary mb-3 rounded" href="{% url 'crear_empleado' %}">Añadir Plantel</a>
+    {% if user.is_authenticated and user.is_staff %}
+     <a class="btn btn-primary mb-3 rounded" href="{% url 'crear_empleado' %}">Añadir Plantel</a>
+    {% endif %}
     <ul class="list-group">
         {% if plantel_tecnico %}
             {% for empleado in plantel_tecnico %}

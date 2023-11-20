@@ -79,6 +79,9 @@
         // Obtener el criterio actual de orden (si existe)
         var ordenActual = parametros.get('ordenar_por');
 
+        console.log("Criterio:", criterio);
+        console.log("Orden actual:", ordenActual);
+
         // Si ya existe el parámetro y es igual al criterio actual, invertir el orden
         if (ordenActual === criterio || ordenActual === '-' + criterio) {
             parametros.set('ordenar_por', ordenActual.startsWith('-') ? criterio : '-' + criterio);
