@@ -88,9 +88,9 @@
                             </p>
                             <p><strong>Fecha de Comienzo:</strong> {{ empleado.fecha_comienzo }}</p>
                             {% if empleado.fecha_fin == None %}
-                                <p><strong>Estado:</strong> Sigue trabajando</p>
+                                <p class="card-text text-success"><strong>Estado:</strong> Sigue trabajando</p>
                             {% else %}
-                                <p><strong>Estado:</strong> No sigue trabajando</p>
+                                <p class="card-text text-danger"><strong>Estado:</strong> No sigue trabajando</p>
                             {% endif %}
 
                             <p><strong>Rol:</strong> {{ empleado.rol }}</p>

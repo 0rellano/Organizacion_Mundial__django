@@ -250,6 +250,36 @@ class EmpleadoForm(forms.ModelForm):
         model = Personal
         fields = '__all__'
 
+    nombre = forms.CharField(
+        max_length=100,
+        widget=forms.TextInput(attrs={
+            'placeholder': 'Nombre',
+            'class': 'form-control',
+        })
+    )
+    apellido = forms.CharField(
+        max_length=100,
+        widget=forms.TextInput(attrs={
+            'placeholder': 'Apellido',
+            'class': 'form-control',
+        })
+    )
+    nro_pasaporte = forms.CharField(
+        max_length=200,
+        widget=forms.TextInput(attrs={
+            'placeholder': 'Número de Pasaporte',
+            'class': 'form-control',
+        })
+    )
+    fecha_comienzo = forms.DateField(
+        widget=DateInput(attrs={'class': 'form-control', 'placeholder': 'Fecha de comienzo'}),
+        input_formats=['%Y-%m-%d'],
+    )
+    fecha_fin = forms.DateField(
+        widget=DateInput(attrs={'class': 'form-control', 'placeholder': 'Fecha de fin'}),
+        input_formats=['%Y-%m-%d'],
+        required=False,  # Indica que el campo no es obligatorio
+    )
     pais_perteneciente = forms.ModelChoiceField(
         queryset=Pais.objects.all(),
         widget=forms.Select(attrs={
@@ -259,7 +289,6 @@ class EmpleadoForm(forms.ModelForm):
         initial=None,  # Establece el valor inicial en None
         empty_label=None,  # Elimina la etiqueta vacía predeterminada
     )
-
     rol = forms.ModelChoiceField(
         queryset=Rol.objects.all(),
         widget=forms.Select(attrs={
@@ -267,7 +296,6 @@ class EmpleadoForm(forms.ModelForm):
             'placeholder': 'Seleccione el rol'
         })
     )
-
     fecha_nacimiento = forms.DateField(
         widget=DateInput(attrs={'class': 'form-control', 'placeholder': 'Seleccione la fecha de nacimiento'}),
         input_formats=['%Y-%m-%d'],
