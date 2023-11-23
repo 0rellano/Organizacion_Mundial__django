@@ -1,17 +1,22 @@
 {% extends 'base.html' %}
 
-{% block title %}Principal {% endblock %}
+{% block title %}Sesion{% endblock %}
 
 {% block content %}
   {% if user.is_authenticated %}
     <div class="text-center">  
       <p>Bienvenido a Organización de Torneo, aca podra guarda todo los datos de los jugadores, partidos, mundiales, etc., y cambiarlos.</p>
     </div>
+    <form method="post" action="{% url 'index' %}" class="d-inline">
+      {% csrf_token %}
+      <button type="submit" class="btn btn-link">Cerrar Sesión</button>
+    </form>
   {% else %}
     <div class="text-center">
-      <p class="mb-4">Inicia sesión o regístrate para poder ver el contenido de esta página</p>
+      <p>Bienvenido a Organización de Torneo, aca podra guarda todo los datos de los jugadores, partidos, mundiales, etc., y cambiarlos.</p>
+      <p class="mb-4">Inicia sesión o regístrate para poder ver y mofidicar el contenido de esta página</p>
       <a href="{% url 'login' %}" class="btn btn-primary btn-lg mx-2">Iniciar Sesión</a>
-      <a href="{% url 'registro' %}" class="btn btn-success btn-lg mx-2">Registro</a>
+      <a href="{% url 'registro' %}" class="btn btn-success btn-lg mx-2">Crear Usuario</a>
     </div>
   {% endif %}
 {% endblock %}

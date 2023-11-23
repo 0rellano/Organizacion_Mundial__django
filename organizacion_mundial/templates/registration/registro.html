@@ -4,7 +4,6 @@
 {% endblock %}
 
 {% block content %}
-<h3>Registro de Usuario</h3>
 
 <div class="container">
     <br>
@@ -14,14 +13,14 @@
         <div class="col-12 col-md-6 offset-md-3">
             <div class="card">
                 <div class="card-body">
-                    <h2>Registro de usuario</h2>
+                    <h2>Crear Usuario</h2>
                     <hr>
                     <form action="" method="post">
                         {% csrf_token %}
                         {{ form.as_p }}
-                    <a href="{% url 'index' %}">ir al home</a> |
-                    <a href="{% url 'login' %}">ir al login</a>
-                    <input type="submit" value="registrar" class="btn btn-success float-right">
+                    <a href="{% url 'index' %}">Volver</a> |
+                    <a href="{% url 'login' %}">Iniciar Sesión</a>
+                    <input type="submit" value="Registrarse" class="btn btn-success float-right">
                     </form>
                 </div>
             </div>
