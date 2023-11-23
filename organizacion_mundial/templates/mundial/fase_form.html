@@ -1,7 +1,18 @@
 {% extends 'base.html' %}
+
 {% block title %}Crear Fase{% endblock %}
 {% block content %}
-<form action="{% url 'crear_fase' pk=pk_mundial %}" method="POST">
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<form action="{% url 'crear_fase' %}" method="POST">
     {% csrf_token %}
     {{ form }}
 

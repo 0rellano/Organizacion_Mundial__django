@@ -358,7 +358,7 @@ class CrearMundialView(CreateView):
     form_class = MundialForm
 
     def get_success_url(self) -> str:
-        return reverse_lazy('fases_mundiales', kwargs={'pk': self.object.pk})
+        return reverse_lazy('fases_mundial', kwargs={'pk': self.object.pk})
     
 
 class ListaFasesMundialView(DetailView):
@@ -377,38 +377,42 @@ class CrearFaseView(CreateView):
     model = Fase
     template_name = 'mundial/fase_form.html'
     form_class = FaseForm
-    success_url = reverse_lazy('fases_mundiales')
+    success_url = reverse_lazy('fases_mundial')
 
     def get_context_data(self, **kwargs: Any) -> dict[str, Any]:
         context = super().get_context_data(**kwargs)
         context['pk_mundial'] = self.kwargs.get('mundial_id')
-        return 
+        return  context
 
     def get_initial(self) -> dict[str, Any]:
         if self.request.method == 'GET':
+            self.request.session['id_mundial'] = self.request.GET.get('pk')
             initial = super().get_initial()
             initial['mundial'] = Mundial.objects.get(pk=self.request.GET.get('pk')).pk
             initial['orden'] = self.request.GET.get('orden')
             return initial
     
     def get_success_url(self) -> str:
-        return reverse_lazy('fases_mundiales', kwargs={'pk': int(self.request.GET.get('pk'))})
+        return reverse_lazy('fases_mundial', kwargs={'pk': self.request.session.get('id_mundial')})
     
 
 class EliminarFaseView(DeleteView):
     model = Fase
 
-    def get(self, request, *args, **kwargs):
-        self.request.session['previous_url'] = self.request.META.get('HTTP_REFERER', None)
-        return super().get(request, *args, **kwargs)
-    
-    def get_success_url(self):
-        previous_url = self.request.session.get('previous_url', None)
-        return previous_url or super().get_success_url()
+    def get_success_url(self) -> str:
+        pk_mundial = self.object.mundial.pk
+        return reverse_lazy('fases_mundial', kwargs={'pk': pk_mundial})
 
 
+class EditarFaseView(UpdateView):
+    model = Fase
+    template_name = 'mundial/fase_form_update.html'
+    form_class = FaseForm
+    success_url = reverse_lazy('fases_mundial')
 
-
+    def get_success_url(self) -> str:
+        pk_mundial = self.object.mundial.pk
+        return reverse_lazy('fases_mundial', kwargs={'pk': pk_mundial})
 
 # PARTIDO
 @method_decorator(login_required(login_url='login'), name='dispatch')

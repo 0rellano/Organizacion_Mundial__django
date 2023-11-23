@@ -23,8 +23,9 @@ urlpatterns = [
     path('mundial/editar/<int:pk>', EditarMundialView.as_view(), name='editar_mundial'),
     path('mundial/<int:pk>', DetalleMundialView.as_view(), name='mundial'),
     # Fase
-    path('mundial/fases/<int:pk>', ListaFasesMundialView.as_view(), name='fases_mundiales'),
-    path('fase/crear/<int:pk>', CrearFaseView.as_view(), name='crear_fase'),
+    path('mundial/fases/<int:pk>', ListaFasesMundialView.as_view(), name='fases_mundial'),
+    path('fase/crear/', CrearFaseView.as_view(), name='crear_fase'),
+    path('fase/editar/<int:pk>', EditarFaseView.as_view(), name='editar_fase'),
     path('fase/eliminar/<int:pk>', EliminarFaseView.as_view(), name='eliminar_fase'),
     #Partido
     path('partidos/<int:pk>', PartidoView.as_view(), name='partido'),
