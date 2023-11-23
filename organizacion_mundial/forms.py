@@ -172,7 +172,6 @@ class FaseForm(forms.ModelForm):
         })
     )
     
-=======
 class PaisForm(forms.ModelForm):
     class Meta:
         model = Pais
