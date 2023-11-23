@@ -27,26 +27,27 @@
             <a href="{% url 'registro' %}" class="btn btn-success btn-lg mx-2">Registro</a>
         </div>
     {% endif %}
+    {% if user.is_authenticated %}
+        <div class="mt-5">
+            <h4 class="display-6">Historia del Proyecto</h4>
+            <p class="lead">Este proyecto fue creado como parte de un desafío propuesto por nuestros profesores de programación.</p>
+        </div>
 
-    <div class="mt-5">
-        <h4 class="display-6">Historia del Proyecto</h4>
-        <p class="lead">Este proyecto fue creado como parte de un desafío propuesto por nuestros profesores de programación.</p>
-    </div>
+        <div class="mt-4">
+            <h4 class="display-6">Objetivos del Proyecto</h4>
+            <p class="lead">El objetivo principal es proporcionar una plataforma para visualizar mundiales de fútbol, destacando todas sus características distintivas.</p>
+        </div>
 
-    <div class="mt-4">
-        <h4 class="display-6">Objetivos del Proyecto</h4>
-        <p class="lead">El objetivo principal es proporcionar una plataforma para visualizar mundiales de fútbol, destacando todas sus características distintivas.</p>
-    </div>
+        <div class="mt-4">
+            <h4 class="display-6">Participantes</h4>
+            <p class="lead">Desarrollado por Lucio Peralta, Joaquín Orellano y Francisco Faus.</p>
+        </div>
 
-    <div class="mt-4">
-        <h4 class="display-6">Participantes</h4>
-        <p class="lead">Desarrollado por Lucio Peralta, Joaquín Orellano y Francisco Faus.</p>
-    </div>
-
-    <div class="mt-4">
-        <h4 class="display-6">Tecnologías Utilizadas</h4>
-        <p class="lead">El proyecto fue implementado utilizando el framework Django.</p>
-    </div>
+        <div class="mt-4">
+            <h4 class="display-6">Tecnologías Utilizadas</h4>
+            <p class="lead">El proyecto fue implementado utilizando el framework Django.</p>
+        </div>
+    {% endif %}
 </div>
 
 {% endblock %}
