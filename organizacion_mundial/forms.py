@@ -105,13 +105,17 @@ class MundialForm(forms.ModelForm):
          widget=forms.DateInput(attrs={
               'class': 'form-control',
               'type': 'date',
-              })
+              
+              }), input_formats=['%Y-%m-%d'],
     )
+
+
     fecha_final = forms.DateField(
          widget=forms.DateInput(attrs={
               'class': 'form-control',
               'type': 'date',
-              })
+              }),
+              input_formats=['%Y-%m-%d']
     )
 
 
@@ -171,7 +175,8 @@ class FaseForm(forms.ModelForm):
             'readonly': False
         })
     )
-    
+
+
 class PaisForm(forms.ModelForm):
     class Meta:
         model = Pais
