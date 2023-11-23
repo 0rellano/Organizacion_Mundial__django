@@ -32,8 +32,8 @@
                     </button>                    
                 </th>
                 <th>
-                    <button type="button" onclick="ordenarPor('mundiales_ganados')" class="btn btn-info btn-lg btn-block">
-                        Mundiales Ganados {% if ordenar_por == 'mundiales_ganados' %}{% if ordenar_ascendente %}<i class="bi bi-sort-down"></i>{% else %}<i class="bi bi-sort-up"></i>{% endif %}{% endif %}
+                    <button type="button" class="btn btn-info btn-lg btn-block">
+                        Mundiales Ganados
                     </button>
                 </th>
                 {% if user.is_authenticated and user.is_staff %}
