@@ -22,6 +22,12 @@ from django.db.models import F
 class homeView(TemplateView):
     template_name = 'index.html'
 
+    def get_context_data(self, **kwargs):
+            context = super().get_context_data(**kwargs)
+            context['mundial_actual'] = Mundial.objects.filter(fecha_final__lte=date.today()).order_by('-fecha_final').first()
+
+            return context
+
 
 @method_decorator(login_required(login_url='login'), name='dispatch')
 class ListaJugadoresView(ListView):
