@@ -5,6 +5,7 @@
 {% block content %}
 <div class="container mt-5">
     <h2 class="text-center mb-4">Explora los Mundiales</h2>
+    <a class="btn btn-outline-success" href="{% url 'crear_mundial' %}">Crear Mundial</a>
 
     <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4">
         {% for mundial in mundiales %}
@@ -17,6 +18,11 @@
                     <p class="card-text">País Sede: <a href="{% url 'pais' pk=mundial.pais_sede.pk %}">{{ mundial.pais_sede }}</a></p>
                     <p class="card-text">Fecha de Inicio: {{ mundial.fecha_inicio }}</p>
                     <p class="card-text">Fecha de Fin: {{ mundial.fecha_final }}</p>
+                    <form method="POST" action="{% url 'eliminar_mundial' pk=mundial.pk %}">
+                        {% csrf_token %}
+                        <input type="submit" value="Eliminar" class="btn btn-danger">
+                    </form>
+                    <a class="btn btn-info" href="{% url 'editar_mundial' pk=mundial.pk %}">Editar</a>
                     <!-- Agrega más información según tus necesidades -->
                 </div>
             </div>

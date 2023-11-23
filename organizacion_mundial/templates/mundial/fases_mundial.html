@@ -1,0 +1,24 @@
+{% extends 'base.html' %}
+{% block content %}
+<h1>{{mundial}}</h1><a href="{% url 'editar_mundial' pk=mundial.pk %}">Editar Mundial</a>
+<h2>Fases</h2>
+{% if fases %}
+    {% for fase in fases %}
+        {{fase}}
+        <a class="btn btn-outline-secondary" href="#">Editar</a>
+        <form action="{% url 'eliminar_fase' pk=fase.pk %}">
+            {% csrf_token %}
+            <input type="submit" value="Eliminar" class="btn btn-danger">
+        </form>
+    {% endfor %}
+{% else %}
+    <p class="text">oh...no tienes ninguna fase. <b class="text-danger" >TIENES QUE CREAR MINIMO UNA</b></p>
+{% endif%}
+<form action="{% url 'crear_fase' pk=mundial.pk %}" method="get">
+    <input type="hidden" name="pk" value="{{mundial.pk}}">
+    <input type="hidden" name="orden" value="1">
+
+    <input class="btn btn btn-outline-info" type="submit" value="Añade una fase">
+</form>
+
+{% endblock %}
