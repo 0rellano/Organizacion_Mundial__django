@@ -4,6 +4,7 @@
 
 {% block content %}
 <div class="container mt-5">
+    <br><br><br>
     <h2 class="text-center mb-4">Explora los Jugadores</h2>
 
     <form method="get" action="{% url 'lista_jugadores' %}">
@@ -18,7 +19,9 @@
         </div>
     </form>
 
-    <a class="btn btn-primary" href="{% url 'crear_jugador' %}">Crear jugador</a>
+    {% if user.is_authenticated and user.is_staff %}
+        <a class="btn btn-primary mb-3" href="{% url 'crear_jugador' %}">Crear jugador</a>
+    {% endif %}
 
     <table class="table table-bordered table-striped">
         <thead class="thead-dark">
@@ -26,34 +29,39 @@
                 <th><button type="button" onclick="ordenarPor('nombre')" class="btn btn-info btn-lg btn-block">Nombre</button></th>
                 <th><button type="button" onclick="ordenarPor('pais')" class="btn btn-info btn-lg btn-block">País</button></th>
                 <th><button type="button" onclick="ordenarPor('posicion')" class="btn btn-info btn-lg btn-block">Posición</button></th>
+                {% if user.is_authenticated and user.is_staff %}
+                    <th>Acciones</th>
+                {% endif %}
             </tr>
         </thead>    
         <tbody>
             {% for jugador in jugadores %}
-            <tr>
-                <td>
-                    <a href="{% url 'detalle_jugador' pk=jugador.pk %}" class="black-link">
-                        {{ jugador.nombre|title }} {{ jugador.apellido|title }}
-                    </a>
-                </td>
-                <td>
-                    <a href="{% url 'pais' pk=jugador.pais.pk %}" class="black-link">
-                        {{ jugador.pais.nombre|title }}
-                    </a> 
-                </td>
-                <td>{{ jugador.posicion|title }}</td>
-                <td>
-                    <form action="{% url 'eliminar_jugador' pk=jugador.pk %}" method="post">
-                        {% csrf_token %}
-                        <button class="btn btn-sm btn-danger" type="submit">Eliminar</button>
-                    </form>
-                    <a href="{% url 'editar_jugador' pk=jugador.pk %}" class="btn btn-sm btn-info">Editar</a>
-                </td>
-            </tr>
-            
-            {% endfor %}
+                <tr>
+                    <td>
+                        <a href="{% url 'detalle_jugador' pk=jugador.pk %}" class="black-link">
+                            {{ jugador.nombre|title }} {{ jugador.apellido|title }}
+                        </a>
+                    </td>
+                    <td>
+                        <a href="{% url 'pais' pk=jugador.pais.pk %}" class="black-link">
+                            {{ jugador.pais.nombre|title }}
+                        </a> 
+                    </td>
+                    <td>{{ jugador.posicion|title }}</td>
+                    {% if user.is_authenticated and user.is_staff %}
+                        <td>
+                            <a href="{% url 'editar_jugador' pk=jugador.pk %}" class="btn btn-sm btn-info">Editar</a>
+                            <form action="{% url 'eliminar_jugador' pk=jugador.pk %}" method="post" class="d-inline">
+                                {% csrf_token %}
+                                <button class="btn btn-sm btn-danger" type="submit">Eliminar</button>
+                            </form>
+                        </td>
+                    {% endif %}
+                </tr>
+                {% endfor %}
         </tbody> 
     </table>
+    <br>
 </div>
 
 <script>
@@ -70,6 +78,9 @@
 
         // Obtener el criterio actual de orden (si existe)
         var ordenActual = parametros.get('ordenar_por');
+
+        console.log("Criterio:", criterio);
+        console.log("Orden actual:", ordenActual);
 
         // Si ya existe el parámetro y es igual al criterio actual, invertir el orden
         if (ordenActual === criterio || ordenActual === '-' + criterio) {

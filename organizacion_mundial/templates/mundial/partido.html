@@ -1,31 +1,45 @@
 {% extends 'base.html' %}
+
 {% block content %}
-{{partido}}
-<p>
-    <a href="{% url 'pais' pk=partido.local.id %}">{{partido.local}}</a>
-    
-    <p>
-        {{partido.formacion_local}}
-        {% for jugador in partido.formacion_local.titulares.all%}
-        <a href="{% url 'detalle_jugador' pk=jugador.id%}">{{jugador}}</a>
-        {% endfor %}
-    </p>
-</p>
-<p>
-    <a href="{% url 'pais' pk=partido.visitante.id %}">{{partido.visitante}}</a>
-    <p>
-        {{partido.formacion_visitante}}
-        {% for jugador in partido.formacion_visitante.titulares.all%}
-        <a href="{% url 'detalle_jugador' pk=jugador.id %}">{{jugador}}</a>
-        {% endfor %}
+<div class="container mt-5">
+    <br><br><br>
+    <h1 class="text-center">{{ partido }}</h1>
 
-    </p>
-</p>
+    <div class="row mt-4">
+        <div class="col-md-6">
+            <h2>{{ partido.local }}</h2>
+            <p class="lead">
+                <a class="text-dark" href="{% url 'pais' pk=partido.local.id %}">{{ partido.local }}</a>
+            </p>
+            <p class="font-weight-bold">{{ partido.formacion_local }}</p>
+            <ul class="list-group">
+                {% for jugador in partido.formacion_local.titulares.all %}
+                    <li class="list-group-item"><a href="{% url 'detalle_jugador' pk=jugador.id %}">{{ jugador }}</a></li>
+                {% endfor %}
+            </ul>
+        </div>
 
-<p>Cronologia del PArtido</p>
-{% for evento in eventos %}
-<p>
-{{evento}}
-</p>
-{% endfor %}
+        <div class="col-md-6">
+            <h2>{{ partido.visitante }}</h2>
+            <p class="lead">
+                <a class="text-dark" href="{% url 'pais' pk=partido.visitante.id %}">{{ partido.visitante }}</a>
+            </p>
+            <p class="font-weight-bold">{{ partido.formacion_visitante }}</p>
+            <ul class="list-group">
+                {% for jugador in partido.formacion_visitante.titulares.all %}
+                    <li class="list-group-item"><a href="{% url 'detalle_jugador' pk=jugador.id %}">{{ jugador }}</a></li>
+                {% endfor %}
+            </ul>
+        </div>
+    </div>
+
+    <div class="mt-4">
+        <h2>Cronología del Partido</h2>
+        <ul class="list-group">
+            {% for evento in eventos %}
+                <li class="list-group-item">{{ evento }}</li>
+            {% endfor %}
+        </ul>
+    </div>
+</div>
 {% endblock %}

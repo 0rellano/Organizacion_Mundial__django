@@ -4,8 +4,8 @@
 
 {% block content %}
 <div class="container mt-5">
+    <br><br><br>
     <h1 class="text-center mb-4">Detalles del Jugador</h1>
-
     <div class="card">
         <div class="card-body">
             <h5 class="card-title">{{ jugador.nombre }} {{ jugador.apellido }}</h5>
@@ -13,7 +13,7 @@
             <p class="card-text"><strong>Fecha de Nacimiento:</strong> {{ jugador.fecha_nacimiento }}</p>
             <!-- Agrega otros campos según sea necesario -->
             <p class="card-text"><strong>Número de Camiseta:</strong> {{ jugador.numero_camiseta }}</p>
-            <p class="card-text"><strong>País:</strong> <a href="{% url 'pais' pk=jugador.pais.id %}">{{ jugador.pais.nombre }}</a></p>
+            <p class="card-text"><strong>País:</strong> <a href="{% url 'pais' pk=jugador.pais.id %}" class="black-link">{{ jugador.pais.nombre }}</a></p>
             <p class="card-text"><strong>Equipo:</strong> {% if jugador.equipo %}{{ jugador.equipo.nombre }}{% else %}No asignado{% endif %}</p>
             <p class="card-text"><strong>Posición:</strong> {{ jugador.posicion }}</p>
 
@@ -25,11 +25,14 @@
             {% endif %}
         </div>
     </div>
-    <h1>Cosas que hizo jugador(eventos)</h1>
-    {% for evento in eventos%}
-    <p>
-        {{evento.tipo_evento}} de {{evento.jugador}} en el minuto {{evento.minuto_ocurrido}} en el partido <a href="{% url 'partido' pk=evento.partido.id %}">{{evento.partido}}</a>
-    </p>
+    <br>
+    <h1 class="text-center mb-4">Eventos del Jugador</h1>
+    {% for evento in eventos %}
+        <div class="card mb-3">
+            <div class="card-body">
+                <p class="card-text">{{ evento.tipo_evento }} de {{ evento.jugador }} en el minuto {{ evento.minuto_ocurrido }} en el partido <a href="{% url 'partido' pk=evento.partido.id %}" class="black-link">{{ evento.partido }}</a></p>
+            </div>
+        </div>
     {% endfor %}
 </div>
 {% endblock %}

@@ -13,65 +13,67 @@
     <title>{% block title %}Document{% endblock %}</title>
 </head>
 <body>
-
-  <nav class="navbar navbar-expand-lg bg-body-tertiary">
-    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
-        <span class="navbar-toggler-icon"></span>
-    </button>
-    <a class="nav-title" href="{% url 'index' %}">Org de Torneos</a>
-    <div class="collapse navbar-collapse" id="navbarNavDropdown">
-        <ul class="navbar-nav ms-auto navbar-center">
-            <li class="nav-item">
-                <a class="nav-link active" aria-current="page" href="{% url 'index' %}">Home</a>
-            </li>
-            {% if user.is_authenticated %}
-                {% if user.is_staff %}
+    <nav class="navbar bg-body-tertiary fixed-top">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="{% url 'index' %}">Organización Mundial de Fútbol</a>
+            <ul class="navbar-nav ms-auto flex-row">
+                <li class="nav-item">
+                    <a class="nav-link active" aria-current="page" href="{% url 'index' %}">Home</a>
+                </li>
+                {% if user.is_authenticated %}
+                    {% if user.is_staff %}
+                        <li class="nav-item">
+                            <a href="{% url 'admin:index' %}" class="nav-link btn btn-dark btn-hover-bg-light btn-admin" target="_blank">Admin Site</a>
+                        </li>
+                    {% endif %}
                     <li class="nav-item">
-                        <a href="{% url 'admin:index' %}" class="nav-link btn btn-dark btn-hover-bg-light btn-admin" target="_blank">Admin Site</a>
+                        <a href="{% url 'logout' %}" class="nav-link">Logout</a>
+                    </li>
+                    <li class="nav-item">
+                        <p class="nav-link username">Usuario actual: @{{ user.username }}</p>
+                    </li>                  
+                {% else %}
+                    <li class="nav-item">
+                        <a href="{% url 'login' %}" class="nav-link btn-dark btn-hover-bg-light">Login</a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="{% url 'registro' %}" class="nav-link btn-dark btn-hover-bg-light">Registro</a>
                     </li>
                 {% endif %}
-                <li class="nav-item">
-                    <a href="{% url 'logout' %}" class="nav-link">Logout</a>
-                </li>
-                <li class="nav-item">
-                    <p class="nav-link">Usuario actual: @{{ user.username }}</p>
-                </li>
-                <li class="nav-item dropdown">
-                    <a class="nav-link dropdown-toggle custom-dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                        <i class="bi bi-three-dots custom-three-dots"></i>
-                    </a>
-                    <ul class="dropdown-menu dropdown-menu-end">
+            </ul>
+    
+            <button class="navbar-toggler" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasNavbar" aria-controls="offcanvasNavbar" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvasNavbar" aria-labelledby="offcanvasNavbarLabel">
+                <div class="offcanvas-header">
+                    <h5 class="offcanvas-title" id="offcanvasNavbarLabel">Menu</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+                </div>
+                <div class="offcanvas-body">
+                    <ul class="navbar-nav justify-content-end flex-grow-1 pe-3">
                         <li><a class="dropdown-item" href="{% url 'lista_jugadores' %}">Jugadores</a></li>
                         <li><a class="dropdown-item" href="{% url 'mundiales' %}">Mundiales</a></li>
-                        <li><a class="dropdown-item" href="{% url 'paises' %}">Paises</a></li>
+                        <li><a class="dropdown-item" href="{% url 'paises' %}">Paises</a></li>  
                     </ul>
-                </li>
-            {% else %}
-                <li class="nav-item">
-                    <a href="{% url 'login' %}" class="nav-link btn btn-dark btn-hover-bg-light">Login</a>
-                </li>
-                <li class="nav-item">
-                    <a href="{% url 'registro' %}" class="nav-link btn btn-dark btn-hover-bg-light">Registro</a>
-                </li>
-            {% endif %}
-        </ul>
-    </div>
-</nav>
-
-
-
+                </div>
+            </div>
+            
+        </div>
+    </nav>
+     
   {% block content %}
   {% endblock %}
 
   <footer class="bg-light text-center text-white custom-footer">
     <div class="container p-4 pb-0">
       <section class="mb-4">
-        <a class="btn text-white btn-floating m-1" style="background-color: #3b5998;" href="#!" role="button"><i class="fab fa-facebook-f"></i></a>
-        <a class="btn text-white btn-floating m-1" style="background-color: #55acee;" href="#!" role="button"><i class="fab fa-twitter"></i></a>
-        <a class="btn text-white btn-floating m-1" style="background-color: #dd4b39;" href="#!" role="button"><i class="fab fa-google"></i></a>
-        <a class="btn text-white btn-floating m-1" style="background-color: #ac2bac;" href="#!" role="button"><i class="fab fa-instagram"></i></a>
-        <a class="btn text-white btn-floating m-1" style="background-color: #0082ca;" href="#!" role="button"><i class="fab fa-linkedin-in"></i></a>
-        <a class="btn text-white btn-floating m-1" style="background-color: #333333;" href="#!" role="button"><i class="fab fa-github"></i></a>
+        <a class="btn text-white btn-floating m-1" style="background-color: #3b5998;" href="" role="button"><i class="fab fa-facebook-f"></i></a>
+        <a class="btn text-white btn-floating m-1" style="background-color: #55acee;" href="" role="button"><i class="fab fa-twitter"></i></a>
+        <a class="btn text-white btn-floating m-1" style="background-color: #dd4b39;" href="" role="button"><i class="fab fa-google"></i></a>
+        <a class="btn text-white btn-floating m-1" style="background-color: #ac2bac;" href="" role="button"><i class="fab fa-instagram"></i></a>
+        <a class="btn text-white btn-floating m-1" style="background-color: #0082ca;" href="" role="button"><i class="fab fa-linkedin-in"></i></a>
+        <a class="btn text-white btn-floating m-1" style="background-color: #333333;" href="https://github.com/0rellano/Organizacion_Mundial__django" role="button" target="_blank"><i class="fab fa-github"></i></a>
       </section>
     </div>
     <div class="text-center p-3" style="background-color: rgba(0, 0, 0, 0.2);">

@@ -19,8 +19,41 @@ body {
   background-color: #212529;
 }
 
+.navbar {
+  padding-top: 10px;
+}
+.navbar-auth {
+  padding-top: 0px;
+}
+.navbar-no-auth {
+  padding-top: 0px;
+}
+.username {
+  margin-top: 0;
+  margin-bottom: 0;
+  font-size: inherit; /* o el tamaño de fuente deseado */
+}
+.navbar-nav {
+  display: flex;
+  align-items: center;
+}
+
 .nav-item {
+  margin-right: 10px;
   color: #343a40;
+  display: inline-block;
+}
+
+.offcanvas-body .navbar-nav a {
+  font-size: 18px;
+  margin-bottom: 10px;
+  color: #343a40; /* Color de texto normal */
+  transition: color 0.3s; /* Efecto de transición para el cambio de color */
+
+}
+
+.offcanvas-body .navbar-nav a:hover {
+  color: #8a7f7f; /* Gris más oscuro al pasar el mouse */
 }
 
 .custom-dropdown-toggle::after {
@@ -64,4 +97,12 @@ button {
   font-weight: bold;
   display: inline-block;
   margin-left: auto;
+}
+
+.mb-3 {
+  width: 300px; /* Ajusta el valor según tus necesidades */
+  margin-bottom: 15px; /* Espaciado entre los campos */
+}
+.mb-3 input {
+  width: 200%; /* Campo de texto ocupa todo el ancho del contenedor */
 }

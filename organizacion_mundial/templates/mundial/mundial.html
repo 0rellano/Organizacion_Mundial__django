@@ -1,34 +1,43 @@
 {% extends 'base.html' %}
 
-{% block title %}{{ mundial.pais_sede.nombre }} {{ mundial.anio }}{% endblock %}
-
 {% block content %}
-
 <div class="container mt-5">
+    <br><br><br>
     <h1 class="text-center mb-4">{{ mundial.pais_sede.nombre }} {{ mundial.anio }}</h1>
 
-    <h2>Participantes</h2>
-    <ul class="list-group">
-        {% for participante in participantes %}
-            <li class="list-group-item">
-                <p>{{ participante.posicion_obtenida }}°: <a href="{% url 'pais' pk=participante.pais.id %}">{{ participante.pais.nombre }}</a></p>
-            </li>
-        {% endfor %}
-    </ul>
+    <div class="mb-4">
+        <h2>Participantes</h2>
+        <ul class="list-group">
+            {% for participante in participantes %}
+                <li class="list-group-item">
+                    <p>{{ participante.posicion_obtenida }}°: <a href="{% url 'pais' pk=participante.pais.id %}">{{ participante.pais.nombre }}</a></p>
+                </li>
+            {% endfor %}
+            
+            {% if not participantes %}
+                <li class="list-group-item">No hay participantes disponibles</li>
+            {% endif %}
+        </ul>
+    </div>
 
-    <h2>Fases</h2>
-    <ul class="list-group">
-        {% for fase, partidos in fases.items %}
-            <li class="list-group-item">
-                <p>{{ fase.nombre }}</p>
-                <div class="list-group">
-                    {% for partido in partidos %}
-                    <a class="list-group-item list-group-item-action list-group-item-primary" href="{% url 'partido' pk=partido.pk %}">{{partido}}</a>
-                    {% endfor %}
-                </div>
-            </li>
-        {% endfor %}
-    </ul>
+    <div>
+        <h2>Fases</h2>
+        <ul class="list-group">
+            {% if fases %}
+                {% for fase, partidos in fases.items %}
+                    <li class="list-group-item">
+                        <p>{{ fase.nombre }}</p>
+                        <div class="list-group">
+                            {% for partido in partidos %}
+                                <a class="list-group-item list-group-item-action list-group-item-primary" href="{% url 'partido' pk=partido.pk %}">{{ partido }}</a>
+                            {% endfor %}
+                        </div>
+                    </li>
+                {% endfor %}
+            {% else %}
+                <li class="list-group-item">No hay fases disponibles</li>
+            {% endif %}
+        </ul>
+    </div>
 </div>
 {% endblock %}
-
