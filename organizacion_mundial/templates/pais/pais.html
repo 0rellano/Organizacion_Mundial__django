@@ -41,24 +41,10 @@
     </ul>
 
     <h2 class="mt-4">Formación Actual</h2>
-    {% if user.is_authenticated and user.is_staff %}
-        <div class="mb-3">
-            <a class="btn btn-primary" href="{% url 'crear_formacion' %}">Crear Formación</a>
-        </div>
-    {% endif %}
     {% if formacion_actual %}
         <div class="card mb-3">
             <div class="card-body">
                 <p class="card-text">{{ formacion_actual }}</p>
-                {% if user.is_authenticated and user.is_staff %}
-                    <div class="mt-3">
-                        <a class="btn btn-primary" href="{% url 'editar_formacion' pk=formacion_actual.pk %}">Editar Formación</a>
-                        <form action="{% url 'eliminar_formacion' pk=formacion_actual.pk %}" method="post" style="display: inline;">
-                            {% csrf_token %}
-                            <button class="btn btn-danger" type="submit">Eliminar Formación</button>
-                        </form>
-                    </div>
-                {% endif %}
             </div>
         </div>
     {% else %}

@@ -284,6 +284,29 @@ class ListaMundialesView(ListView):
     context_object_name = 'mundiales'
     template_name = 'mundial/mundiales.html'
 
+    def get_queryset(self):
+        queryset = Mundial.objects.all()
+        buscar = self.request.GET.get('buscar')
+
+        # Filtrar los mundiales según el parámetro de búsqueda
+        if buscar:
+            # Modificar la búsqueda para que incluya mundiales con el año proporcionado
+            queryset = queryset.filter(anio__icontains=buscar)
+
+        # Obtener el parámetro 'ordenar_por' de la URL
+        ordenar_por = self.request.GET.get('ordenar_por')
+
+        # Aplicar la ordenación si el parámetro está presente
+        if ordenar_por:
+            if ordenar_por.startswith('-'):
+                # Orden descendente
+                campo_orden = ordenar_por[1:]
+                queryset = queryset.order_by(F(campo_orden).desc())
+            else:
+                # Orden ascendente
+                queryset = queryset.order_by(ordenar_por)
+
+        return queryset
 
 @method_decorator(login_required(login_url='login'), name='dispatch')
 class DetalleMundialView(DetailView):

@@ -1,11 +1,23 @@
 {% extends 'base.html' %}
 
-{% block title %}Mundiales{% endblock %}
+{% block title %}Explora los Mundiales{% endblock %}
 
 {% block content %}
 <div class="container mt-5">
     <br><br><br>
     <h2 class="text-center mb-4">Explora los Mundiales</h2>
+
+    <form method="get" action="{% url 'mundiales' %}">
+        <div class="input-group mb-2">
+            <input type="text" name="buscar" class="form-control" placeholder="Buscar por nombre" value="{{ request.GET.buscar }}">
+            <div class="input-group-append">
+                <button type="submit" class="btn btn-primary btn-lg">Buscar</button>
+                <button type="button" class="btn btn-secondary btn-lg" onclick="limpiarYEnviar()">
+                    <i class="bi bi-trash"></i>
+                </button>
+            </div>
+        </div>
+    </form>
 
     <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4">
         {% for mundial in mundiales|dictsort:"fecha_inicio" %}
@@ -24,5 +36,14 @@
         {% endfor %}
     </div>
 </div>
+
+<script>
+    function limpiarYEnviar() {
+        var campoBusqueda = document.querySelector('input[name="buscar"]');
+        campoBusqueda.value = '';
+        campoBusqueda.dispatchEvent(new Event('input'));  // Simular evento de entrada
+        campoBusqueda.form.submit();
+    }
+</script>
 
 {% endblock %}

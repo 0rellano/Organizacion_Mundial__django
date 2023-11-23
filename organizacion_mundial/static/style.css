@@ -22,7 +22,17 @@ body {
 .navbar {
   padding-top: 10px;
 }
-
+.navbar-auth {
+  padding-top: 0px;
+}
+.navbar-no-auth {
+  padding-top: 0px;
+}
+.username {
+  margin-top: 0;
+  margin-bottom: 0;
+  font-size: inherit; /* o el tamaño de fuente deseado */
+}
 .navbar-nav {
   display: flex;
   align-items: center;
