@@ -1,26 +1,5 @@
 {% extends 'base.html' %}
 
-<<<<<<< HEAD
-{% block title %}IniciarSesion
-{% endblock %}
-
-{% block content %}
-
-<div class="container">
-    <br><br><br>
-    <div class="row">
-        <div class="col-12 col-md-6 offset-md-3">
-            <div class="card">
-                <div class="card-body">
-                    <p class="text-center">Iniciar Sesión</p>
-                    <hr>
-                    <form action="" method="post">
-                        {% csrf_token %}
-                        {{ form.as_p }}
-                    <a href="{% url 'index' %}">Volver</a> |
-                    <a href="{% url 'registro' %}">Crear Usuario</a>
-                    <input type="submit" value="ingresar" class="btn btn-success float-right">
-=======
 {% block title %}Login{% endblock %}
 
 {% block content %}
@@ -44,7 +23,6 @@
                         <div class="d-grid gap-2">
                             <input type="submit" value="Ingresar" class="btn btn-success">
                         </div>
->>>>>>> 78db79071e535b9649f0e0d1bddb8b3efe52bbb9
                     </form>
                     <hr>
                     <div class="text-center">
