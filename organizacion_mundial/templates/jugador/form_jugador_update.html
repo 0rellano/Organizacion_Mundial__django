@@ -1,0 +1,69 @@
+{% extends 'base.html' %}
+{% block title %}Editar Jugador{% endblock %}
+{% block content %}
+<main class="d-flex flex-column align-items-center text-center mt-5">
+    <br><br><br>
+    <h1>Editar Jugador</h1>
+    <form method="post" class="row g-3" style="max-width: 400px;" action="{% url 'editar_jugador' pk=jugador.pk %}">
+        {% csrf_token %}
+        <div class="col-12">
+            <div class="form-group">
+                {{ form.nombre.label_tag }}
+                {{ form.nombre }}
+            </div>
+        </div>
+        <div class="col-12">
+            <div class="form-group">
+                {{ form.apellido.label_tag }}
+                {{ form.apellido }}
+            </div>
+        </div>
+        <div class="col-12">
+            <div class="form-group">
+                {{ form.nro_pasaporte.label_tag }}
+                {{ form.nro_pasaporte }}
+            </div>
+        </div>
+        <div class="col-12">
+            <div class="form-group">
+                {{ form.fecha_nacimiento.label_tag }}
+                {{ form.fecha_nacimiento }}
+            </div>
+        </div>
+        <div class="col-12">
+            <div class="form-group">
+                {{ form.numero_camiseta.label_tag }}
+                {{ form.numero_camiseta }}
+            </div>
+        </div>
+        <div class="col-12">
+            <div class="form-group">
+                {{ form.pais.label_tag }}
+                {{ form.pais }}
+            </div>
+        </div>
+        <div class="col-12">
+            <div class="form-group">
+                {{ form.equipo.label_tag }}
+                {{ form.equipo }}
+            </div>
+        </div>
+        <div class="col-12">
+            <div class="form-group">
+                {{ form.posicion.label_tag }}
+                {{ form.posicion }}
+            </div>
+        </div>
+        <div class="col-12">
+            <div class="form-group">
+                {{ form.fecha_retiro.label_tag }}
+                {{ form.fecha_retiro }}
+            </div>
+        </div>
+        <div class="col-12">
+            <button class="btn btn-primary" type="submit">Editar</button>
+        </div>
+    </form>
+</main>
+<br><br>
+{% endblock %}

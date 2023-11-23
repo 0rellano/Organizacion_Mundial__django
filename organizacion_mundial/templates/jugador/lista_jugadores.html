@@ -4,6 +4,7 @@
 
 {% block content %}
 <div class="container mt-5">
+    <br><br><br>
     <h2 class="text-center mb-4">Explora los Jugadores</h2>
 
     <form method="get" action="{% url 'lista_jugadores' %}">
@@ -18,7 +19,9 @@
         </div>
     </form>
 
-    <a class="btn btn-primary" href="{% url 'crear_jugador' %}">Crear jugador</a>
+    {% if user.is_authenticated and user.is_staff %}
+        <a class="btn btn-primary mb-3" href="{% url 'crear_jugador' %}">Crear jugador</a>
+    {% endif %}
 
     <table class="table table-bordered table-striped">
         <thead class="thead-dark">
@@ -26,6 +29,9 @@
                 <th><button type="button" onclick="ordenarPor('nombre')" class="btn btn-info btn-lg btn-block">Nombre</button></th>
                 <th><button type="button" onclick="ordenarPor('pais')" class="btn btn-info btn-lg btn-block">País</button></th>
                 <th><button type="button" onclick="ordenarPor('posicion')" class="btn btn-info btn-lg btn-block">Posición</button></th>
+                {% if user.is_authenticated and user.is_staff %}
+                    <th>Acciones</th>
+                {% endif %}
             </tr>
         </thead>    
         <tbody>
@@ -49,9 +55,11 @@
                     </form>
                 </td>
             </tr>
+            
             {% endfor %}
         </tbody> 
     </table>
+    <br>
 </div>
 
 <script>
@@ -68,6 +76,9 @@
 
         // Obtener el criterio actual de orden (si existe)
         var ordenActual = parametros.get('ordenar_por');
+
+        console.log("Criterio:", criterio);
+        console.log("Orden actual:", ordenActual);
 
         // Si ya existe el parámetro y es igual al criterio actual, invertir el orden
         if (ordenActual === criterio || ordenActual === '-' + criterio) {

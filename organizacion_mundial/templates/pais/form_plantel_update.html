@@ -1,0 +1,63 @@
+{% extends 'base.html' %}
+{% block title %}Editar Personal{% endblock %}
+{% block content %}
+<main class="d-flex flex-column align-items-center text-center mt-5">
+    <br><br><br>
+    <h1>Editar Personal</h1>
+    <form method="post" class="row g-3" style="max-width: 400px;" action="{% url 'editar_empleado' pk=form.instance.pk %}">
+        {% csrf_token %}
+        <div class="col-12">
+            <div class="form-group">
+                {{ form.nombre.label_tag }}
+                {{ form.nombre }}
+            </div>
+        </div>
+        <div class="col-12">
+            <div class="form-group">
+                {{ form.apellido.label_tag }}
+                {{ form.apellido }}
+            </div>
+        </div>
+        <div class="col-12">
+            <div class="form-group">
+                {{ form.nro_pasaporte.label_tag }}
+                {{ form.nro_pasaporte }}
+            </div>
+        </div>
+        <div class="col-12">
+            <div class="form-group">
+                {{ form.fecha_comienzo.label_tag }}
+                {{ form.fecha_comienzo }}
+            </div>
+        </div>
+        <div class="col-12">
+            <div class="form-group">
+                {{ form.fecha_fin.label_tag }}
+                {{ form.fecha_fin }}
+            </div>
+        </div>
+        <div class="col-12">
+            <div class="form-group">
+                {{ form.pais_perteneciente.label_tag }}
+                {{ form.pais_perteneciente }}
+            </div>
+        </div>
+        <div class="col-12">
+            <div class="form-group">
+                {{ form.rol.label_tag }}
+                {{ form.rol }}
+            </div>
+        </div>
+        <div class="col-12">
+            <div class="form-group">
+                {{ form.fecha_nacimiento.label_tag }}
+                {{ form.fecha_nacimiento }}
+            </div>
+        </div>
+        <div class="col-12">
+            <button class="btn btn-primary" type="submit">Editar</button>
+        </div>
+    </form>
+    <br>
+</main>
+{% endblock %}

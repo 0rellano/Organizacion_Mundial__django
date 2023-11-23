@@ -1,0 +1,13 @@
+{% extends 'base.html' %}
+
+{% block title %}Error 404{% endblock %}
+
+{% block content %}
+    <div class="container mt-5">
+        <div class="text-center">
+            <h1 class="display-4" style="color: #FF6347;">¡Oops!</h1>
+            <p class="lead" style="font-size: 18px; color: #696969;">Parece que te has perdido...</p>
+            <a href="{% url 'index' %}" class="btn btn-primary" style="text-decoration: none;">Volver a la página principal</a>
+        </div>
+    </div>
+{% endblock %}

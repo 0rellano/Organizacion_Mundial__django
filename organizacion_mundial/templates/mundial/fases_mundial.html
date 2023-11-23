@@ -1,0 +1,37 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container mt-5">
+    <br><br><br>
+    <h1>{{mundial}}</h1>
+    <a href="{% url 'editar_mundial' pk=mundial.pk %}" class="btn btn-primary">Editar Mundial</a>
+
+    <h2 class="mt-4">Fases</h2>
+
+    {% if fases %}
+        <div class="list-group mt-3">
+            {% for fase in fases %}
+                <div class="list-group-item d-flex justify-content-between align-items-center">
+                    {{ fase }}
+                    <div class="btn-group" role="group">
+                        <a href="#" class="btn btn-sm btn-info rounded text-end">Editar</a>
+                        <form action="{% url 'eliminar_fase' pk=fase.pk %}" method="post">
+                            {% csrf_token %}
+                            <input type="submit" value="Eliminar" class="btn btn-sm btn-danger rounded text-end">
+                        </form>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    {% else %}
+        <p class="text">Oh... no tienes ninguna fase. <b class="text-danger">TIENES QUE CREAR AL MENOS UNA</b></p>
+    {% endif %}
+
+    <form action="{% url 'crear_fase' pk=mundial.pk %}" method="get" class="mt-3">
+        <input type="hidden" name="pk" value="{{mundial.pk}}">
+        <input type="hidden" name="orden" value="1">
+
+        <input type="submit" value="Añadir una fase" class="btn btn-outline-info">
+    </form>
+</div>
+{% endblock %}

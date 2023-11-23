@@ -4,67 +4,104 @@
 
 {% block content %}
 <div class="container mt-5">
-    <h1 class="text-center mb-4">País {{ pais.nombre }}</h1>
-    <p>Liga que tiene: {{ pais.liga_nombre }}</p>
-    <h2>EQUIPOS</h2>
+    <br><br><br>
+    <h1 class="text-center mb-4">País: {{ pais.nombre }}</h1>
+    <div class="card">
+        <div class="card-body">
+            <h5 class="card-title">{{ pais.nombre }}</h5>
+            <p class="card-text"><strong>Liga:</strong> {{ pais.liga_nombre }}</p>
+        </div>
+    </div>
+
+    <h2 class="mt-4">Equipos</h2>
+    {% if user.is_authenticated and user.is_staff %}
+    <div class="mb-3">
+        <a class="btn btn-primary" href="{% url 'crear_equipo' %}">Crear Equipo</a>
+    </div>
+    {% endif %}
     <ul class="list-group">
-        {% if equipos%}
+        {% if equipos %}
             {% for equipo in equipos %}
-                <li class="list-group-item">{{ equipo.nombre }}</li>
+                <li class="list-group-item d-flex justify-content-between align-items-center">
+                    {{ equipo.nombre }}
+                    {% if user.is_authenticated and user.is_staff %}
+                        <div>
+                            <a href="{% url 'editar_equipo' pk=equipo.pk %}" class="btn btn-sm btn-info">Editar</a>
+                            <form action="{% url 'eliminar_equipo' pk=equipo.pk %}" method="post" style="display: inline;">
+                                {% csrf_token %}
+                                <button class="btn btn-sm btn-danger" type="submit">Eliminar</button>
+                            </form>
+                        </div>
+                    {% endif %}
+                </li>
             {% endfor %}
         {% else %}
-            <li class="list-group-item">No hay ningun equipo</li>
+            <li class="list-group-item">No hay ningún equipo</li>
         {% endif %}
     </ul>
 
-    <h2>Formacion Actual</h2>
-    <p>{{formacion_actual}}</p>
+    <h2 class="mt-4">Formación Actual</h2>
+    {% if formacion_actual %}
+        <div class="card mb-3">
+            <div class="card-body">
+                <p class="card-text">{{ formacion_actual }}</p>
+            </div>
+        </div>
+    {% else %}
+        <div class="mb-3">
+            <p>No hay formación actual disponible</p>
+        </div>
+    {% endif %}
 
-
-
-    <h2>Plantel Técnico</h2>
+    <h2 class="mt-4">Plantel Técnico</h2>
+    {% if user.is_authenticated and user.is_staff %}
+     <a class="btn btn-primary mb-3 rounded" href="{% url 'crear_empleado' %}">Añadir Plantel</a>
+    {% endif %}
     <ul class="list-group">
-        {% for empleado in plantel_tecnico %}
-            <li class="list-group-item">
-                <p><strong>Nombre:</strong> {{ empleado.nombre }}</p>
-                <p><strong>Apellido:</strong> {{ empleado.apellido }}</p>
-                <p><strong>Número de Pasaporte:</strong> {{ empleado.nro_pasaporte }}</p>
-                <p class="fecha-nacimiento"><strong>Fecha de Nacimiento:</strong> {{ empleado.fecha_nacimiento }}</p>
-                <p class="edad-empleado"><strong>Edad: Calculando...</strong></p>
-                <p><strong>Fecha de Comienzo:</strong> {{ empleado.fecha_comienzo }}</p>
-                {% if empleado.fecha_fin  == None %}
-                    <p><strong>Estado:</strong> Sigue trabajando</p>
-                {% else %}
-                    <p><strong>Estado:</strong> No sigue trabajando</p>
-                {% endif %}
-                
-                <p><strong>Rol:</strong> {{ empleado.rol }}</p>
-                <p><strong>Descripción del Rol:</strong> {{ empleado.rol.descripcion }}</p>
-            </li>
-        {% endfor %}
+        {% if plantel_tecnico %}
+            {% for empleado in plantel_tecnico %}
+                <li class="list-group-item rounded">
+                    <div class="d-flex justify-content-between align-items-start rounded">
+                        <div class="rounded">
+                            <p><strong>Nombre:</strong> {{ empleado.nombre }}</p>
+                            <p><strong>Apellido:</strong> {{ empleado.apellido }}</p>
+                            <p><strong>Número de Pasaporte:</strong> {{ empleado.nro_pasaporte }}</p>
+                            <p class="fecha-nacimiento"><strong>Fecha de Nacimiento:</strong> {{ empleado.fecha_nacimiento }}</p>
+                            <p class="edad-empleado">
+                                {% if empleado.edad %}
+                                    <strong>Edad:</strong> {{ empleado.edad }} años
+                                {% else %}
+                                    <strong>Edad:</strong> No disponible
+                                {% endif %}
+                            </p>
+                            <p><strong>Fecha de Comienzo:</strong> {{ empleado.fecha_comienzo }}</p>
+                            {% if empleado.fecha_fin == None %}
+                                <p class="card-text text-success"><strong>Estado:</strong> Sigue trabajando</p>
+                            {% else %}
+                                <p class="card-text text-danger"><strong>Estado:</strong> No sigue trabajando</p>
+                            {% endif %}
+
+                            <p><strong>Rol:</strong> {{ empleado.rol }}</p>
+                            {% if empleado.rol %}
+                                <p><strong>Descripción del Rol:</strong> {{ empleado.rol.descripcion }}</p>
+                            {% endif %}
+                        </div>
+                        <div class="mt-2">
+                            {% if user.is_authenticated and user.is_staff %}
+                                <a href="{% url 'editar_empleado' pk=empleado.pk %}" class="btn btn-sm btn-info rounded text-end">Editar</a>
+                                <form action="{% url 'eliminar_empleado' pk=empleado.pk %}" method="post" style="display: inline;">
+                                    {% csrf_token %}
+                                    <button class="btn btn-sm btn-danger rounded text-end" type="submit">Eliminar</button>
+                                </form>
+                            {% endif %}
+                        </div>
+                    </div>
+                </li>
+                <br>
+            {% endfor %}
+        {% else %}
+            <li class="list-group-item rounded">No hay plantel técnico disponible</li>
+        {% endif %}
     </ul>
 </div>
-<script>
-    // Obtener todas las instancias de fecha-nacimiento y edad-empleado
-    var fechasNacimiento = document.getElementsByClassName('fecha-nacimiento');
-    var edadesEmpleado = document.getElementsByClassName('edad-empleado');
-
-    // Iterar sobre cada instancia y calcular la edad
-    for (var i = 0; i < fechasNacimiento.length; i++) {
-        var fechaNacimientoString = fechasNacimiento[i].getAttribute('data-nacimiento');
-        var fechaNacimiento = new Date(fechaNacimientoString);
-        var fechaActual = new Date();
-        var edadEmpleado = fechaActual.getFullYear() - fechaNacimiento.getFullYear();
-
-        if (fechaActual.getMonth() < fechaNacimiento.getMonth() || (fechaActual.getMonth() === fechaNacimiento.getMonth() && fechaActual.getDate() < fechaNacimiento.getDate())) {
-            edadEmpleado--;
-        }
-
-        // Mostrar la edad en el elemento correspondiente
-
-        edadesEmpleado[i].innerHTML = '<strong>Edad:</strong> ' + edadEmpleado + ' años';
-
-    }
-</script>
 {% endblock %}
->>>>>>> front-end

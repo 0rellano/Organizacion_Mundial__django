@@ -3,6 +3,7 @@
 {% block title %}Sesion{% endblock %}
 
 {% block content %}
+<<<<<<< HEAD
   {% if user.is_authenticated %}
     <div class="text-center">  
       <p>Bienvenido a Organización de Torneo, aca podra guarda todo los datos de los jugadores, partidos, mundiales, etc., y cambiarlos.</p>
@@ -19,4 +20,53 @@
       <a href="{% url 'registro' %}" class="btn btn-success btn-lg mx-2">Crear Usuario</a>
     </div>
   {% endif %}
+=======
+<div class="container mt-5 mx-auto"> <!-- Añadido: mx-auto para centrar horizontalmente -->
+    <br><br><br>
+    {% if user.is_authenticated %}
+        {% if mundial_actual %}
+            <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4">
+                <div class="card h-100">
+                    <div class="card-body">
+                        <h2 class="card-title"><a href="{% url 'mundial' pk=mundial_actual.pk %}">Mundial Actual: {{ mundial_actual.pais_sede.nombre }} {{ mundial_actual.anio }}</a></h2>
+                        <p class="card-text mb-4">País Sede: <a href="{% url 'pais' pk=mundial_actual.pais_sede.pk %}">{{ mundial_actual.pais_sede.nombre }}</a></p>
+                        <p class="card-text mb-4">Fecha de Inicio: {{ mundial_actual.fecha_inicio|date:"Y-m-d" }}</p>
+                        <p class="card-text mb-4">Fecha de Fin: {{ mundial_actual.fecha_final|date:"Y-m-d" }}</p>
+                    </div>
+                </div>
+            </div>
+        {% else %}
+            <p>No hay mundiales disponibles en este momento</p>
+        {% endif %}
+    {% else %}
+        <div class="text-center">
+            <p class="mb-4">Inicia sesión o regístrate para poder ver el contenido de esta página</p>
+            <a href="{% url 'login' %}" class="btn btn-primary btn-lg mx-2">Iniciar Sesión</a>
+            <a href="{% url 'registro' %}" class="btn btn-success btn-lg mx-2">Registro</a>
+        </div>
+    {% endif %}
+    {% if user.is_authenticated %}
+        <div class="mt-5">
+            <h4 class="display-6">Historia del Proyecto</h4>
+            <p class="lead">Este proyecto fue creado como parte de un desafío propuesto por nuestros profesores de programación.</p>
+        </div>
+
+        <div class="mt-4">
+            <h4 class="display-6">Objetivos del Proyecto</h4>
+            <p class="lead">El objetivo principal es proporcionar una plataforma para visualizar mundiales de fútbol, destacando todas sus características distintivas.</p>
+        </div>
+
+        <div class="mt-4">
+            <h4 class="display-6">Participantes</h4>
+            <p class="lead">Desarrollado por Lucio Peralta, Joaquín Orellano y Francisco Faus.</p>
+        </div>
+
+        <div class="mt-4">
+            <h4 class="display-6">Tecnologías Utilizadas</h4>
+            <p class="lead">El proyecto fue implementado utilizando el framework Django.</p>
+        </div>
+    {% endif %}
+</div>
+
+>>>>>>> 78db79071e535b9649f0e0d1bddb8b3efe52bbb9
 {% endblock %}
