@@ -161,17 +161,20 @@ class FaseForm(forms.ModelForm):
     )
     fecha_final = forms.DateField(
         widget=forms.DateInput(attrs={
-              'type': 'date',
-              })
+            'class': 'form-control',
+            'type': 'date',
+        })
     )
     orden = forms.IntegerField(
         widget=forms.NumberInput(attrs={
+            'class': 'form-control',
             'readonly': False
         })
     )
     mundial = forms.ModelChoiceField(
         queryset=None,
         widget=forms.Select(attrs={
+            'class': 'form-control',
             'readonly': False
         })
     )
@@ -446,12 +449,48 @@ class PartidoForm(forms.ModelForm):
         model = Partido
         fields = '__all__'
         exclude = ['formacion_local', 'formacion_visitante']
-    
+
     fecha = forms.DateField(
         widget=DateInput(attrs={'class': 'form-control', 'placeholder': 'Fecha del partido'}),
         input_formats=['%Y-%m-%d'],
     )
-    
+    local = forms.ModelChoiceField(
+        queryset=Pais.objects.all(),
+        widget=forms.Select(attrs={'class': 'form-control'}),
+    )
+    visitante = forms.ModelChoiceField(
+        queryset=Pais.objects.all(),
+        widget=forms.Select(attrs={'class': 'form-control'}),
+    )
+    goles_local = forms.IntegerField(
+        widget=forms.NumberInput(attrs={'class': 'form-control', 'placeholder': 'Goles local'}),
+    )
+    goles_visitante = forms.IntegerField(
+        widget=forms.NumberInput(attrs={'class': 'form-control', 'placeholder': 'Goles visitante'}),
+    )
+    minutos_ataque_local = forms.IntegerField(
+        widget=forms.NumberInput(attrs={'class': 'form-control', 'placeholder': 'Minutos de ataque local'}),
+    )
+    cantidad_corners_local = forms.IntegerField(
+        widget=forms.NumberInput(attrs={'class': 'form-control', 'placeholder': 'Cantidad de corners local'}),
+    )
+    cantidad_laterales_local = forms.IntegerField(
+        widget=forms.NumberInput(attrs={'class': 'form-control', 'placeholder': 'Cantidad de laterales local'}),
+    )
+    minutos_ataque_visitante = forms.IntegerField(
+        widget=forms.NumberInput(attrs={'class': 'form-control', 'placeholder': 'Minutos de ataque visitante'}),
+    )
+    cantidad_corners_visitante = forms.IntegerField(
+        widget=forms.NumberInput(attrs={'class': 'form-control', 'placeholder': 'Cantidad de corners visitante'}),
+    )
+    cantidad_laterales_visitante = forms.IntegerField(
+        widget=forms.NumberInput(attrs={'class': 'form-control', 'placeholder': 'Cantidad de laterales visitante'}),
+    )
+    fase = forms.ModelChoiceField(
+        queryset=Fase.objects.all(),
+        widget=forms.Select(attrs={'class': 'form-control'}),
+    )
+
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
 
@@ -463,15 +502,16 @@ class PartidoForm(forms.ModelForm):
             self.fields['fase'].queryset = fase
         else:
             self.fields['fase'].queryset = Fase.objects.all()
-    
+
     def clean(self):
         cleaned_data = super().clean()
         local = cleaned_data.get('local')
         visitante = cleaned_data.get('visitante')
 
         if local == visitante:
-            raise forms.ValidationError("No puede ser local y visitante el mismo pais")
+            raise forms.ValidationError("No puede ser local y visitante el mismo país")
         return cleaned_data
+
  
 
 class EventoForm(forms.ModelForm):

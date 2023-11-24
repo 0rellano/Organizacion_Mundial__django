@@ -49,11 +49,15 @@
                 </td>
                 <td>{{ jugador.posicion|title }}</td>
                 <td>
-                    <form action="{% url 'eliminar_jugador' pk=jugador.pk %}" method="post">
-                        {% csrf_token %}
-                        <button class="btn btn-sm btn-danger" type="submit">Eliminar</button>
-                    </form>
+                    <div class="btn-group" role="group">
+                        <a href="{% url 'editar_jugador' pk=jugador.pk %}" class="btn btn-sm btn-info rounded-end">Editar</a>
+                        <form action="{% url 'eliminar_jugador' pk=jugador.pk %}" method="post">
+                            {% csrf_token %}
+                            <button class="btn btn-sm btn-danger rounded-start" type="submit">Eliminar</button>
+                        </form>
+                    </div>
                 </td>
+                
             </tr>
             
             {% endfor %}

@@ -6,12 +6,100 @@
 <br>
 <br>
 
-<h2>Crear Partido</h2>
-<form action="{% url 'crear_partido' %}" method="POST">
-    {% csrf_token %}
-    {{ form.as_p }}
-
-    <input type="submit" value="Crear" class="btn btn-primary">
-</form>
+<main class="d-flex flex-column align-items-center text-center mt-5">
+    <h2>Crear Partido</h2>
+    <p>Completa la información del partido:</p>
+    <form method="POST" class="row g-3" style="max-width: 400px;" action="{% url 'crear_partido' %}">
+        {% csrf_token %}
+        <div class="col-12">
+            <div class="form-group">
+                {{ form.fecha.label_tag }}
+                {{ form.fecha }}
+            </div>
+        </div>
+        <div class="col-12">
+            <div class="form-group">
+                {{ form.local.label_tag }}
+                {{ form.local }}
+            </div>
+        </div>
+        <div class="col-12">
+            <div class="form-group">
+                {{ form.visitante.label_tag }}
+                {{ form.visitante }}
+            </div>
+        </div>
+        <div class="col-12">
+            <div class="form-group">
+                {{ form.goles_local.label_tag }}
+                {{ form.goles_local }}
+            </div>
+        </div>
+        <div class="col-12">
+            <div class="form-group">
+                {{ form.goles_visitante.label_tag }}
+                {{ form.goles_visitante }}
+            </div>
+        </div>
+        <div class="col-12">
+            <div class="form-group">
+                {{ form.minutos_ataque_local.label_tag }}
+                {{ form.minutos_ataque_local }}
+            </div>
+        </div>
+        <div class="col-12">
+            <div class="form-group">
+                {{ form.cantidad_corners_local.label_tag }}
+                {{ form.cantidad_corners_local }}
+            </div>
+        </div>
+        <div class="col-12">
+            <div class="form-group">
+                {{ form.cantidad_laterales_local.label_tag }}
+                {{ form.cantidad_laterales_local }}
+            </div>
+        </div>
+        <div class="col-12">
+            <div class="form-group">
+                {{ form.minutos_ataque_visitante.label_tag }}
+                {{ form.minutos_ataque_visitante }}
+            </div>
+        </div>
+        <div class="col-12">
+            <div class="form-group">
+                {{ form.cantidad_corners_visitante.label_tag }}
+                {{ form.cantidad_corners_visitante }}
+            </div>
+        </div>
+        <div class="col-12">
+            <div class="form-group">
+                {{ form.cantidad_laterales_visitante.label_tag }}
+                {{ form.cantidad_laterales_visitante }}
+            </div>
+        </div>
+        <div class="col-12">
+            <div class="form-group">
+                {{ form.formacion_local.label_tag }}
+                {{ form.formacion_local }}
+            </div>
+        </div>
+        <div class="col-12">
+            <div class="form-group">
+                {{ form.formacion_visitante.label_tag }}
+                {{ form.formacion_visitante }}
+            </div>
+        </div>
+        <div class="col-12">
+            <div class="form-group">
+                {{ form.fase.label_tag }}
+                {{ form.fase }}
+            </div>
+        </div>
+        <div class="col-12">
+            <input type="submit" value="Crear" class="btn btn-primary">
+        </div>
+    </form>
+    <br>
+</main>
 
 {% endblock %}
