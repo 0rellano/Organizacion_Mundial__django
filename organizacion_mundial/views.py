@@ -411,7 +411,7 @@ class EditarFaseView(UpdateView):
 class PartidoView(DetailView):
     model = Partido
     context_object_name = 'partido'
-    template_name = 'mundial/partido.html'
+    template_name = 'partido/partido.html'
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
