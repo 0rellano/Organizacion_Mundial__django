@@ -1,0 +1,25 @@
+{% extends 'base.html' %}
+
+{% block title %}Crear Partido{% endblock %}
+{% block content %}
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+{% if eventos %}
+{% for evento in eventos %}
+<div class="card">
+    {{evento}}
+</div>
+{% endfor %}
+{% endif %}
+
+<form action="{% url 'crear_eventos' pk=pk_partido %}" method="post">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <input class="btn btn-primary" type="submit" value="Crear Evento">
+</form>
+
+{% endblock %}

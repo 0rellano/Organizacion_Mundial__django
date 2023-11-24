@@ -1,5 +1,6 @@
 # Vistas
 from typing import Any
+from django.db import models
 from django.views.generic import ListView, DetailView, TemplateView, DeleteView, FormView
 from django.views.generic.edit import CreateView, UpdateView
 from django.views import View
@@ -456,7 +457,6 @@ class CrearFormacionesView(FormView):
         return context
 
     def post(self, request, *args, **kwargs):
-        print(request.POST)
         form_local = self.form_class(request.POST, prefix='form_local')
         form_visitante = self.form_class(request.POST, prefix='form_visitante')
         if form_local.is_valid() and form_visitante.is_valid():
@@ -483,11 +483,25 @@ class CrearFormacionesView(FormView):
         return render(self.request, self.template_name, context)
 
     def get_success_url(self) -> str:
-        return reverse_lazy('CrearEventoView', kwargs={'pk':self.request.session.get('pk_partido')})
+        return reverse_lazy('crear_eventos', kwargs={'pk':self.request.session.get('pk_partido')})
 
 
 class CrearEventoView(CreateView):
-    pass
+    model = Evento
+    form_class = EventoForm
+    template_name = 'partido/eventos_form.html'
+
+    def get_initial(self) -> dict[str, Any]:
+        initial = super().get_initial()
+        initial['partido_pk'] = self.kwargs.get('pk')
+        return initial
+    
+    def get_context_data(self, **kwargs: Any) -> dict[str, Any]:
+        context = super().get_context_data(**kwargs)
+        pk_partido = self.kwargs.get('pk')
+        context['eventos'] = Evento.objects.filter(partido__pk=pk_partido)
+        context['pk_partido'] = pk_partido
+        return context
 
 
 class Error404View(View):

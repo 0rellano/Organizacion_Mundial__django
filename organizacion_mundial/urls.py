@@ -30,7 +30,7 @@ urlpatterns = [
     #Partido
     path('partido/crear', CrearPartidoView.as_view(), name='crear_partido'),
     path('partidos/<int:pk>', PartidoView.as_view(), name='partido'),
-    path('partidos/eventos/<int:pk>', CrearEventoView.as_view(), name='partido'),
+    path('partidos/eventos/<int:pk>', CrearEventoView.as_view(), name='crear_eventos'),
 
     # Formaciones
     path('formaciones/crear/<int:pk>', CrearFormacionesView.as_view(), name='crear_formaciones'),

@@ -474,4 +474,28 @@ class PartidoForm(forms.ModelForm):
         return cleaned_data
  
 
+class EventoForm(forms.ModelForm):
+    class Meta:
+        model = Evento
+        fields = '__all__'
     
+    
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+
+        self.fields['partido'].empty_label = None
+        pk_partido= self.initial.get('partido_pk')
+        print(pk_partido)
+
+        partido = Partido.objects.filter(pk=pk_partido)
+        if pk_partido:
+            self.fields['partido'].queryset = partido
+        else:
+            self.fields['partido'].queryset = Partido.objects.all()
+
+    partido = forms.ModelChoiceField(
+        label=False,
+        queryset=None,
+        widget=forms.Select(attrs={
+            'style': 'display: none'
+        }),)
