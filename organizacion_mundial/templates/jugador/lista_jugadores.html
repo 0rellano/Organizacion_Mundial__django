@@ -36,29 +36,27 @@
         </thead>    
         <tbody>
             {% for jugador in jugadores %}
-                <tr>
-                    <td>
-                        <a href="{% url 'detalle_jugador' pk=jugador.pk %}" class="black-link">
-                            {{ jugador.nombre|title }} {{ jugador.apellido|title }}
-                        </a>
-                    </td>
-                    <td>
-                        <a href="{% url 'pais' pk=jugador.pais.pk %}" class="black-link">
-                            {{ jugador.pais.nombre|title }}
-                        </a> 
-                    </td>
-                    <td>{{ jugador.posicion|title }}</td>
-                    {% if user.is_authenticated and user.is_staff %}
-                        <td>
-                            <a href="{% url 'editar_jugador' pk=jugador.pk %}" class="btn btn-sm btn-info">Editar</a>
-                            <form action="{% url 'eliminar_jugador' pk=jugador.pk %}" method="post" class="d-inline">
-                                {% csrf_token %}
-                                <button class="btn btn-sm btn-danger" type="submit">Eliminar</button>
-                            </form>
-                        </td>
-                    {% endif %}
-                </tr>
-                {% endfor %}
+            <tr>
+                <td>
+                    <a href="{% url 'detalle_jugador' pk=jugador.pk %}" class="black-link">
+                        {{ jugador.nombre|title }} {{ jugador.apellido|title }}
+                    </a>
+                </td>
+                <td>
+                    <a href="{% url 'pais' pk=jugador.pais.pk %}" class="black-link">
+                        {{ jugador.pais.nombre|title }}
+                    </a> 
+                </td>
+                <td>{{ jugador.posicion|title }}</td>
+                <td>
+                    <form action="{% url 'eliminar_jugador' pk=jugador.pk %}" method="post">
+                        {% csrf_token %}
+                        <button class="btn btn-sm btn-danger" type="submit">Eliminar</button>
+                    </form>
+                </td>
+            </tr>
+            
+            {% endfor %}
         </tbody> 
     </table>
     <br>

@@ -6,7 +6,7 @@
 <div class="container mt-5">
     <br><br><br>
     <h2 class="text-center mb-4">Explora los Mundiales</h2>
-    <a class="btn btn-outline-success" href="{% url 'crear_mundial' %}">Crear Mundial</a>
+    
 
     <form method="get" action="{% url 'mundiales' %}">
         <div class="input-group mb-2">
@@ -20,27 +20,33 @@
         </div>
     </form>
 
+    {% if user.is_authenticated and user.is_staff %}
+        <a class="btn btn-primary mb-3" href="{% url 'crear_mundial' %}">Crear Mundial</a>
+    {% endif %}
+
     <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4">
         {% for mundial in mundiales|dictsort:"fecha_inicio" %}
-        <div class="col">
-            <div class="card h-100">
-                <div class="card-body">
-                    <h5 class="card-title">
-                        <a href="/mundiales/{{ mundial.pk }}" class="black-link">{{ mundial }}</a>
-                    </h5>
-                    <p class="card-text">País Sede: <a href="{% url 'pais' pk=mundial.pais_sede.pk %}">{{ mundial.pais_sede }}</a></p>
-                    <p class="card-text">Fecha de Inicio: {{ mundial.fecha_inicio|date:"Y-m-d" }}</p>
-                    <p class="card-text">Fecha de Fin: {{ mundial.fecha_final|date:"Y-m-d" }}</p>
-                    <form method="POST" action="{% url 'eliminar_mundial' pk=mundial.pk %}">
-                        {% csrf_token %}
-                        <input type="submit" value="Eliminar" class="btn btn-danger">
-                    </form>
-                    <a class="btn btn-info" href="{% url 'fases_mundial' pk=mundial.pk %}">Editar</a>
-                    <!-- Agrega más información según tus necesidades -->
-     
+            <div class="col">
+                <div class="card h-100">
+                    <div class="card-body">
+                        <h5 class="card-title">
+                            <a href="/mundiales/{{ mundial.pk }}" class="black-link">{{ mundial }}</a>
+                        </h5>
+                        <p class="card-text">País Sede: <a href="{% url 'pais' pk=mundial.pais_sede.pk %}">{{ mundial.pais_sede }}</a></p>
+                        <p class="card-text">Fecha de Inicio: {{ mundial.fecha_inicio|date:"Y-m-d" }}</p>
+                        <p class="card-text">Fecha de Fin: {{ mundial.fecha_final|date:"Y-m-d" }}</p>
+                    </div>
+                    <div class="d-flex justify-content-end mt-2 mb-2">
+                        {% if user.is_authenticated and user.is_staff %}
+                            <a href="{% url 'fases_mundial' pk=mundial.pk %}" class="btn btn-sm btn-info rounded text-end">Editar</a>
+                            <form action="{% url 'eliminar_mundial' pk=mundial.pk %}" method="post" style="display: inline;">
+                                {% csrf_token %}
+                                <button class="btn btn-sm btn-danger rounded text-end" type="submit">Eliminar</button>
+                            </form>
+                        {% endif %}
+                    </div>
                 </div>
             </div>
-        </div>
         {% endfor %}
     </div>
 </div>

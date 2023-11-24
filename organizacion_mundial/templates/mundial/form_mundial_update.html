@@ -1,11 +1,40 @@
 {% extends 'base.html' %}
-{%block title%}Crear Mundial{%endblock%}
-{%block content%}
-<h1>Editar Mundial</h1>
-<p>Parte 1: Mundial</p>
-<form action="{% url 'editar_mundial' pk=mundial.pk %}" method="post">
-    {% csrf_token %}
-{{form}}
-<input class="btn btn-primary" type="submit" value="Editar">
-</form>
-{%endblock%}
+{% block title %}Editar Mundial{% endblock %}
+{% block content %}
+<main class="d-flex flex-column align-items-center text-center mt-5">
+    <br><br><br>
+    <h1>Editar Mundial</h1>
+    <p>Parte 1: Mundial</p>
+    <form method="post" class="row g-3" style="max-width: 400px;" action="{% url 'editar_mundial' pk=form.instance.pk %}">
+        {% csrf_token %}
+        <div class="col-12">
+            <div class="form-group">
+                {{ form.anio.label_tag }}
+                {{ form.anio }}
+            </div>
+        </div>
+        <div class="col-12">
+            <div class="form-group">
+                {{ form.pais_sede.label_tag }}
+                {{ form.pais_sede }}
+            </div>
+        </div>
+        <div class="col-12">
+            <div class="form-group">
+                {{ form.fecha_inicio.label_tag }}
+                {{ form.fecha_inicio }}
+            </div>
+        </div>
+        <div class="col-12">
+            <div class="form-group">
+                {{ form.fecha_final.label_tag }}
+                {{ form.fecha_final }}
+            </div>
+        </div>
+        <div class="col-12">
+            <button class="btn btn-primary" type="submit">Editar Mundial</button>
+        </div>
+    </form>
+    <br>
+</main>
+{% endblock %}

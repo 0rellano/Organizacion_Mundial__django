@@ -102,20 +102,20 @@ class MundialForm(forms.ModelForm):
     )
 
     fecha_inicio = forms.DateField(
-         widget=forms.DateInput(attrs={
+         widget=DateInput(attrs={
               'class': 'form-control',
               'type': 'date',
-              
-              }), input_formats=['%Y-%m-%d'],
+         }),
+         input_formats=['%Y-%m-%d'],
+         required=False  # Hacer que la fecha de inicio no sea obligatoria
     )
-
-
     fecha_final = forms.DateField(
-         widget=forms.DateInput(attrs={
+         widget=DateInput(attrs={
               'class': 'form-control',
               'type': 'date',
-              }),
-              input_formats=['%Y-%m-%d']
+         }),
+         input_formats=['%Y-%m-%d'],
+         required=False  # Hacer que la fecha final no sea obligatoria
     )
 
 

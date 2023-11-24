@@ -1,24 +1,51 @@
 {% extends 'base.html' %}
+
 {% block content %}
-<h1>{{mundial}}</h1><a href="{% url 'editar_mundial' pk=mundial.pk %}">Editar Mundial</a>
-<h2>Fases</h2>
-{% if fases %}
-    {% for fase in fases %}
-        {{fase}}
-        <a class="btn btn-outline-secondary" href="{% url 'editar_fase' pk=fase.pk %}">Editar</a>
-        <form method="POST" action="{% url 'eliminar_fase' pk=fase.pk %}">
-            {% csrf_token %}
-            <input type="submit" value="Eliminar" class="btn btn-danger">
-        </form>
-    {% endfor %}
-{% else %}
-    <p class="text">oh...no tienes ninguna fase. <b class="text-danger" >TIENES QUE CREAR MINIMO UNA</b></p>
-{% endif%}
-<form action="{% url 'crear_fase'%}" method="get">
-    <input type="hidden" name="pk" value="{{mundial.pk}}">
-    <input type="hidden" name="orden" value="1">
+<div class="container mt-5">
+    <br><br><br>
+    <h1>{{mundial}}</h1>
+    <a href="{% url 'editar_mundial' pk=mundial.pk %}" class="btn btn-primary">Editar Mundial</a>
 
-    <input class="btn btn btn-outline-info" type="submit" value="Añade una fase">
-</form>
+    <h2 class="mt-4">Fases</h2>
 
+    {% if fases %}
+        <div class="list-group mt-3">
+            {% for fase in fases %}
+                <div class="list-group-item d-flex justify-content-between align-items-center">
+                    {{ fase }}
+                    <div class="btn-group" role="group">
+                        <a href="{% url 'editar_fase' pk=fase.pk %}" class="btn btn-sm btn-info rounded text-end">Editar</a>
+                        <form action="{% url 'eliminar_fase' pk=fase.pk %}" method="post">
+                            {% csrf_token %}
+                            <input type="submit" value="Eliminar" class="btn btn-sm btn-danger rounded text-end">
+                        </form>
+                        
+                    </div>
+                    
+                    
+                </div>
+            {% endfor %}
+        </div>
+    {% else %}
+        <p class="text">Oh... no tienes ninguna fase. <b class="text-danger">TIENES QUE CREAR AL MENOS UNA</b></p>
+    {% endif %}
+    <form action="{% url 'crear_fase' %}" method="get" class="mt-3">
+        <input type="hidden" name="pk" value="{{mundial.pk}}">
+        <input id="inputOrden" type="hidden" name="orden" value="{{fases.count}}">
+
+        <input type="submit" value="Añadir una fase" class="btn btn-outline-info">
+    </form>
+
+    
+</div>
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        var inputOrden = document.getElementById('inputOrden');
+        var valorActual = parseInt(inputOrden.value);
+        
+        if (!isNaN(valorActual)) {
+            inputOrden.value = valorActual + 1;
+        }
+    });
+</script>
 {% endblock %}
