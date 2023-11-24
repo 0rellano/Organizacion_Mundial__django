@@ -19,7 +19,7 @@
                             {% csrf_token %}
                             <input type="submit" value="Eliminar" class="btn btn-sm btn-danger rounded text-end">
                         </form>
-                        
+                        <a href="{% url 'crear_partido' %}?idfase={{fase.pk}}"  class="btn btn-warning">Añadir Partido</a>
                     </div>
                     
                     

@@ -193,14 +193,12 @@ class PaisForm(forms.ModelForm):
         })
     )
 
-
 class PosicionForm(forms.ModelForm):
     class Meta:
         model = Posicion
         fields = '__all__'
 
     nombre_posicion = forms.CharField(max_length=100)
-
 
 class PlantelForm(forms.ModelForm):
     class Meta:
@@ -276,7 +274,6 @@ class PlantelForm(forms.ModelForm):
             'type': 'date',
         })
     )
-
 
 class EquipoForm(forms.ModelForm):
     class Meta:
@@ -409,3 +406,72 @@ class EmpleadoForm(forms.ModelForm):
         if initial_pais is not None:
             self.fields['pais_perteneciente'].initial = initial_pais
 
+class FormacionForm(forms.ModelForm):
+    class Meta:
+        model = Formacion
+        fields = '__all__'
+    
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        
+        self.fields['pais'].empty_label = None
+        pk_pais = self.initial.get('pk_pais')
+        pais = Pais.objects.filter(pk=pk_pais)
+        if pk_pais:
+            self.fields['pais'].queryset = pais
+            self.fields['titulares'].queryset = Jugador.objects.filter(pais=pais.first())
+            self.fields['suplentes'].queryset = Jugador.objects.filter(pais=pais.first())
+
+        else:
+            self.fields['pais'].queryset = Pais.objects.all()
+            self.fields['titulares'].queryset = Jugador.objects.all()
+        
+    def clean(self):
+        cleaned_data = super().clean()
+        titulares = cleaned_data.get('titulares')
+        suplentes = cleaned_data.get('suplentes')
+        print(titulares)
+        print(suplentes)
+
+        if titulares and suplentes:
+            intersection = titulares.intersection(suplentes)
+            if intersection:
+                raise forms.ValidationError(f"No pueden haber un jugador de titular y de suplente. {intersection.first()}")
+
+        return cleaned_data
+    
+
+class PartidoForm(forms.ModelForm):
+    class Meta:
+        model = Partido
+        fields = '__all__'
+        exclude = ['formacion_local', 'formacion_visitante']
+    
+    fecha = forms.DateField(
+        widget=DateInput(attrs={'class': 'form-control', 'placeholder': 'Fecha del partido'}),
+        input_formats=['%Y-%m-%d'],
+    )
+    
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+
+        self.fields['fase'].empty_label = None
+        pk_fase = self.initial.get('idfase')
+
+        fase = Fase.objects.filter(pk=pk_fase)
+        if pk_fase:
+            self.fields['fase'].queryset = fase
+        else:
+            self.fields['fase'].queryset = Fase.objects.all()
+    
+    def clean(self):
+        cleaned_data = super().clean()
+        local = cleaned_data.get('local')
+        visitante = cleaned_data.get('visitante')
+
+        if local == visitante:
+            raise forms.ValidationError("No puede ser local y visitante el mismo pais")
+        return cleaned_data
+ 
+
+    

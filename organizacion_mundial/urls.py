@@ -28,7 +28,15 @@ urlpatterns = [
     path('fase/editar/<int:pk>', EditarFaseView.as_view(), name='editar_fase'),
     path('fase/eliminar/<int:pk>', EliminarFaseView.as_view(), name='eliminar_fase'),
     #Partido
+    path('partido/crear', CrearPartidoView.as_view(), name='crear_partido'),
     path('partidos/<int:pk>', PartidoView.as_view(), name='partido'),
+    path('partidos/eventos/<int:pk>', CrearEventoView.as_view(), name='partido'),
+
+    # Formaciones
+    path('formaciones/crear/<int:pk>', CrearFormacionesView.as_view(), name='crear_formaciones'),
+    # path('formaciones/editar/<int:pk>', EditarFormacionView.as_view(), name='editar_formacion'),
+    # path('formaciones/eliminar/<int:pk>', EliminarFormacionView.as_view(), name='eliminar_formacion'),
+
     #Registro
     path('registro/', Registro.as_view(), name='registro'),
     #Plantel
@@ -38,10 +46,6 @@ urlpatterns = [
     path('equipos/editar/<int:pk>/', EditarEquipoView.as_view(), name='editar_equipo'),
     path('equipos/eliminar/<int:pk>', EliminarEquipoView.as_view(), name='eliminar_equipo'),
 
-    # Formaciones
-    path('formaciones/crear', CrearFormacionView.as_view(), name='crear_formacion'),
-    path('formaciones/editar/<int:pk>', EditarFormacionView.as_view(), name='editar_formacion'),
-    path('formaciones/eliminar/<int:pk>', EliminarFormacionView.as_view(), name='eliminar_formacion'),
 
     # Empleados (Plantel Técnico)
     path('empleados/crear', CrearEmpleadoView.as_view(), name='crear_empleado'),

@@ -1,11 +1,6 @@
 # Vistas
 from typing import Any
-from urllib.parse import urlencode
-from django.db.models.query import QuerySet
-from django.forms.models import BaseModelForm
-from django.http import HttpRequest, HttpResponse
-from django.http import HttpResponseRedirect
-from django.views.generic import ListView, DetailView, TemplateView, DeleteView
+from django.views.generic import ListView, DetailView, TemplateView, DeleteView, FormView
 from django.views.generic.edit import CreateView, UpdateView
 from django.views import View
 # Recursos
@@ -177,35 +172,6 @@ class EliminarEquipoView(DeleteView):
             pais_id = self.object.pais_perteneciente.id
             return reverse('pais', args=[pais_id])
 
-# Vistas para formaciones
-@method_decorator(login_required(login_url='login'), name='dispatch')
-class CrearFormacionView(CreateView):
-    model = Formacion
-    template_name = 'pais/form_formacion.html'
-    form_class = FormacionForm
-    def get_success_url(self):
-        if self.object and self.object.pais_perteneciente:
-            pais_id = self.object.pais_perteneciente.id
-            return reverse('pais', args=[pais_id])
-        else:
-            return reverse('')
-
-@method_decorator(login_required(login_url='login'), name='dispatch')
-class EditarFormacionView(UpdateView):
-    model = Formacion
-    template_name = 'pais/form_formacion_update.html'
-    form_class = FormacionForm
-    def get_success_url(self):
-        pais_id = self.object.pais_perteneciente.id
-        return reverse('pais', args=[pais_id])
-
-@method_decorator(login_required(login_url='login'), name='dispatch')
-class EliminarFormacionView(DeleteView):
-    model = Formacion
-    def get_success_url(self):
-        pais_id = self.object.pais_perteneciente.id
-        return reverse('pais', args=[pais_id])
-
 # Vistas para empleados (plantel técnico)
 @method_decorator(login_required(login_url='login'), name='dispatch')
 class CrearEmpleadoView(CreateView):
@@ -373,7 +339,7 @@ class EditarMundialView(UpdateView):
     form_class = MundialForm
     
     def get_success_url(self) -> str:
-        return reverse_lazy('fases_mundiales', kwargs={'pk': self.object.pk})
+        return reverse_lazy('fases_mundial', kwargs={'pk': self.object.pk})
 
 
 class CrearMundialView(CreateView):
@@ -390,6 +356,7 @@ class ListaFasesMundialView(DetailView):
     template_name = 'mundial/fases_mundial.html'
 
     def get_context_data(self, **kwargs: Any) -> dict[str, Any]:
+        self.request.session['mundial_id'] = self.object.pk
         context = super().get_context_data(**kwargs)
         context['fases'] = Fase.objects.filter(mundial=self.object)
         return context
@@ -450,6 +417,77 @@ class PartidoView(DetailView):
         context['eventos'] = Evento.objects.filter(partido=self.object).order_by('minuto_ocurrido')
 
         return context
+
+
+class CrearPartidoView(CreateView):
+    model = Partido
+    template_name = 'partido/partido_form.html'
+    form_class = PartidoForm
+    success_url = None
+
+    def get_initial(self) -> dict[str, Any]:
+        if self.request.method == 'GET':
+            initial = super().get_initial()
+            initial['idfase'] = self.request.GET.get('idfase')
+            return initial
+
+    def get_success_url(self) -> str:
+        return reverse_lazy('crear_formaciones', kwargs={'pk':self.object.pk})
+
+class CrearFormacionesView(FormView):
+    template_name = 'partido/formaciones_form.html'
+    form_class = FormacionForm
+    success_url = None
+
+    def get_initial(self) -> dict[str, Any]:
+        if self.request.method == 'GET':
+            initial = super().get_initial()
+            initial['pk_pais'] = self.request.kwargs.get('pk')
+            return initial
+
+    def get_context_data(self, **kwargs):
+        context = {}
+        partido = Partido.objects.get(pk=self.kwargs.get('pk'))
+        self.request.session['pk_partido'] = self.kwargs.get('pk')
+
+        context['pk'] = self.kwargs.get('pk')
+        context['form_local'] = self.form_class(prefix='form_local', initial={'pk_pais': partido.local.pk})
+        context['form_visitante'] = self.form_class(prefix='form_visitante', initial={'pk_pais': partido.visitante.pk})
+        return context
+
+    def post(self, request, *args, **kwargs):
+        print(request.POST)
+        form_local = self.form_class(request.POST, prefix='form_local')
+        form_visitante = self.form_class(request.POST, prefix='form_visitante')
+        if form_local.is_valid() and form_visitante.is_valid():
+            return self.form_valid(form_local, form_visitante)
+        else:
+            return self.form_invalid(form_local, form_visitante)
+
+    def form_valid(self, form_local, form_visitante):
+        formacion_local = form_local.save()
+        formacion_visitante = form_visitante.save()
+        partido = Partido.objects.get(pk=self.request.session.get('pk_partido'))
+        partido.formacion_local = formacion_local
+        partido.formacion_visitante = formacion_visitante
+        partido.save()
+
+        return super().form_valid(form_local)
+
+    def form_invalid(self, form_local, form_visitante):
+        context = self.get_context_data()
+        context['form_local'] = form_local
+        context['form_visitante'] = form_visitante
+        context['errors_local'] = form_visitante.errors
+        context['errors_visitante'] = form_local.errors
+        return render(self.request, self.template_name, context)
+
+    def get_success_url(self) -> str:
+        return reverse_lazy('CrearEventoView', kwargs={'pk':self.request.session.get('pk_partido')})
+
+
+class CrearEventoView(CreateView):
+    pass
 
 
 class Error404View(View):

@@ -1,0 +1,26 @@
+{% extends 'base.html' %}
+
+{% block title %}Crear Partido{% endblock %}
+{% block content %}
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<main class="d-flex flex-column align-items-center">
+    <h2 class="mb-4">Crear Formaciones</h2>
+    <form class="w-75 row" action="{% url 'crear_formaciones' pk=pk %}" method="POST">
+        {% csrf_token %}
+        <div class="col-md-6 d-flex flex-column align-items-center">
+
+            {{ form_local }}
+        </div>
+        <div class="col-md-6 d-flex flex-column align-items-center">
+            {{ form_visitante }}
+        </div>
+        <input type="submit" value="Crear" class="btn btn-primary mt-3">
+    </form>
+</main>
+
+{% endblock %}
