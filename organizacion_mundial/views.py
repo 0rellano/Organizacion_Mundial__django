@@ -503,6 +503,9 @@ class CrearEventoView(CreateView):
         context['pk_partido'] = pk_partido
         return context
 
+    def get_success_url(self) -> str:
+        return reverse_lazy('crear_eventos', kwargs={'pk':self.kwargs.get('pk')})
+
 
 class Error404View(View):
     def get(self, request, exception=None, *args, **kwargs):
