@@ -14,15 +14,15 @@
                 <div class="list-group-item d-flex justify-content-between align-items-center">
                     {{ fase }}
                     <div class="btn-group" role="group">
-                        <a href="{% url 'editar_fase' pk=fase.pk %}" class="btn btn-sm btn-info rounded text-end">Editar</a>
-                        <form action="{% url 'eliminar_fase' pk=fase.pk %}" method="post">
+                        <a href="{% url 'editar_fase' pk=fase.pk %}" class="btn btn-sm btn-info rounded-end">Editar</a>
+                        
+                        <form action="{% url 'eliminar_fase' pk=fase.pk %}" method="post" class="d-inline">
                             {% csrf_token %}
-                            <input type="submit" value="Eliminar" class="btn btn-sm btn-danger rounded text-end">
+                            <input type="submit" value="Eliminar" class="btn btn-sm btn-danger rounded-start">
                         </form>
-                        <a href="{% url 'crear_partido' %}?idfase={{fase.pk}}"  class="btn btn-warning">Añadir Partido</a>
+                        
+                        <a href="{% url 'crear_partido' %}?idfase={{fase.pk}}" class="btn btn-sm btn-warning">Añadir Partido</a>
                     </div>
-                    
-                    
                 </div>
             {% endfor %}
         </div>
